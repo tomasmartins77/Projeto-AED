@@ -20,63 +20,41 @@ void modo1(int argc, char *filename)
 {
     FILE *ficheiro;
     lab_t lab;
-    int aux_x = 0, aux_y = 0, aux_custo = 0, aux = 0, i = 0;
-    char line[MAX] = {0};
-
+    int aux_x = 0, aux_y = 0, aux_custo = 0;
+    
     ficheiro = fopen(filename, "r");
     if (ficheiro == NULL)
     {
         exit(EXIT_FAILURE);
     }
-    printf("sadasdggrgggggg\n");
 
-    while (fgets(line, MAX, ficheiro) != NULL)
-    {
-        if (aux == 6)
-            break;
-
-        const char s[2] = " ";
-        char *token;
-
-        /* get the first token */
-        token = strtok(line, s);
-        lab.linhas = atoi(token);
-        aux++;
-        printf("adsasdasdadas\n\n");
-        /* walk through other tokens */
-        while (token != NULL)
-        {
-            token = strtok(NULL, s);
-            if (aux == 1)
-                lab.colunas = atoi(token);
-            if (aux == 2)
-                lab.solx = atoi(token);
-            if (aux == 3)
-                lab.soly = atoi(token);
-            if (aux == 4)
-                strcpy(token, lab.pergunta);
-            if (aux == 5)
-                lab.blocos = atoi(token);
-            aux++;
-        }
+        fscanf(ficheiro,"%d %d %d %d %s %d", &lab.linhas, &lab.colunas, &lab.solx, &lab.soly, lab.pergunta, &lab.blocos);
+        printf("%d\n", lab.linhas);
+        printf("%d\n", lab.colunas);
+        printf("%d\n", lab.solx);
+        printf("%d\n", lab.soly);
+        printf("%s\n", lab.pergunta);
+        printf("%d\n", lab.blocos);
 
         int **tab = (int **)calloc(lab.linhas, sizeof(int *));
-
-        for (int i = 0; i < lab.linhas; i++)
+        
+        for (int i = 1; i <= lab.linhas; i++)
         {
             tab[i] = (int *)calloc(lab.colunas, sizeof(int));
         }
 
-        printf("%d", lab.linhas);
-
         while (fscanf(ficheiro, "%d %d %d", &aux_x, &aux_y, &aux_custo) != EOF)
         {
+                    printf("%d ", aux_x);
+                    printf("%d ", aux_y);
+                    printf("%d\n", aux_custo);
+
             tab[aux_x][aux_y] = aux_custo;
         }
 
         fclose(ficheiro);
-    }
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -94,7 +72,7 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
+/*
 void inserir_dados(char *linha, int aux, lab_t *lab)
 {
     switch (aux)
@@ -118,7 +96,7 @@ void inserir_dados(char *linha, int aux, lab_t *lab)
         lab->blocos = atoi(linha);
         break;
     }
-}
+}*/
 
 /** \brief menu de utilizacao*/
 void utilizacao()
