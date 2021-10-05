@@ -29,12 +29,6 @@ void modo1(int argc, char *filename)
     }
 
         fscanf(ficheiro,"%d %d %d %d %s %d", &lab.linhas, &lab.colunas, &lab.solx, &lab.soly, lab.pergunta, &lab.blocos);
-        printf("%d\n", lab.linhas);
-        printf("%d\n", lab.colunas);
-        printf("%d\n", lab.solx);
-        printf("%d\n", lab.soly);
-        printf("%s\n", lab.pergunta);
-        printf("%d\n", lab.blocos);
 
         int **tab = (int **)calloc(lab.linhas, sizeof(int *));
         
@@ -45,24 +39,39 @@ void modo1(int argc, char *filename)
 
         while (fscanf(ficheiro, "%d %d %d", &aux_x, &aux_y, &aux_custo) != EOF)
         {
-                    printf("%d ", aux_x);
-                    printf("%d ", aux_y);
-                    printf("%d\n", aux_custo);
-
             tab[aux_x][aux_y] = aux_custo;
         }
 
         fclose(ficheiro);
 }
 
+int A1(int** tab, lab_t lab)
+{
+    int resultado = 0;
+    return resultado = tab[lab.solx][lab.soly];
+}
+
+int A3(int** tab, lab_t lab)
+{
+    int resultado = 0;
+    if(tab[lab.solx][lab.soly] > 0 )
+    return resultado = tab[lab.solx][lab.soly];
+}
+
+int A4(int** tab, lab_t lab)
+{
+    int resultado = 0;
+    if(tab[lab.solx][lab.soly] == -1 )
+    return resultado = tab[lab.solx][lab.soly];
+}
 
 int main(int argc, char *argv[])
 {
     int mode;
 
-    if (argc != 3)
+    if (argc != 3 || strcmp(argv[1], "-s") != 0)
         exit(0);
-    //ver se argv1 é -s
+
     if (strstr(argv[2], ".in1") != 0)
     {
         modo1(argc, argv[2]);
@@ -72,31 +81,6 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-/*
-void inserir_dados(char *linha, int aux, lab_t *lab)
-{
-    switch (aux)
-    {
-    case 0:
-        lab->linhas = atoi(linha);
-        break;
-    case 1:
-        lab->colunas = atoi(linha);
-        break;
-    case 2:
-        lab->solx = atoi(linha);
-        break;
-    case 3:
-        lab->soly = atoi(linha);
-        break;
-    case 4:
-        strcpy(linha, lab->pergunta);
-        break;
-    case 5:
-        lab->blocos = atoi(linha);
-        break;
-    }
-}*/
 
 /** \brief menu de utilizacao*/
 void utilizacao()
