@@ -49,22 +49,19 @@ void modo1(int argc, char *filename)
 
 int A1(int** tab, lab_t lab)
 {
+    //ver se esta fora do maze
     int resultado = 0;
     return resultado = tab[lab.solx][lab.soly];
 }
 
 int A3(int** tab, lab_t lab)
 {
-    int resultado = 0;
-    if(tab[lab.solx][lab.soly] > 0 )
-    return resultado = tab[lab.solx][lab.soly];
+    
 }
 
 int A4(int** tab, lab_t lab)
 {
-    int resultado = 0;
-    if(tab[lab.solx][lab.soly] == -1 )
-    return resultado = tab[lab.solx][lab.soly];
+   
 }
 
 int main(int argc, char *argv[])
