@@ -14,6 +14,7 @@ typedef struct labirinto
     char pergunta[3];
 } lab_t;
 
+
 void inserir_dados(char *linha, int aux, lab_t *lab);
 
 void modo1(int argc, char *filename)
