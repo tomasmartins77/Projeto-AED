@@ -100,18 +100,30 @@ int check_filename(char* filename)
     int i = 0, j = 0, t = 0;
     char ex[4];
 
-    for(i = 0; i < strlen(filename); i++)
-    {
-
-    }
+    i = strlen(filename);
     t = i - 4;
     for(j = 0; t < i+1; j++, t++)
     {
         ex[j] = filename[t];
     }
-    
+
     if(strcmp(ex, ".in1") == 0);
-    return 0;
+    return 1;
+}
+
+char* change_ex(char* filename)
+{
+    int i = 0, j = 0, t = 0;
+    char ex[6] = ".sol1";
+
+    i = strlen(filename);
+    t = i - 5;
+    for(j = 0; t < i+1; j++, t++)
+    {
+        filename[t+1] = ex[j];
+    }
+    return filename;
+
 }
 
 int main(int argc, char *argv[])
@@ -123,6 +135,10 @@ int main(int argc, char *argv[])
     {
         exit(1);
     }
+    char* file_end;
+    strcpy(file_end, change_ex(argv[2]));
+    
+    printf("\n%s\n", file_end);
     ficheiro = fopen(argv[2], "r");
     if (ficheiro == NULL)
     {
