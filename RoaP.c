@@ -22,41 +22,41 @@ int check_if_outside(lab_t lab);
 
 int A1(int** tab, lab_t lab);
 
-int* A2(int** tab, lab_t lab);
+int A2_4(int** tab, lab_t lab, int v);
 
+int A3(int** tab, lab_t lab);
 
 int menu_perguntas(int** tab, lab_t lab)
 {
-    
     if(strcmp(lab.pergunta, "A1") == 0)
     {
         return A1(tab, lab);
-    }/*
-    if(strcmp(lab.pergunta, "A2"))
-    {
-        return A2(tab, lab);
     }
-    if(strcmp(lab.pergunta, "A3"))
+    if(strcmp(lab.pergunta, "A2") == 0)
+    {
+        return A2_4(tab, lab, 0);
+    }
+    if(strcmp(lab.pergunta, "A3") == 0)
     {
         return A3(tab, lab);
     }
-    if(strcmp(lab.pergunta, "A4"))
+    if(strcmp(lab.pergunta, "A4") == 0)
     {
-        return A4(tab, lab);
-    }
-    if(strcmp(lab.pergunta, "A5"))
+        return A2_4(tab, lab, -1);
+    }/*
+    if(strcmp(lab.pergunta, "A5") == 0)
     {
         return A5(tab, lab);
     }
-    if(strcmp(lab.pergunta, "A6"))
+    if(strcmp(lab.pergunta, "A6") == 0)
     {
         return A6(tab, lab);
     }*/
     exit(1);
 }
 
-
-void output_file(int resposta, char* filename, lab_t lab)
+/*
+FILE* output_file(int resposta, char* filename, lab_t lab)
 {
     FILE* ficheiro;
 
@@ -69,10 +69,10 @@ void output_file(int resposta, char* filename, lab_t lab)
         exit(1);
     }
        
-    fprintf(ficheiro, "%d", resposta);
+    fprintf(ficheiro, "%d\n", resposta);
 
-    fclose(ficheiro);
-}
+    return ficheiro;
+}*/
 
 lab_t init_maze(){
     lab_t lab;
@@ -87,62 +87,78 @@ lab_t init_maze(){
 
 int** init_tab(lab_t lab)
 {
+    int i;
     int **tab = (int **)calloc(lab.linhas, sizeof(int *));
         
-        for (int i = 1; i <= lab.linhas; i++)
+        for (i = 0; i < lab.linhas; i++)
         {
             tab[i] = (int *)calloc(lab.colunas, sizeof(int));
         }
     return tab;
 }
 
+void free_tab(int** tab, lab_t lab)
+{
+    int i;
+    for (i = 0; i < lab.linhas; i++)
+        {
+            free(tab[i]);
+        }
+    free(tab);
+}
+
 void modo1(char* filename, FILE* ficheiro)
 {
-    
     lab_t lab = init_maze();
     int aux_x = 0, aux_y = 0, aux_custo = 0, aux_tamanho = 0, resposta = 0;
+    FILE* fp;
+    int** tab = NULL;
+    char* file_end = (char*)malloc(strlen(filename) * sizeof(char) + 2);
+    strcpy(change_ex(filename), file_end);
+
+    fp = fopen("adsasdaddsa.sol1", "w");
+    if(fp == NULL)
+    {
+        exit(1);
+    }
+       
     
 
-    while(1)
+
+    while(ficheiro != NULL)
     {
     if(fscanf(ficheiro,"%d %d %d %d %s %d", &lab.linhas, &lab.colunas, &lab.solx, &lab.soly, lab.pergunta, &lab.blocos) != 6)
     {
         fclose(ficheiro);
         exit(1);
     }
-
-    if(check_if_outside(lab) == -2)
-    {
-        output_file(-2, filename, lab);
-    }
-
-    int** tab = init_tab(lab);
-
-    while (fscanf(ficheiro, "%d %d %d", &aux_x, &aux_y, &aux_custo) != EOF)
-    {
-        if(aux_tamanho == lab.blocos)
-        {
-            aux_tamanho = 0;
-            break;
-        }
-
-        tab[aux_x][aux_y] = aux_custo;
-
-        aux_tamanho++;
-    }
     
-        resposta = menu_perguntas(tab, lab);
-        output_file(resposta, filename, lab);
+        tab = init_tab(lab);
 
-        if(feof(ficheiro) == 1)
+        while (aux_tamanho != lab.blocos)
         {
-            fclose(ficheiro);
-            break;
+            fscanf(ficheiro, "%d %d %d", &aux_x, &aux_y, &aux_custo);
+            aux_x--;
+            aux_y--;
+            tab[aux_x][aux_y] = aux_custo;
+            aux_tamanho++;
         }
+        if(check_if_outside(lab) == -2)
+        {
+            resposta = -2;
+        }else{
+            resposta = menu_perguntas(tab, lab);
+        }
+        free_tab(tab, lab);
+        aux_tamanho = 0;
+        fprintf(fp, "%d\n\n", resposta);
     }
+        
     
+    fclose(fp);
     fclose(ficheiro);   
 }
+
 
 int check_if_outside(lab_t lab)
 {
@@ -153,49 +169,34 @@ int check_if_outside(lab_t lab)
 
 int A1(int** tab, lab_t lab)
 {
-    //ver se esta fora do maze
     int resultado = 0;
-    return resultado = tab[lab.solx][lab.soly];
-}
-/*
-int* A2(int** tab, lab_t lab)
-{
-    int i = 0, j = 0, a = 0, b = 0, offset_x = 0, offset_y = 0, z = 0;
-    int vizinhos[9];
-
-    for(a = 0; a < 3; a++)
-    {
-        for(b = 0; b < 3; b++)
-        {
-            for(i = -1; i < 2; i++)
-            {
-                for(j = -1; j < 2; j++, z++)
-                {
-                    offset_x = lab.solx + a + i;
-                    offset_y = lab.soly + b + j;
-                    if(offset_x >= 0 && offset_y >= 0 && offset_x < lab.linhas && offset_y < lab.colunas)
-                    {
-                        vizinhos[z] = tab[offset_x][offset_y];
-                        
-                    }
-                }
-            }
-        }
-    }
-    return vizinhos;
+    return resultado = tab[lab.solx-1][lab.soly-1];
 }
 
 int A3(int** tab, lab_t lab)
 {
-    
+    if((lab.solx - 1 >= 1 && tab[lab.solx-2][lab.soly-1] > 0) || (lab.solx + 1 <= lab.linhas && tab[lab.solx][lab.soly-1] > 0))
+    {
+        return 1;
+    }else if((lab.soly - 1 >= 1 && tab[lab.solx-1][lab.soly-2] > 0) || (lab.soly + 1 <= lab.colunas && tab[lab.solx-1][lab.soly] > 0))
+    {
+        return 1;
+    }
+    return 0;
 }
 
-int A4(int** tab, lab_t lab)
+int A2_4(int** tab, lab_t lab, int v)
 {
-    
+    if((lab.solx - 1 >= 1 && tab[lab.solx-2][lab.soly-1] == v) || (lab.solx + 1 <= lab.linhas && tab[lab.solx][lab.soly-1] == v))
+    {
+        return 1;
+    }else if((lab.soly - 1 >= 1 && tab[lab.solx-1][lab.soly-2] == v) || (lab.soly + 1 <= lab.colunas && tab[lab.solx-1][lab.soly] == v))
+    {
+        return 1;
+    }
+    return 0;
 }
-
-
+/*
 int A5(int** tab, lab_t lab)
 {
    
@@ -234,38 +235,25 @@ char* change_ex(char* filename)
         filename[t+1] = ex[j];
     }
     return filename;
-
 }
 
 int main(int argc, char *argv[])
 {
     FILE *ficheiro;
     //ver nome ficheiro antes de o abrir
-    if(check_filename(argv[2]) == 0)
+    if(check_filename(argv[2]) == 1)
     {
+        if (argc != 3 || strcmp(argv[1], "-s") != 0)
         exit(1);
-    }
-    
-    
-    ficheiro = fopen(argv[2], "r");
-    if (ficheiro == NULL)
-    {
-        exit(EXIT_FAILURE);
-    }
 
-    modo1(argv[2], ficheiro);
+        ficheiro = fopen(argv[2], "r");
+        if (ficheiro == NULL)
+        {
+            exit(EXIT_FAILURE);
+        }
 
-
-// ficheiros podem ter .in1 no meio do nome
-    if (argc != 3 || strcmp(argv[1], "-s") != 0)
-        exit(0);
-
-    if (strstr(argv[2], ".in1") != 0)
-    {
         modo1(argv[2], ficheiro);
     }
-    else
-        exit(0);
-
+    
     return 0;
 }

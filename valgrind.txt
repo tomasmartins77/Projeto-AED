@@ -1,0 +1,131 @@
+==9144== Memcheck, a memory error detector
+==9144== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==9144== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==9144== Command: ./a.out -s enunciado116.in1
+==9144== Parent PID: 1880
+==9144== 
+==9144== Conditional jump or move depends on uninitialised value(s)
+==9144==    at 0x484490E: strcpy (vg_replace_strmem.c:523)
+==9144==    by 0x10948D: modo1 (RoaP.c:87)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144==  Uninitialised value was created by a heap allocation
+==9144==    at 0x483E7C5: malloc (vg_replace_malloc.c:380)
+==9144==    by 0x10946B: modo1 (RoaP.c:86)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== Invalid write of size 8
+==9144==    at 0x1093E8: init_tab (RoaP.c:75)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144==  Address 0x4a379b0 is 0 bytes after a block of size 80 alloc'd
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093B2: init_tab (RoaP.c:71)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== Invalid write of size 4
+==9144==    at 0x1095D7: modo1 (RoaP.c:117)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144==  Address 0x4a37a88 is 0 bytes after a block of size 40 alloc'd
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093E7: init_tab (RoaP.c:75)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== Invalid read of size 8
+==9144==    at 0x1095C5: modo1 (RoaP.c:117)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144==  Address 0x4a379b0 is 0 bytes after a block of size 80 alloc'd
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093B2: init_tab (RoaP.c:71)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== 
+==9144== HEAP SUMMARY:
+==9144==     in use at exit: 970 bytes in 13 blocks
+==9144==   total heap usage: 17 allocs, 4 frees, 10,658 bytes allocated
+==9144== 
+==9144== 18 bytes in 1 blocks are still reachable in loss record 1 of 5
+==9144==    at 0x483E7C5: malloc (vg_replace_malloc.c:380)
+==9144==    by 0x10946B: modo1 (RoaP.c:86)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== 40 bytes in 1 blocks are definitely lost in loss record 2 of 5
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093E7: init_tab (RoaP.c:75)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== 80 bytes in 1 blocks are still reachable in loss record 3 of 5
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093B2: init_tab (RoaP.c:71)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== 360 bytes in 9 blocks are still reachable in loss record 4 of 5
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093E7: init_tab (RoaP.c:75)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== 472 bytes in 1 blocks are still reachable in loss record 5 of 5
+==9144==    at 0x483E7C5: malloc (vg_replace_malloc.c:380)
+==9144==    by 0x48DBFDE: __fopen_internal (in /usr/lib/libc-2.33.so)
+==9144==    by 0x1094A6: modo1 (RoaP.c:89)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== LEAK SUMMARY:
+==9144==    definitely lost: 40 bytes in 1 blocks
+==9144==    indirectly lost: 0 bytes in 0 blocks
+==9144==      possibly lost: 0 bytes in 0 blocks
+==9144==    still reachable: 930 bytes in 12 blocks
+==9144==         suppressed: 0 bytes in 0 blocks
+==9144== 
+==9144== ERROR SUMMARY: 8 errors from 5 contexts (suppressed: 0 from 0)
+==9144== 
+==9144== 1 errors in context 1 of 5:
+==9144== Invalid write of size 8
+==9144==    at 0x1093E8: init_tab (RoaP.c:75)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144==  Address 0x4a379b0 is 0 bytes after a block of size 80 alloc'd
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093B2: init_tab (RoaP.c:71)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== 
+==9144== 1 errors in context 2 of 5:
+==9144== Conditional jump or move depends on uninitialised value(s)
+==9144==    at 0x484490E: strcpy (vg_replace_strmem.c:523)
+==9144==    by 0x10948D: modo1 (RoaP.c:87)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144==  Uninitialised value was created by a heap allocation
+==9144==    at 0x483E7C5: malloc (vg_replace_malloc.c:380)
+==9144==    by 0x10946B: modo1 (RoaP.c:86)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== 
+==9144== 2 errors in context 3 of 5:
+==9144== Invalid write of size 4
+==9144==    at 0x1095D7: modo1 (RoaP.c:117)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144==  Address 0x4a37a88 is 0 bytes after a block of size 40 alloc'd
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093E7: init_tab (RoaP.c:75)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== 
+==9144== 3 errors in context 4 of 5:
+==9144== Invalid read of size 8
+==9144==    at 0x1095C5: modo1 (RoaP.c:117)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144==  Address 0x4a379b0 is 0 bytes after a block of size 80 alloc'd
+==9144==    at 0x48435FF: calloc (vg_replace_malloc.c:1117)
+==9144==    by 0x1093B2: init_tab (RoaP.c:71)
+==9144==    by 0x1095A6: modo1 (RoaP.c:113)
+==9144==    by 0x109B04: main (RoaP.c:230)
+==9144== 
+==9144== ERROR SUMMARY: 8 errors from 5 contexts (suppressed: 0 from 0)
