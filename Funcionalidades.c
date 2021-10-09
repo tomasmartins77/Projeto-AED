@@ -17,11 +17,11 @@ int menu_perguntas(int** tab, lab_t lab)
     if(strcmp(lab.pergunta, "A4") == 0)
     {
         return A2_4(tab, lab, -1);
-    }/*
+    }
     if(strcmp(lab.pergunta, "A5") == 0)
     {
         return A5(tab, lab);
-    }
+    }/*
     if(strcmp(lab.pergunta, "A6") == 0)
     {
         return A6(tab, lab);
@@ -58,12 +58,25 @@ int A2_4(int** tab, lab_t lab, int v)
     }
     return 0;
 }
-/*
+
 int A5(int** tab, lab_t lab)
 {
-   
+    if(lab.solx-1 >= 1 && lab.solx+1 < lab.colunas && tab[lab.solx-1][lab.soly-1]>0)
+    {
+        if(tab[lab.solx-2][lab.soly-1] == 0 || tab[lab.solx][lab.soly-1] == 0)
+            return 1;  
+        else
+            return 0;
+    }else if(lab.soly-1 >= 1 && lab.soly+1 < lab.linhas && tab[lab.solx-1][lab.soly-1]>0)
+    {
+        if((lab.soly-1 >= 1 && tab[lab.solx-1][lab.soly-2] == 0) || (lab.soly+1 <= lab.colunas && tab[lab.solx-1][lab.soly] == 0))
+            return 1;
+        else
+            return 0;
+    }
+    return -1;
 }
-
+/*
 int A6(int** tab, lab_t lab)
 {
     

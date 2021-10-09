@@ -37,7 +37,9 @@ void modo1(char* filename, FILE* ficheiro)
     if(file_end == NULL)
         exit(1);
 
-    strcpy(change_ex(filename), file_end);
+    strcpy(file_end, change_ex(filename));
+
+    free(file_end);
 
     fp = fopen("adsasdaddsa.sol1", "w");
     if(fp == NULL)
