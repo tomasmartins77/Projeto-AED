@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     FILE *fp_in;
     FILE *fp_out;
-    
+
     char* file_end = (char*)malloc(strlen(argv[2]) * sizeof(char) + 2);
     if(file_end == NULL)
         exit(1);

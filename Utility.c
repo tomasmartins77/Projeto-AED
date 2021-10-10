@@ -47,7 +47,9 @@ int check_if_outside(lab_t lab)
 int check_filename(char* filename, int offset)
 {
     int i = 0, j = 0, t = 0;
-    char ex[offset];
+    char ex[offset+1];
+    for(i=0;i<offset+1;i++)
+        ex[i] = '\0';
 
     i = strlen(filename);
     t = i - offset;
@@ -58,7 +60,7 @@ int check_filename(char* filename, int offset)
 
     if(offset == 4)
     {
-        if(strcmp(ex, ".in1") == 0);
+        if(strcmp(".in1", ex) == 0)
             return 1;
     }
     return 0;

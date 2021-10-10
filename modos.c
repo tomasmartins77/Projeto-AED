@@ -7,13 +7,16 @@ void modo1(FILE *fp_in, FILE *fp_out)
     lab_t lab = init_maze();
     int aux_x = 0, aux_y = 0, aux_custo = 0, aux_tamanho = 0, resposta = 0;
     int** tab = NULL;
-    
+    int sec_cordx = 0, sec_cordy = 0;
 
     while(fp_in != NULL)
     {
         if(fscanf(fp_in,"%d %d %d %d %s %d", &lab.linhas, &lab.colunas, &lab.solx, &lab.soly, lab.pergunta, &lab.blocos) != 6)
-            break;
-        
+        {
+            if(fscanf(fp_in,"%d %d %d %d %s %d %d %d", &lab.linhas, &lab.colunas, &lab.solx, &lab.soly, lab.pergunta, &sec_cordx, &sec_cordy, &lab.blocos) != 8)
+                break;
+        }
+
         tab = init_tab(lab);
 
         while (aux_tamanho != lab.blocos)
