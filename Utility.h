@@ -1,7 +1,7 @@
 #ifndef Utility
 #define Utility
 
-#include "Funcionalidades.h"
+#include "modos.h"
 
 int** init_tab(lab_t lab);
 
@@ -11,7 +11,7 @@ void free_tab(int** tab, lab_t lab);
 
 int check_if_outside(lab_t lab);
 
-int check_filename(char* filename);
+int check_filename(char* filename, int offset);
 
 char* change_ex(char* filename);
 

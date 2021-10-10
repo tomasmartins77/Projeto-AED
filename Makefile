@@ -10,7 +10,7 @@ OBJS=$(patsubst %.c, %.o, $(SRCS))
 HEADERS=$(wildcard *.h)
 PDFS=$(wildcard *.pdf)
 
-TARGET= RoaP
+TARGET= roap
 
 all: $(TARGET)
 
