@@ -73,19 +73,13 @@ int verifica_coord(int** tab, lab_t lab, int custo)
     {
         case '2':
             if(custo == 0)
-            {
                 return 1;
-            }
         case '3':
             if(custo > 0)
-            {
                 return 1;
-            }
         case '4':
             if(custo == -1)
-            {
                 return 1;
-            }
     }
      return 0;
 }
