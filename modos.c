@@ -17,7 +17,10 @@ void modo1(FILE *fp_in, FILE *fp_out)
                 break;
         }
 
-        tab = init_tab(lab);
+        if(check_if_outside(lab, lab.solx, lab.soly) == -2)
+            aux_tamanho == lab.blocos;
+        else
+            tab = init_tab(lab);
 
         while (aux_tamanho != lab.blocos)
         {
@@ -32,12 +35,11 @@ void modo1(FILE *fp_in, FILE *fp_out)
             aux_tamanho++;
         }
         if(check_if_outside(lab, lab.solx, lab.soly) == -2)
-        {
             resposta = -2;
-        }else{
+        else{
             resposta = menu_perguntas(tab, lab, sec_cordx, sec_cordy);
+            free_tab(tab, lab);
         }
-        free_tab(tab, lab);
         aux_tamanho = 0;
         fprintf(fp_out, "%d\n\n", resposta);
     }
