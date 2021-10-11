@@ -31,11 +31,11 @@ void modo1(FILE *fp_in, FILE *fp_out)
             tab[aux_x][aux_y] = aux_custo;
             aux_tamanho++;
         }
-        if(check_if_outside(lab) == -2)
+        if(check_if_outside(lab, lab.solx, lab.soly) == -2)
         {
             resposta = -2;
         }else{
-            resposta = menu_perguntas(tab, lab);
+            resposta = menu_perguntas(tab, lab, sec_cordx, sec_cordy);
         }
         free_tab(tab, lab);
         aux_tamanho = 0;

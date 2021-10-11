@@ -37,9 +37,9 @@ void free_tab(int** tab, lab_t lab)
     free(tab);
 }
 
-int check_if_outside(lab_t lab)
+int check_if_outside(lab_t lab, int x, int y)
 {
-    if(lab.solx > lab.linhas || lab.soly > lab.colunas || lab.solx < 1 || lab.soly < 1)
+    if(x > lab.linhas || y > lab.colunas || x < 1 || y < 1)
         return -2;
     return 0;
 }
