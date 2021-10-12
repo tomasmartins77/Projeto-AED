@@ -16,18 +16,30 @@ void modo1(FILE *fp_in, FILE *fp_out)
             if(fscanf(fp_in,"%d %d %d %d %s %d %d %d", &lab.linhas, &lab.colunas, &lab.solx, &lab.soly, lab.pergunta, &sec_cordx, &sec_cordy, &lab.blocos) != 8)
                 break;
         }
-
+//sizeable03 501 linhas
         if(check_if_outside(lab, lab.solx, lab.soly) == -2)
-            aux_tamanho == lab.blocos;
+        {
+            while (aux_tamanho != lab.blocos)
+            {
+                if(fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
+                {
+                close_files(fp_in, fp_out);
+                free_tab(tab, lab);
+                return;
+                }
+                aux_tamanho++;
+            }
+        }
         else
             tab = init_tab(lab);
-
+            
         while (aux_tamanho != lab.blocos)
         {
             if(fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
             {
                 close_files(fp_in, fp_out);
-                exit(1);
+                free_tab(tab, lab);
+                return;
             }
             aux_x--;
             aux_y--;

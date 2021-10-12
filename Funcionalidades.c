@@ -84,7 +84,7 @@ int verifica_coord(int** tab, lab_t lab, int custo)
      return 0;
 }
 
-
+//nao esta a 100%
 int A5(int** tab, lab_t lab)
 {
     if(lab.solx-1 >= 1 && lab.solx+1 < lab.colunas && tab[lab.solx-1][lab.soly-1]>0)
