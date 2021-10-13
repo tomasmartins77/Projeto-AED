@@ -1,34 +1,23 @@
-
 CC= gcc
 
 CFLAGS= -Wall -std=c99 -O3
 
-LDFLAGS= -lm
-
-SRCS=$(wildcard *.c)
-OBJS=$(patsubst %.c, %.o, $(SRCS))
-HEADERS=$(wildcard *.h)
-PDFS=$(wildcard *.pdf)
-
 TARGET= roap
 
-all: $(TARGET)
+roap: Utility.o Funcionalidades.o modos.o main.o
+	$(CC) $(CFLAGS) -o $(TARGET) Utility.o Funcionalidades.o modos.o main.o
 
-$(TARGET): $(OBJS) Makefile
-	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $@
+main.o: main.c Utility.h Funcionalidades.h modos.h
+	$(CC) $(CFLAGS) -c main.c
 
-%.o: %.c $(HEADERS) Makefile
-	$(CC) -c $(CFLAGS) -o $@ $<
+modos.o: modos.c modos.h Funcionalidades.h Utility.h
+	$(CC) $(CFLAGS) -c modos.c
 
-zip: $(TARGET).zip
+Funcionalidades.o: Funcionalidades.c Funcionalidades.h Utility.h
+	$(CC) $(CFLAGS) -c Funcionalidades.c
 
-$(TARGET).zip: Makefile $(SRCS) $(HEADERS) $(PDFS)
-	zip -9 $@ $?
-
-tgz: $(TARGET).tar.gz
-
-$(TARGET).tar.gz: Makefile $(SRCS) $(HEADERS) $(PDFS)
-	tar czvf $@ $^
+Utility.o: Utility.c Utility.h
+	$(CC) $(CFLAGS) -c Utility.c
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f *.o *.out $(TARGET)

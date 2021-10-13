@@ -1,10 +1,9 @@
 #include "Utility.h"
 
-
 int** init_tab(lab_t lab)
 {
     int i;
-    int **tab = (int **)calloc(lab.linhas, sizeof(int *));
+    short **tab = (int **)calloc(lab.linhas, sizeof(int *));
         
         for (i = 0; i < lab.linhas; i++)
         {
