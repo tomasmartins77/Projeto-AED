@@ -3,7 +3,7 @@
 int** init_tab(lab_t lab)
 {
     int i;
-    short **tab = (int **)calloc(lab.linhas, sizeof(int *));
+    int **tab = (int **)calloc(lab.linhas, sizeof(int *));
         
         for (i = 0; i < lab.linhas; i++)
         {
@@ -14,14 +14,14 @@ int** init_tab(lab_t lab)
 
 lab_t init_maze()
 {
-    int i;
+    int i = 0;
     lab_t lab;
     lab.linhas = 0;
     lab.colunas = 0;
     lab.blocos = 0;
     lab.solx = 0;
     for(i = 0; i < 2; i++)
-    lab.pergunta[i] = 0;
+        lab.pergunta[i] = 0;
     lab.soly = 0;
     return lab;
 }

@@ -16,7 +16,7 @@ void modo1(FILE *fp_in, FILE *fp_out)
             if(fscanf(fp_in,"%d %d %d %d %s %d %d %d", &lab.linhas, &lab.colunas, &lab.solx, &lab.soly, lab.pergunta, &sec_cordx, &sec_cordy, &lab.blocos) != 8)
                 break;
         }
-//sizeable03 501 linhas
+/*sizeable03 501 linhas*/
         if(check_if_outside(lab, lab.solx, lab.soly) == -2)
         {
             while (aux_tamanho != lab.blocos)
