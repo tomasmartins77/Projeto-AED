@@ -1,7 +1,8 @@
-#include "Funcionalidades.h"
+#include "modos.h"
 #include "Utility.h"
+#include "Funcionalidades.h"
 
-int menu_perguntas(int** tab, lab_t lab, int sec_cordx, int sec_cordy)
+int menu_perguntas(int** tab, lab_t lab)
 {
     if(strcmp(lab.pergunta, "A1") == 0)
     {
@@ -33,47 +34,30 @@ int A1(int** tab, int x, int y)
 {
     return tab[x-1][y-1];
 }
-
+/*quando esta tudo rodeado nao da*/
 int A234(int** tab, lab_t lab, int x, int y)
 {
-    int resultado = 0, i, j;
+    int resultado = 0, i = 0, j = 0;
 
-    for(i = -1; i<=1; i+=2)
+    for(i = -1; i <= 1; i += 2)
     {
-        if(check_if_outside(lab, x+i, y) == 0)
+        if(check_if_outside(lab, x + i, y) == 0)
         {
-            resultado = A1(tab, x+i, y);
-            return verifica_coord(tab, lab, resultado);
+            resultado = A1(tab, x + i, y);
+            return verifica_coord(lab, resultado);
         }
         if(j == 1)
             break;
-        for(j=-1; j<=1; j+=2)
+        for(j = -1; j <= 1; j += 2)
         {
-            if(check_if_outside(lab, x, y+j) == 0)
+            if(check_if_outside(lab, x, y + j) == 0)
             {
-                resultado = A1(tab, x, y+j);
-                return verifica_coord(tab, lab, resultado);
+                resultado = A1(tab, x, y + j);
+                return verifica_coord(lab, resultado);
             }
         }     
     }
     return 0;
-}
-
-int verifica_coord(int** tab, lab_t lab, int custo)
-{
-    switch(lab.pergunta[1])
-    {
-        case '2':
-            if(custo == 0)
-                return 1;
-        case '3':
-            if(custo > 0)
-                return 1;
-        case '4':
-            if(custo == -1)
-                return 1;
-    }
-     return 0;
 }
 
 int A5(int** tab, lab_t lab)

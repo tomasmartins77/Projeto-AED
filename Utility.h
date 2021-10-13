@@ -1,10 +1,6 @@
 #ifndef Utility
 #define Utility
 
-#include "modos.h"
-#define DIREITA 1
-#define ESQUERDA 0
-
 int** init_tab(lab_t lab);
 
 lab_t init_maze();
@@ -18,5 +14,7 @@ int check_filename(char* filename, int offset);
 char* change_ex(char* filename);
 
 void close_files(FILE* fp1, FILE* fp2);
+
+int verifica_coord(lab_t lab, int custo);
 
 #endif

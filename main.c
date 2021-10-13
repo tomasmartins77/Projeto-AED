@@ -2,6 +2,10 @@
 #include "Funcionalidades.h"
 #include "Utility.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 int main(int argc, char *argv[])
 {
     FILE *fp_in;

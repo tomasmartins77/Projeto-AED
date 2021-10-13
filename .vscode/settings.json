@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "utility.h": "c"
+        "utility.h": "c",
+        "modos.h": "c"
     }
 }

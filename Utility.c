@@ -1,8 +1,10 @@
+#include "modos.h"
 #include "Utility.h"
+#include "Funcionalidades.h"
 
 int** init_tab(lab_t lab)
 {
-    int i;
+    int i = 0;
     int **tab = (int **)calloc(lab.linhas, sizeof(int *));
         
         for (i = 0; i < lab.linhas; i++)
@@ -28,7 +30,7 @@ lab_t init_maze()
 
 void free_tab(int** tab, lab_t lab)
 {
-    int i;
+    int i = 0;
     for (i = 0; i < lab.linhas; i++)
         {
             free(tab[i]);
@@ -46,8 +48,8 @@ int check_if_outside(lab_t lab, int x, int y)
 int check_filename(char* filename, int offset)
 {
     int i = 0, j = 0, t = 0;
-    char ex[offset+1];
-    for(i=0;i<offset+1;i++)
+    char ex[offset + 1];
+    for(i = 0; i < offset + 1; i++)
         ex[i] = '\0';
 
     i = strlen(filename);
@@ -83,4 +85,21 @@ void close_files(FILE* fp1, FILE* fp2)
 {
     fclose(fp1);
     fclose(fp2);
+}
+
+int verifica_coord(lab_t lab, int custo)
+{
+    switch(lab.pergunta[1])
+    {
+        case '2':
+            if(custo == 0)
+                return 1;
+        case '3':
+            if(custo > 0)
+                return 1;
+        case '4':
+            if(custo == -1)
+                return 1;
+    }
+     return 0;
 }
