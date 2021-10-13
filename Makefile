@@ -1,7 +1,7 @@
 
 CC= gcc
 
-CFLAGS= -Wall -std=c99 -O3 -g
+CFLAGS= -Wall -std=c99 -O3
 
 LDFLAGS= -lm
 
