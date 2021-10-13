@@ -23,9 +23,8 @@ void modo1(FILE *fp_in, FILE *fp_out)
             {
                 if(fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
                 {
-                close_files(fp_in, fp_out);
-                free_tab(tab, lab);
-                return;
+                    close_files(fp_in, fp_out);
+                    return;
                 }
                 aux_tamanho++;
             }
@@ -41,10 +40,11 @@ void modo1(FILE *fp_in, FILE *fp_out)
                 free_tab(tab, lab);
                 return;
             }
-            aux_x--;
-            aux_y--;
-            tab[aux_x][aux_y] = aux_custo;
-            aux_tamanho++;
+            if(check_if_outside(lab, lab.solx, lab.soly) != -2)
+            {
+                tab[aux_x-1][aux_y-1] = aux_custo;
+                aux_tamanho++;
+            }
         }
         if(check_if_outside(lab, lab.solx, lab.soly) == -2)
             resposta = -2;

@@ -20,8 +20,11 @@ int menu_perguntas(int** tab, lab_t lab, int sec_cordx, int sec_cordy)
         return A234(tab, lab, lab.solx, lab.soly);
     }
     if(strcmp(lab.pergunta, "A5") == 0)
-    {
-        return A5(tab, lab);
+    {   
+            if(tab[lab.solx-1][lab.soly-1] < 1)
+                return -1;
+            else
+                return A5(tab, lab);
     }
     if(strcmp(lab.pergunta, "A6") == 0)
     {
