@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         }
 
         strcpy(file_end, change_ex(argv[2]));
-
+/*meter file_end no fopen*/
         fp_out = fopen("adsasdaddsa.sol1", "w");
         if(fp_out == NULL)
         {

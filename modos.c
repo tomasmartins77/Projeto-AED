@@ -2,6 +2,13 @@
 #include "Utility.h"
 #include "Funcionalidades.h"
 
+/** \brief
+ *
+ * \param fp_in FILE*
+ * \param fp_out FILE*
+ * \return void
+ *
+ */
 void modo1(FILE *fp_in, FILE *fp_out)
 {
     lab_t lab = init_maze();
@@ -30,7 +37,7 @@ void modo1(FILE *fp_in, FILE *fp_out)
         }
         else
             tab = init_tab(lab);
-            
+
         while (aux_tamanho != lab.blocos)
         {
             if(fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
@@ -41,7 +48,7 @@ void modo1(FILE *fp_in, FILE *fp_out)
             }
             if(aux_x <= lab.linhas || aux_y <= lab.colunas)
                 tab[aux_x-1][aux_y-1] = aux_custo;
-                
+
             aux_tamanho++;
         }
         if(check_if_outside(lab, lab.solx, lab.soly) == -2)
@@ -53,5 +60,5 @@ void modo1(FILE *fp_in, FILE *fp_out)
         aux_tamanho = 0;
         fprintf(fp_out, "%d\n\n", resposta);
     }
-    close_files(fp_in, fp_out);   
+    close_files(fp_in, fp_out);
 }

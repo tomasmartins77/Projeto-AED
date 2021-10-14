@@ -15,6 +15,9 @@ typedef struct labirinto
     char pergunta[3];
 } lab_t;
 
+/** \brief
+ *
+ */
 void modo1(FILE *fp_in, FILE *fp_out);
 
 #endif

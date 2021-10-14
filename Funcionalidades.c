@@ -2,6 +2,13 @@
 #include "Utility.h"
 #include "Funcionalidades.h"
 
+/** \brief
+ *
+ * \param tab int**
+ * \param lab lab_t
+ * \return int
+ *
+ */
 int menu_perguntas(int** tab, lab_t lab)
 {
     if(strcmp(lab.pergunta, "A1") == 0)
@@ -21,7 +28,7 @@ int menu_perguntas(int** tab, lab_t lab)
         return A234(tab, lab, lab.solx, lab.soly);
     }
     if(strcmp(lab.pergunta, "A5") == 0)
-    {   
+    {
         if(tab[lab.solx-1][lab.soly-1] < 1)
             return -1;
         else
@@ -30,11 +37,28 @@ int menu_perguntas(int** tab, lab_t lab)
     exit(1);
 }
 
+/** \brief
+ *
+ * \param tab int**
+ * \param x int
+ * \param y int
+ * \return int
+ *
+ */
 int A1(int** tab, int x, int y)
 {
     return tab[x-1][y-1];
 }
 
+/** \brief
+ *
+ * \param tab int**
+ * \param lab lab_t
+ * \param x int
+ * \param y int
+ * \return int
+ *
+ */
 int A234(int** tab, lab_t lab, int x, int y)
 {
     int resultado = 0, i;
@@ -56,18 +80,25 @@ int A234(int** tab, lab_t lab, int x, int y)
             if(verifica_coord(lab, resultado) == 1)
                 return 1;
         }
-    }     
+    }
     return 0;
 }
 
+/** \brief
+ *
+ * \param tab int**
+ * \param lab lab_t
+ * \return int
+ *
+ */
 int A5(int** tab, lab_t lab)
 {
     if(tab[lab.solx-1][lab.soly-1]>0)
     {
         if(check_if_outside(lab, lab.solx-1, lab.soly) != -2 && tab[lab.solx-2][lab.soly-1] == 0 && check_if_outside(lab, lab.solx+1, lab.soly) != -2 && tab[lab.solx][lab.soly-1] == 0)
-            return 1;  
+            return 1;
         else if(check_if_outside(lab, lab.solx, lab.soly-1) != -2 && tab[lab.solx-1][lab.soly-2] == 0 && check_if_outside(lab, lab.solx, lab.soly+1) != -2 && tab[lab.solx-1][lab.soly] == 0)
-            return 1;  
+            return 1;
         else
             return 0;
     }
