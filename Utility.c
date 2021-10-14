@@ -156,6 +156,9 @@ int verifica_coord(lab_t lab, int custo)
             if(custo == -1)
                 return 1;
             break;
+        case '6':
+            if(custo != 0)
+                return 1;
     }
      return 0;
 }

@@ -104,3 +104,77 @@ int A5(int** tab, lab_t lab)
     }
     return -1;
 }
+
+int A6(int** tab, lab_t lab, int A6_x, int A6_y)
+{
+    int i = 0, aux = 0, p = lab.solx*lab.soly-1, j = 0, q = A6_x*A6_y-1, size = lab.linhas*lab.colunas, x = 0, y = 0;
+
+    int* tab_id = (int*)calloc(size, sizeof(int));
+    int* tab_size = (int*)calloc(size, sizeof(int));
+    if(tab_id == NULL || tab_size == NULL)
+    {
+        free_tab(tab, lab);
+        exit(1);
+    }
+
+    if(upper_coord(tab, lab, A6_x, A6_y) == 1)
+    {
+        x = lab.solx;
+        y = lab.soly;
+    }
+    if(upper_coord(tab, lab, A6_x, A6_y) == 0)
+    {
+        x = A6_x;
+        y = A6_y;
+    }
+
+    while (aux != size)
+   {
+      for (i = p; i != tab_id[i]; i = tab_id[i])
+      {
+        if(A234(tab, lab, x, y) == 1)
+            tab_id[i] = 1;
+      }
+      for (j = q; j != tab_id[j]; j = tab_id[j])
+      {
+        if(A234(tab, lab, x, y) == 1)
+            tab_id[j] = 1;
+      }
+
+        if(tab_id[i] != 1 && tab_id[j] != 1)
+        {
+            if (tab_size[i] < tab_size[j])
+            {
+            tab_id[i] = j;
+            tab_size[j] += tab_size[i];
+        }
+        else
+        {
+            tab_id[j] = i;
+            tab_size[i] += tab_size[j];
+        }
+        }
+      
+      p++;
+      q--;
+      aux++;
+    }
+    free(tab_id);
+    free(tab_size);
+}
+
+int upper_coord(int** tab, lab_t lab, int A6_x, int A6_y)
+{
+    if(lab.solx < A6_x)
+        return 1;
+    else
+        return 0;   
+}
+
+int down_coord(int** tab, lab_t lab, int A6_x, int A6_y)
+{
+    if(lab.solx > A6_x)
+        return (lab.solx-1)*lab.colunas + lab.soly-1;
+    else
+        return (A6_x-1)*lab.colunas + A6_y-1;;   
+}
