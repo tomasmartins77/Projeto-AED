@@ -94,12 +94,15 @@ int verifica_coord(lab_t lab, int custo)
         case '2':
             if(custo == 0)
                 return 1;
+            break;
         case '3':
             if(custo > 0)
                 return 1;
+            break;
         case '4':
             if(custo == -1)
                 return 1;
+            break;
     }
      return 0;
 }

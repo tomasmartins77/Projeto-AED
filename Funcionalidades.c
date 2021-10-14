@@ -34,29 +34,29 @@ int A1(int** tab, int x, int y)
 {
     return tab[x-1][y-1];
 }
-/*quando esta tudo rodeado nao da*/
+
 int A234(int** tab, lab_t lab, int x, int y)
 {
-    int resultado = 0, i = 0, j = 0;
+    int resultado = 0, i;
 
     for(i = -1; i <= 1; i += 2)
     {
         if(check_if_outside(lab, x + i, y) == 0)
         {
             resultado = A1(tab, x + i, y);
-            return verifica_coord(lab, resultado);
+            if(verifica_coord(lab, resultado) == 1)
+                return 1;
         }
-        if(j == 1)
-            break;
-        for(j = -1; j <= 1; j += 2)
-        {
-            if(check_if_outside(lab, x, y + j) == 0)
-            {
-                resultado = A1(tab, x, y + j);
-                return verifica_coord(lab, resultado);
-            }
-        }     
     }
+    for(i = -1; i <= 1; i += 2)
+    {
+        if(check_if_outside(lab, x, y + i) == 0)
+        {
+            resultado = A1(tab, x, y + i);
+            if(verifica_coord(lab, resultado) == 1)
+                return 1;
+        }
+    }     
     return 0;
 }
 
