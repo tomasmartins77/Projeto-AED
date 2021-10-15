@@ -109,7 +109,7 @@ int A5(int **tab, lab_t lab)
 
 int A1_aux(int *tab, int x)
 {
-    return tab[x - 1];
+    return tab[x];
 }
 
 int check_if_outside_aux(lab_t lab, int x)
@@ -169,21 +169,8 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y)
         exit(1);
     }
 
-    tab_id = change_tab(tab, tab_id, lab);
-
-    printf("penis  %d\n", tab_id[(lab.solx - 1) * lab.colunas + lab.soly - 1]);
-    printf("pila   %d\n", tab_id[(A6_x - 1) * lab.colunas + A6_y - 1]);
-
-    if (upper_coord(lab, A6_x, A6_y) == 1)
-    {
-        p = (lab.solx - 1) * lab.colunas + lab.soly - 1;
-        q = (A6_x - 1) * lab.colunas + A6_y - 1;
-    }
-    else
-    {
-        p = (A6_x - 1) * lab.colunas + A6_y - 1;
-        q = (lab.solx - 1) * lab.colunas + lab.soly - 1;
-    }
+    p = (lab.solx - 1) * lab.colunas + lab.soly - 1;
+    q = (A6_x - 1) * lab.colunas + A6_y - 1;
 
     while (aux != size)
     {
@@ -214,33 +201,32 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y)
     {
         resposta = 1;
     }
-
-    int head;
-    for (i = 0; i < size; i++)
-    {
-        head = 1;
-        if (tab_id[i] == i)
+    /*
+        int head;
+        for (i = 0; i < size; i++)
         {
-            for (j = 0; j < size; j++)
+            head = 1;
+            if (tab_id[i] == i)
             {
-                if (tab_id[j] == i)
+                for (j = 0; j < size; j++)
                 {
-                    if (head)
+                    if (tab_id[j] == i)
                     {
-                        head = 0;
-                        printf("%d", j);
+                        if (head)
+                        {
+                            head = 0;
+                            printf("%d", j);
+                        }
+                        else
+                            printf("-%d", j);
                     }
-                    else
-                        printf("-%d", j);
                 }
+                printf("\n");
             }
-            printf("\n");
-        }
-    }
+        }*/
 
     free(tab_id);
     free(tab_size);
-    printf("%d aeeee acertoooo", resposta);
     return resposta;
 }
 

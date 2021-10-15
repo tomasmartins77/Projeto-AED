@@ -144,7 +144,7 @@ char *change_ex(char *filename)
     t = i - 5;
     for (j = 0; t < i + 1; j++, t++)
     {
-        filename[t + 1] = ex[j];
+        filename[t++] = ex[j];
     }
     return filename;
 }
