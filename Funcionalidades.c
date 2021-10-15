@@ -9,27 +9,27 @@
  * \return int
  *
  */
-int menu_perguntas(int** tab, lab_t lab)
+int menu_perguntas(int **tab, lab_t lab)
 {
-    if(strcmp(lab.pergunta, "A1") == 0)
+    if (strcmp(lab.pergunta, "A1") == 0)
     {
         return A1(tab, lab.solx, lab.soly);
     }
-    if(strcmp(lab.pergunta, "A2") == 0)
+    if (strcmp(lab.pergunta, "A2") == 0)
     {
         return A234(tab, lab, lab.solx, lab.soly);
     }
-    if(strcmp(lab.pergunta, "A3") == 0)
+    if (strcmp(lab.pergunta, "A3") == 0)
     {
         return A234(tab, lab, lab.solx, lab.soly);
     }
-    if(strcmp(lab.pergunta, "A4") == 0)
+    if (strcmp(lab.pergunta, "A4") == 0)
     {
         return A234(tab, lab, lab.solx, lab.soly);
     }
-    if(strcmp(lab.pergunta, "A5") == 0)
+    if (strcmp(lab.pergunta, "A5") == 0)
     {
-        if(tab[lab.solx-1][lab.soly-1] < 1)
+        if (tab[lab.solx - 1][lab.soly - 1] < 1)
             return -1;
         else
             return A5(tab, lab);
@@ -45,9 +45,9 @@ int menu_perguntas(int** tab, lab_t lab)
  * \return int
  *
  */
-int A1(int** tab, int x, int y)
+int A1(int **tab, int x, int y)
 {
-    return tab[x-1][y-1];
+    return tab[x - 1][y - 1];
 }
 
 /** \brief
@@ -59,25 +59,25 @@ int A1(int** tab, int x, int y)
  * \return int
  *
  */
-int A234(int** tab, lab_t lab, int x, int y)
+int A234(int **tab, lab_t lab, int x, int y)
 {
     int resultado = 0, i;
 
-    for(i = -1; i <= 1; i += 2)
+    for (i = -1; i <= 1; i += 2)
     {
-        if(check_if_outside(lab, x + i, y) == 0)
+        if (check_if_outside(lab, x + i, y) == 0)
         {
             resultado = A1(tab, x + i, y);
-            if(verifica_coord(lab, resultado) == 1)
+            if (verifica_coord(lab, resultado) == 1)
                 return 1;
         }
     }
-    for(i = -1; i <= 1; i += 2)
+    for (i = -1; i <= 1; i += 2)
     {
-        if(check_if_outside(lab, x, y + i) == 0)
+        if (check_if_outside(lab, x, y + i) == 0)
         {
             resultado = A1(tab, x, y + i);
-            if(verifica_coord(lab, resultado) == 1)
+            if (verifica_coord(lab, resultado) == 1)
                 return 1;
         }
     }
@@ -91,13 +91,13 @@ int A234(int** tab, lab_t lab, int x, int y)
  * \return int
  *
  */
-int A5(int** tab, lab_t lab)
+int A5(int **tab, lab_t lab)
 {
-    if(tab[lab.solx-1][lab.soly-1]>0)
+    if (tab[lab.solx - 1][lab.soly - 1] > 0)
     {
-        if(check_if_outside(lab, lab.solx-1, lab.soly) != -2 && tab[lab.solx-2][lab.soly-1] == 0 && check_if_outside(lab, lab.solx+1, lab.soly) != -2 && tab[lab.solx][lab.soly-1] == 0)
+        if (check_if_outside(lab, lab.solx - 1, lab.soly) != -2 && tab[lab.solx - 2][lab.soly - 1] == 0 && check_if_outside(lab, lab.solx + 1, lab.soly) != -2 && tab[lab.solx][lab.soly - 1] == 0)
             return 1;
-        else if(check_if_outside(lab, lab.solx, lab.soly-1) != -2 && tab[lab.solx-1][lab.soly-2] == 0 && check_if_outside(lab, lab.solx, lab.soly+1) != -2 && tab[lab.solx-1][lab.soly] == 0)
+        else if (check_if_outside(lab, lab.solx, lab.soly - 1) != -2 && tab[lab.solx - 1][lab.soly - 2] == 0 && check_if_outside(lab, lab.solx, lab.soly + 1) != -2 && tab[lab.solx - 1][lab.soly] == 0)
             return 1;
         else
             return 0;
@@ -105,76 +105,150 @@ int A5(int** tab, lab_t lab)
     return -1;
 }
 
-int A6(int** tab, lab_t lab, int A6_x, int A6_y)
+/*
+int A6(int **tab, lab_t lab, int A6_x, int A6_y)
 {
-    int i = 0, aux = 0, p = lab.solx*lab.soly-1, j = 0, q = A6_x*A6_y-1, size = lab.linhas*lab.colunas, x = 0, y = 0;
+    int i = 0, aux = 0, p = lab.solx * lab.soly - 1, j = 0, q = A6_x * A6_y - 1, size = lab.linhas * lab.colunas, x = 0, y = 0;
 
-    int* tab_id = (int*)calloc(size, sizeof(int));
-    int* tab_size = (int*)calloc(size, sizeof(int));
-    if(tab_id == NULL || tab_size == NULL)
+    int *tab_id = (int *)calloc(size, sizeof(int));
+    int *tab_size = (int *)calloc(size, sizeof(int));
+    if (tab_id == NULL || tab_size == NULL)
     {
         free_tab(tab, lab);
         exit(1);
     }
 
-    if(upper_coord(tab, lab, A6_x, A6_y) == 1)
+    if (upper_coord(tab, lab, A6_x, A6_y) == 1)
     {
         x = lab.solx;
         y = lab.soly;
     }
-    if(upper_coord(tab, lab, A6_x, A6_y) == 0)
+    if (upper_coord(tab, lab, A6_x, A6_y) == 0)
     {
         x = A6_x;
         y = A6_y;
     }
 
     while (aux != size)
-   {
-      for (i = p; i != tab_id[i]; i = tab_id[i])
-      {
-        if(A234(tab, lab, x, y) == 1)
-            tab_id[i] = 1;
-      }
-      for (j = q; j != tab_id[j]; j = tab_id[j])
-      {
-        if(A234(tab, lab, x, y) == 1)
-            tab_id[j] = 1;
-      }
+    {
+        for (i = p; i != tab_id[i]; i = tab_id[i])
+        {
+            if (A234(tab, lab, x, y) == 1)
+                tab_id[i] = 1;
+        }
+        for (j = q; j != tab_id[j]; j = tab_id[j])
+        {
+            if (A234(tab, lab, x, y) == 1)
+                tab_id[j] = 1;
+        }
 
-        if(tab_id[i] != 1 && tab_id[j] != 1)
+        if (tab_id[i] != 1 && tab_id[j] != 1)
         {
             if (tab_size[i] < tab_size[j])
             {
-            tab_id[i] = j;
-            tab_size[j] += tab_size[i];
+                tab_id[i] = j;
+                tab_size[j] += tab_size[i];
+            }
+            else
+            {
+                tab_id[j] = i;
+                tab_size[i] += tab_size[j];
+            }
         }
-        else
-        {
-            tab_id[j] = i;
-            tab_size[i] += tab_size[j];
-        }
-        }
-      
-      p++;
-      q--;
-      aux++;
+
+        p++;
+        q--;
+        aux++;
     }
     free(tab_id);
     free(tab_size);
 }
 
-int upper_coord(int** tab, lab_t lab, int A6_x, int A6_y)
+int upper_coord(int **tab, lab_t lab, int A6_x, int A6_y)
 {
-    if(lab.solx < A6_x)
+    if (lab.solx < A6_x)
         return 1;
     else
-        return 0;   
+        return 0;
 }
 
-int down_coord(int** tab, lab_t lab, int A6_x, int A6_y)
+int down_coord(int **tab, lab_t lab, int A6_x, int A6_y)
 {
-    if(lab.solx > A6_x)
-        return (lab.solx-1)*lab.colunas + lab.soly-1;
+    if (lab.solx > A6_x)
+        return (lab.solx - 1) * lab.colunas + lab.soly - 1;
     else
-        return (A6_x-1)*lab.colunas + A6_y-1;;   
+        return (A6_x - 1) * lab.colunas + A6_y - 1;
+    ;
 }
+
+*/
+
+/* merdas da rita que nao fazem sentido nenhum (sim, eu sei que nao faz sentido e que nao funciona):
+
+percorrer o tabuleiro
+    é branca? entao temos p
+    p verifica direita
+    direita é branca? entao temos par (p,q)
+    direita não é branca? entao verificamos baixo
+    baixo = branca
+    
+    basta terem uma coordenada em comum x ou y e serem brancas para se juntarem
+
+    percorrer o tabuleiro todo e identificar todas as peças brancas, guardar essas coordenadas noutro tabuleiro
+    número de coordenadas = id
+    if (peca branca) é vizinho de outra peca branca E ESTAO DENTRO DO TABULEIRO => union
+
+
+    pegar na primeira peça e 
+
+
+
+
+int A6(int **tab, lab_t lab, int A6_x, int A6_y)
+{
+    int i, j, N, p, q;
+    int *id = (int *)malloc(lab.linhas * lab.colunas * sizeof(int));
+    identificar todas as pecas brancas que existem no tabuleiro
+    for (i = 0; i < lab.linhas; i++) 
+    {
+        for (j = 0; j < lab.colunas; j++)
+        {
+            if (tab[i][j] == 0)
+            se for peca branca
+            {
+                N++; numero total de pecas brancas
+            }
+        }
+    }
+
+    for (i = 0; i < N; i++)
+    {
+        id[i] = i;
+        aquela merda do size?
+    }
+
+    {
+        if ( é vizinho e esta dentro do tabuleiro)
+        {
+            for (i = p; i != id[i]; i = id[i])
+
+                for (j = q; j != id[j], j = id[j])
+                    ;
+
+            if (i == j)
+                continue; se tiverem a mesma raiz, ja estao ligados 
+
+            if (sz[i] < sz[j])
+            {
+                id[i] = j;
+                sz[j] += sz[i];
+            }
+            else
+            {
+                id[j] = i;
+                sz[i] += sz[j];
+            }
+        }
+    }
+}
+*/
