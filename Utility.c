@@ -1,7 +1,7 @@
 #include "modos.h"
 #include "Utility.h"
 
-/** \brief inicializa o tabuleiro
+/** \brief
  *
  * \param lab lab_t
  * \return int**
@@ -19,7 +19,37 @@ int **init_tab(lab_t lab)
     return tab;
 }
 
-/** \brief struct que contem os dados de cada labirinto
+void shadow_fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out)
+{
+    int aux_x = 0, aux_y = 0, aux_custo = 0;
+    while ((*aux_tamanho) != lab.blocos)
+    {
+        if (fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
+        {
+            close_files(fp_in, fp_out);
+            exit(1);
+        }
+        (*aux_tamanho)++;
+    }
+}
+
+int **fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab)
+{
+    int aux_x = 0, aux_y = 0, aux_custo = 0;
+    while ((*aux_tamanho) != lab.blocos)
+    {
+        if (fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
+        {
+            close_files(fp_in, fp_out);
+            exit(1);
+        }
+        tab[aux_x - 1][aux_y - 1] = aux_custo;
+        (*aux_tamanho)++;
+    }
+    return tab;
+}
+
+/** \brief
  *
  * \return lab_t
  *
@@ -38,7 +68,7 @@ lab_t init_maze()
     return lab;
 }
 
-/** \brief liberta a memória alocada para todo o tabuleiro
+/** \brief
  *
  * \param tab int**
  * \param lab lab_t
@@ -55,7 +85,7 @@ void free_tab(int **tab, lab_t lab)
     free(tab);
 }
 
-/** \brief verifica se a coordenada se encontra dentro do tabuleiro, se nao estiver retorna -2, se estiver retorna 0
+/** \brief
  *
  * \param lab lab_t
  * \param x int
@@ -99,7 +129,7 @@ int check_filename(char *filename, int offset)
     return 0;
 }
 
-/** \brief muda a extencao do ficheiro de saida para .sol1
+/** \brief
  *
  * \param filename char*
  * \return char*
@@ -119,7 +149,7 @@ char *change_ex(char *filename)
     return filename;
 }
 
-/** \brief funcao que fecha ambos os ficheiros
+/** \brief
  *
  * \param fp1 FILE*
  * \param fp2 FILE*
@@ -132,7 +162,7 @@ void close_files(FILE *fp1, FILE *fp2)
     fclose(fp2);
 }
 
-/** \brief verifica, de acordo com o algorimo A1-A6 lido do ficheiro de entrada a cor da celula de acordo com o custo de cada uma
+/** \brief
  *
  * \param lab lab_t
  * \param custo int
@@ -145,17 +175,14 @@ int verifica_coord(lab_t lab, int custo)
     {
     case '2':
         if (custo == 0)
-            /*se for celula branca*/
             return 1;
         break;
     case '3':
         if (custo > 0)
-            /*se for celula cinzenta*/
             return 1;
         break;
     case '4':
         if (custo == -1)
-            /*se for celula preta*/
             return 1;
         break;
     case '6':
