@@ -6,6 +6,7 @@
 #define DIREITA 1
 
 /** \brief
+/** \brief executa os algoritmos A1-A6 consoante o que foi lido no ficheiro de entrada
  *
  * \param tab int**
  * \param lab lab_t
