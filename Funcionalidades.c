@@ -109,7 +109,8 @@ int A5(int **tab, lab_t lab)
 
 int A6(int **tab, lab_t lab, int A6_x, int A6_y)
 {
-    int i = 0, j = 0, p = 0, q = 0, x = 0, y = 0, size = lab.linhas * lab.colunas;
+    int i = 0, j = 0, p = 0, q = 0, x = 0, y = 0, size = lab.linhas * lab.colunas, aux = 0, aux2 = 1;
+    int variantes[2] = {1, lab.colunas};
 
     int *tab_id = (int *)calloc(size, sizeof(int));
     if (tab_id == NULL)
@@ -135,63 +136,48 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y)
     {
         for (y = 0; y < lab.colunas; y++)
         {
+            aux = 0;
+            aux2 = 1;
             p = tab_id[x * lab.colunas + y];
-            q = tab_id[x * lab.colunas + y + 1];
 
             if (tab[x][y] != 0)
                 continue;
 
-            for (i = p; i != tab_id[i]; i = tab_id[i])
-                ;
-
-            if (y + 1 < lab.colunas && tab[x][y + 1] == 0)
+            while (aux <= 1)
             {
-                for (j = q; j != tab_id[j]; j = tab_id[j])
-                {
-                }
+                q = tab_id[x * lab.colunas + y + variantes[aux]];
 
-                if (i == j)
-                    continue;
-
-                if (tab_size[i] < tab_size[j])
-                {
-                    tab_id[i] = j;
-                    tab_size[j] += tab_size[i];
-                }
-                else
-                {
-                    tab_id[j] = i;
-                    tab_size[i] += tab_size[j];
-                }
-            }
-
-            q = tab_id[x * lab.colunas + y + lab.colunas];
-
-            if (x + 1 < lab.linhas && tab[x + 1][y] == 0)
-            {
-                for (j = q; j != tab_id[j]; j = tab_id[j])
+                for (i = p; i != tab_id[i]; i = tab_id[i])
                     ;
 
-                if (i == j)
-                    continue;
+                if (y + 1 < lab.colunas && tab[x + aux][y + aux2] == 0)
+                {
+                    for (j = q; j != tab_id[j]; j = tab_id[j])
+                    {
+                    }
 
-                if (tab_size[i] < tab_size[j])
-                {
-                    tab_id[i] = j;
-                    tab_size[j] += tab_size[i];
+                    if (i == j)
+                        continue;
+
+                    if (tab_size[i] < tab_size[j])
+                    {
+                        tab_id[i] = j;
+                        tab_size[j] += tab_size[i];
+                    }
+                    else
+                    {
+                        tab_id[j] = i;
+                        tab_size[i] += tab_size[j];
+                    }
                 }
-                else
-                {
-                    tab_id[j] = i;
-                    tab_size[i] += tab_size[j];
-                }
+                aux++;
+                aux2 = 0;
             }
+
             for (i = (lab.solx - 1) * (lab.soly - 1); i != tab_id[i]; i = tab_id[i])
-            {
-            }
+                ;
             for (j = (A6_x - 1) * (A6_y - 1); j != tab_id[j]; j = tab_id[j])
-            {
-            }
+                ;
             if (i == j)
             {
                 free(tab_id);
