@@ -32,7 +32,7 @@ void shadow_fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out)
     }
 }
 
-int **fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab)
+void fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab)
 {
     int aux_x = 0, aux_y = 0, aux_custo = 0;
     while ((*aux_tamanho) != lab.blocos)
@@ -45,7 +45,6 @@ int **fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab)
         tab[aux_x - 1][aux_y - 1] = aux_custo;
         (*aux_tamanho)++;
     }
-    return tab;
 }
 
 /** \brief struct que contem os dados de cada labirinto
@@ -140,11 +139,9 @@ char *change_ex(char *filename)
     char ex[6] = ".sol1";
 
     i = strlen(filename);
-    t = i - 5;
-    for (j = 0; t < i + 1; j++, t++)
-    {
-        filename[t++] = ex[j];
-    }
+    t = i - 4;
+    for (j = 0; j < 6; j++, t++)
+        filename[t] = ex[j];
     return filename;
 }
 
@@ -189,4 +186,21 @@ int verifica_coord(lab_t lab, int custo)
             return 1;
     }
     return 0;
+}
+
+void conn(int *tab_id, int *tab_size, int i, int j)
+{
+    if (i == j)
+        return;
+
+    if (tab_size[i] < tab_size[j])
+    {
+        tab_id[i] = j;
+        tab_size[j] += tab_size[i];
+    }
+    else
+    {
+        tab_id[j] = i;
+        tab_size[i] += tab_size[j];
+    }
 }

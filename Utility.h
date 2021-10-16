@@ -14,7 +14,7 @@ int **init_tab(lab_t lab);
 
 void shadow_fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out);
 
-int **fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab);
+void fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab);
 
 /** \brief
  *
@@ -50,5 +50,7 @@ void close_files(FILE *fp1, FILE *fp2);
  *
  */
 int verifica_coord(lab_t lab, int custo);
+
+void conn(int *tab_id, int *tab_size, int i, int j);
 
 #endif

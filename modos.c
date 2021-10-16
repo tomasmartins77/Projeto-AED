@@ -46,7 +46,7 @@ void modo1(FILE *fp_in, FILE *fp_out)
 
         while (aux_tamanho != lab.blocos)
         {
-            tab = fill(lab, &aux_tamanho, fp_in, fp_out, tab);
+            fill(lab, &aux_tamanho, fp_in, fp_out, tab);
         }
 
         if (check_if_outside(lab, lab.solx, lab.soly) == -2 || (lab.pergunta[1] == '6' && check_if_outside(lab, sec_cordx, sec_cordy) == -2))
