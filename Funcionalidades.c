@@ -107,203 +107,181 @@ int A5(int **tab, lab_t lab)
     return -1;
 }
 
-int A1_aux(int *tab, int x)
-{
-    return tab[x];
-}
-
-int check_if_outside_aux(lab_t lab, int x)
-{
-    if (x > lab.linhas * lab.colunas || x < 0)
-        return -2;
-    return 0;
-}
-
-int A6_aux(int *tab, lab_t lab, int x)
-{
-    int resultado = 0, i;
-    int variantes[4] = {1, -lab.colunas, -1, lab.colunas};
-
-    for (i = 0; i < 4; i++)
-    {
-        if (check_if_outside_aux(lab, x + variantes[i]) == 0)
-        {
-            resultado = A1_aux(tab, x + variantes[i]);
-            if (verifica_coord(lab, resultado) == 1)
-                return variantes[i];
-        }
-    }
-    return 1;
-}
-
-int *change_tab(int **tab, int *tab_id, lab_t lab)
-{
-    int i, j, x;
-    for (i = 0, x = 0; i < lab.linhas; i++)
-    {
-        for (j = 0; j < lab.colunas; j++)
-        {
-            if (tab[i][j] == 0)
-            {
-                tab_id[x] = x;
-            }
-            else
-            {
-                tab_id[x] = -1;
-            }
-            x++;
-        }
-    }
-    return tab_id;
-}
-
 int A6(int **tab, lab_t lab, int A6_x, int A6_y)
 {
-    int i = 0, aux = 0, p = 0, j = 0, q = 0, size = lab.linhas * lab.colunas, resposta = 0;
+    int i = 0, j = 0, p = 0, q = 0, x = 0, y = 0, size = lab.linhas * lab.colunas;
 
     int *tab_id = (int *)calloc(size, sizeof(int));
-    int *tab_size = (int *)calloc(size, sizeof(int));
-    if (tab_id == NULL || tab_size == NULL)
+    if (tab_id == NULL)
     {
         free_tab(tab, lab);
         exit(1);
     }
 
-    p = (lab.solx - 1) * lab.colunas + lab.soly - 1;
-    q = (A6_x - 1) * lab.colunas + A6_y - 1;
-
-    while (aux != size)
+    int *tab_size = (int *)calloc(size, sizeof(int));
+    if (tab_size == NULL)
     {
-        for (i = p; i != tab_id[i]; i = tab_id[i])
-        {
-        }
-        for (j = q; j != tab_id[j]; j = tab_id[j])
-        {
-        }
-
-        if (tab_size[i] < tab_size[j])
-        {
-            tab_id[i] = j;
-            tab_size[j] += tab_size[i];
-        }
-        else
-        {
-            tab_id[j] = i;
-            tab_size[i] += tab_size[j];
-        }
-
-        p += A6_aux(tab_id, lab, i);
-        q += A6_aux(tab_id, lab, j);
-        aux++;
+        free_tab(tab, lab);
+        exit(1);
     }
 
-    if (tab_id[p] == tab_id[q])
+    for (i = 0; i < size; i++)
     {
-        resposta = 1;
+        tab_size[i] = 1;
+        tab_id[i] = i;
     }
-    /*
-        int head;
-        for (i = 0; i < size; i++)
+
+    for (x = 0; x < lab.linhas; x++)
+    {
+        for (y = 0; y < lab.colunas; y++)
         {
-            head = 1;
-            if (tab_id[i] == i)
+            p = tab_id[x * lab.colunas + y];
+            q = tab_id[x * lab.colunas + y + 1];
+
+            if (tab[x][y] != 0)
+                continue;
+
+            for (i = p; i != tab_id[i]; i = tab_id[i])
+                ;
+
+            if (y + 1 < lab.colunas && tab[x][y + 1] == 0)
             {
-                for (j = 0; j < size; j++)
+                for (j = q; j != tab_id[j]; j = tab_id[j])
                 {
-                    if (tab_id[j] == i)
-                    {
-                        if (head)
-                        {
-                            head = 0;
-                            printf("%d", j);
-                        }
-                        else
-                            printf("-%d", j);
-                    }
                 }
-                printf("\n");
+
+                if (i == j)
+                    continue;
+
+                if (tab_size[i] < tab_size[j])
+                {
+                    tab_id[i] = j;
+                    tab_size[j] += tab_size[i];
+                }
+                else
+                {
+                    tab_id[j] = i;
+                    tab_size[i] += tab_size[j];
+                }
             }
-        }*/
+
+            q = tab_id[x * lab.colunas + y + lab.colunas];
+
+            if (x + 1 < lab.linhas && tab[x + 1][y] == 0)
+            {
+                for (j = q; j != tab_id[j]; j = tab_id[j])
+                    ;
+
+                if (i == j)
+                    continue;
+
+                if (tab_size[i] < tab_size[j])
+                {
+                    tab_id[i] = j;
+                    tab_size[j] += tab_size[i];
+                }
+                else
+                {
+                    tab_id[j] = i;
+                    tab_size[i] += tab_size[j];
+                }
+            }
+            for (i = (lab.solx - 1) * (lab.soly - 1); i != tab_id[i]; i = tab_id[i])
+            {
+            }
+            for (j = (A6_x - 1) * (A6_y - 1); j != tab_id[j]; j = tab_id[j])
+            {
+            }
+            if (i == j)
+            {
+                free(tab_id);
+                free(tab_size);
+                return 1;
+            }
+        }
+    }
+
+    for (i = 0; i < lab.linhas; i++)
+    {
+        for (j = 0; j < lab.colunas; j++)
+        {
+            printf("%2d ", tab_id[i * lab.colunas + j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
 
     free(tab_id);
     free(tab_size);
-    return resposta;
-}
-
-int upper_coord(lab_t lab, int A6_x, int A6_y)
-{
-    if (lab.solx < A6_x)
-        return 1;
-    else
-        return 0;
+    return 0;
 }
 
 /* merdas da rita que nao fazem sentido nenhum (sim, eu sei que nao faz sentido e que nao funciona):
 
 percorrer o tabuleiro
-    é branca? entao temos p
-    p verifica direita
-    direita é branca? entao temos par (p,q)
-    direita não é branca? entao verificamos baixo
-    baixo = branca
+     é branca? entao temos p
+     p verifica direita
+     direita é branca? entao temos par (p,q)
+     direita não é branca? entao verificamos baixo
+     baixo = branca
 
-    basta terem uma coordenada em comum x ou y e serem brancas para se juntarem
+     basta terem uma coordenada em comum x ou y e serem brancas para se juntarem
 
-    percorrer o tabuleiro todo e identificar todas as peças brancas, guardar essas coordenadas noutro tabuleiro
-    número de coordenadas = id
-    if (peca branca) é vizinho de outra peca branca E ESTAO DENTRO DO TABULEIRO => union
+     percorrer o tabuleiro todo e identificar todas as peças brancas, guardar essas coordenadas noutro tabuleiro
+     número de coordenadas = id
+     if (peca branca) é vizinho de outra peca branca E ESTAO DENTRO DO TABULEIRO => union
 
 
-    pegar na primeira peça e
+     pegar na primeira peça e
 
 
 
 
 int A6(int **tab, lab_t lab, int A6_x, int A6_y)
 {
-    int i, j, N, p, q;
-    int *id = (int *)malloc(lab.linhas * lab.colunas * sizeof(int));
-    identificar todas as pecas brancas que existem no tabuleiro
-    for (i = 0; i < lab.linhas; i++)
-    {
-        for (j = 0; j < lab.colunas; j++)
-        {
-            if (tab[i][j] == 0)
-            se for peca branca
-            {
-                N++; numero total de pecas brancas
-            }
-        }
-    }
+     int i, j, N, p, q;
+     int *id = (int *)malloc(lab.linhas * lab.colunas * sizeof(int));
+     identificar todas as pecas brancas que existem no tabuleiro
+     for (i = 0; i < lab.linhas; i++)
+     {
+          for (j = 0; j < lab.colunas; j++)
+          {
+                if (tab[i][j] == 0)
+                se for peca branca
+                {
+                     N++; numero total de pecas brancas
+                }
+          }
+     }
 
-    for (i = 0; i < N; i++)
-    {
-        id[i] = i;
-        aquela merda do size?
-    }
+     for (i = 0; i < N; i++)
+     {
+          id[i] = i;
+          aquela merda do size?
+     }
 
-    {
-        if ( é vizinho e esta dentro do tabuleiro)
-        {
-            for (i = p; i != id[i]; i = id[i])
+     {
+          if ( é vizinho e esta dentro do tabuleiro)
+          {
+                for (i = p; i != id[i]; i = id[i])
 
-                for (j = q; j != id[j], j = id[j])
-                    ;
+                     for (j = q; j != id[j], j = id[j])
+                          ;
 
-            if (i == j)
-                continue; se tiverem a mesma raiz, ja estao ligados
+                if (i == j)
+                     continue; se tiverem a mesma raiz, ja estao ligados
 
-            if (sz[i] < sz[j])
-            {
-                id[i] = j;
-                sz[j] += sz[i];
-            }
-            else
-            {
-                id[j] = i;
-                sz[i] += sz[j];
-            }
-        }
-    }
+                if (sz[i] < sz[j])
+                {
+                     id[i] = j;
+                     sz[j] += sz[i];
+                }
+                else
+                {
+                     id[j] = i;
+                     sz[i] += sz[j];
+                }
+          }
+     }
 }
 */

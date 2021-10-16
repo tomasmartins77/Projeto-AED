@@ -1,4 +1,3 @@
-#include "modos.h"
 #include "Utility.h"
 
 /** \brief inicializa o tabuleiro

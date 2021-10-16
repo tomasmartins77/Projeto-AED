@@ -1,6 +1,12 @@
 #ifndef Utility
 #define Utility
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "modos.h"
+
 /** \brief
  *
  */
