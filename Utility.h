@@ -36,7 +36,7 @@ int check_if_outside(lab_t lab, int x, int y);
 /** \brief verifica se o ficheiro tem a extensao correta
  *
  */
-int check_filename(char *filename, int offset);
+int check_filename(char *filename);
 
 /** \brief muda a extencao do ficheiro de saida para .sol1
  *

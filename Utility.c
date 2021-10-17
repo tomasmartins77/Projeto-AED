@@ -10,10 +10,14 @@ int **init_tab(lab_t lab)
 {
     int i = 0;
     int **tab = (int **)calloc(lab.linhas, sizeof(int *));
+    if (tab == NULL)
+        exit(1);
 
     for (i = 0; i < lab.linhas; i++)
     {
         tab[i] = (int *)calloc(lab.colunas, sizeof(int));
+        if (tab[i] == NULL)
+            exit(1);
     }
     return tab;
 }
@@ -81,7 +85,7 @@ void free_tab(int **tab, lab_t lab)
  *
  * \param lab lab_t linhas e colunas
  * \param x int coordenada a ser verificada
- * \param y 
+ * \param y
  * \return int se nao estiver retorna -2, se estiver retorna 0
  *
  */
@@ -95,29 +99,25 @@ int check_if_outside(lab_t lab, int x, int y)
 /** \brief verifica se o ficheiro tem a extensao correta
  *
  * \param filename char* nome do ficheiro
- * \param offset int podera ser utilizado para o projeto final
  * \return int 1 se tiver a extensao correta, 0 se nao
  *
  */
-int check_filename(char *filename, int offset)
+int check_filename(char *filename)
 {
-    int i = 0, j = 0, t = 0;
-    char ex[offset + 1];
-    for (i = 0; i < offset + 1; i++)
-        ex[i] = '\0';
+    int len = 0, j = 0, t = 0;
+    char ex[5];
+    for (j = 0; j < 5; j++)
+        ex[j] = '\0';
 
-    i = strlen(filename);
-    t = i - offset;
-    for (j = 0; t < i; j++, t++)
+    len = strlen(filename);
+    t = len - 4;
+    for (j = 0; t < len; j++, t++)
     {
         ex[j] = filename[t];
     }
 
-    if (offset == 4)
-    {
-        if (strcmp(".in1", ex) == 0)
-            return 1;
-    }
+    if (strcmp(".in1", ex) == 0)
+        return 1;
     return 0;
 }
 
@@ -184,9 +184,8 @@ int verifica_coord(lab_t lab, int custo)
  */
 void conn(int *tab_id, int *tab_size, int i, int j)
 {
-    if (i == j)
+    if (i == j) /*ja estao conectados*/
         return;
-
     /*conectar a arvore menor a maior*/
     if (tab_size[i] < tab_size[j])
     {

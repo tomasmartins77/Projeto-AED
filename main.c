@@ -12,12 +12,10 @@ int main(int argc, char *argv[])
 
     char *file_end = (char *)malloc(strlen(argv[2]) * sizeof(char) + 2);
     if (file_end == NULL)
-    {
         exit(1);
-    }
 
     /*se o formato de invocacao do programa for correto e o ficheiro tiver a extensao correta*/
-    if (argc == 3 && check_filename(argv[2], argc + 1) == 1 && strcmp(argv[1], "-s") == 0)
+    if (argc == 3 && check_filename(argv[2]) == 1 && strcmp(argv[1], "-s") == 0)
     {
         /*abre o ficheiro para leitura*/
         fp_in = fopen(argv[2], "r");
