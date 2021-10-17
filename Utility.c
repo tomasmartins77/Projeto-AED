@@ -129,13 +129,8 @@ int check_filename(char *filename, int offset)
  */
 char *change_ex(char *filename)
 {
-    int i = 0, j = 0, t = 0;
-    char ex[6] = ".sol1";
-
-    i = strlen(filename);
-    t = i - 4;
-    for (j = 0; j < 6; j++, t++)
-        filename[t] = ex[j];
+    filename[strlen(filename) - 4] = '\0'; /*corta a string retirando o .in1*/
+    strcat(filename, ".sol1");             /*adiciona .sol1 no final da string*/
     return filename;
 }
 
