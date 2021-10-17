@@ -112,9 +112,7 @@ int check_filename(char *filename)
     len = strlen(filename);
     t = len - 4;
     for (j = 0; t < len; j++, t++)
-    {
         ex[j] = filename[t];
-    }
 
     if (strcmp(".in1", ex) == 0)
         return 1;
