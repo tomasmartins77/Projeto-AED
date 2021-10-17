@@ -81,7 +81,7 @@ void free_tab(int **tab, lab_t lab)
  *
  * \param lab lab_t linhas e colunas
  * \param x int coordenada a ser verificada
- * \param y int
+ * \param y 
  * \return int se nao estiver retorna -2, se estiver retorna 0
  *
  */
@@ -192,6 +192,7 @@ void conn(int *tab_id, int *tab_size, int i, int j)
     if (i == j)
         return;
 
+    /*conectar a arvore menor a maior*/
     if (tab_size[i] < tab_size[j])
     {
         tab_id[i] = j;

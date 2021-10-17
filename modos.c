@@ -3,7 +3,7 @@
 #include "Utility.h"
 #include "Funcionalidades.h"
 
-/** \brief realiza o modo da fase intermedias
+/** \brief realiza o modo da fase intermedia
  *
  * \param fp_in FILE* ficheiro de entrada
  * \param fp_out FILE* ficheiro de saida
@@ -57,7 +57,7 @@ void modo1(FILE *fp_in, FILE *fp_out)
             free_tab(tab, lab);
         }
         aux_tamanho = 0;
-        fprintf(fp_out, "%d\n\n", resposta); /*escreve no ficheiro a resposta*/
+        fprintf(fp_out, "%d\n\n", resposta); /*escreve no ficheiro de saida a resposta*/
     }
     close_files(fp_in, fp_out);
 }

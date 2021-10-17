@@ -15,7 +15,7 @@ typedef struct labirinto
     char pergunta[3]; /*A1-A6*/
 } lab_t;
 
-/** \brief realiza o modo da fase intermedias
+/** \brief realiza o modo da fase intermedia
  *
  */
 void modo1(FILE *fp_in, FILE *fp_out);

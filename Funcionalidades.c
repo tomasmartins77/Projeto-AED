@@ -26,12 +26,14 @@ int menu_perguntas(int **tab, lab_t lab, int A6_x, int A6_y)
         return A234(tab, lab, lab.solx, lab.soly);
         break;
     case '5': /*A5*/
+        /*se nao corresponde a uma celula cinzenta*/
         if (tab[lab.solx - 1][lab.soly - 1] < 1)
             return -1;
         else
             return A5(tab, lab);
         break;
     case '6': /*A6*/
+              /*se as celulas nao forem brancas*/
         if (tab[lab.solx - 1][lab.soly - 1] != 0 || tab[A6_x - 1][A6_y - 1] != 0)
             return 0;
         else
@@ -41,7 +43,7 @@ int menu_perguntas(int **tab, lab_t lab, int A6_x, int A6_y)
     exit(1);
 }
 
-/** \brief retorna o valor de uma certa coordenada
+/** \brief retorna o valor de uma certa coordenada de forma a identificar o tipo de celula
  *
  * \param tab int** labirinto completo
  * \param x int coordenada que pretendemos verificar
@@ -67,7 +69,7 @@ int A234(int **tab, lab_t lab, int x, int y)
 {
     int resultado = 0, i;
 
-    for (i = -1; i <= 1; i += 2) /*loop que passa pelos vizinhos*/
+    for (i = -1; i <= 1; i += 2) /*loop que passa apenas pelos vizinhos*/
     {
         if (check_if_outside(lab, x + i, y) == 0) /*vizinhos verticais*/
         {
@@ -96,6 +98,7 @@ int A5(int **tab, lab_t lab)
 {
     if (tab[lab.solx - 1][lab.soly - 1] > 0) /*verifica se a celula e cinzenta*/
     {
+        /*se esta dentro do tabuleiro e se esta rodeada pelo menos duas pecas brancas disponiveis (esquerda+direita ou cima+baixo)*/
         if (check_if_outside(lab, lab.solx - 1, lab.soly) != -2 && tab[lab.solx - 2][lab.soly - 1] == 0 && check_if_outside(lab, lab.solx + 1, lab.soly) != -2 && tab[lab.solx][lab.soly - 1] == 0)
             return 1;
         else if (check_if_outside(lab, lab.solx, lab.soly - 1) != -2 && tab[lab.solx - 1][lab.soly - 2] == 0 && check_if_outside(lab, lab.solx, lab.soly + 1) != -2 && tab[lab.solx - 1][lab.soly] == 0)

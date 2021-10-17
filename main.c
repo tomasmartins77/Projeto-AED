@@ -16,8 +16,10 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
+    /*se o formato de invocacao do programa for correto e o ficheiro tiver a extensao correta*/
     if (argc == 3 && check_filename(argv[2], argc + 1) == 1 && strcmp(argv[1], "-s") == 0)
     {
+        /*abre o ficheiro para leitura*/
         fp_in = fopen(argv[2], "r");
         if (fp_in == NULL)
         {
@@ -25,8 +27,10 @@ int main(int argc, char *argv[])
             exit(1);
         }
 
+        /*muda a extensao do file_end*/
         strcpy(file_end, change_ex(argv[2]));
 
+        /*abre o ficheiro para escrita*/
         fp_out = fopen(file_end, "w");
         if (fp_out == NULL)
         {
