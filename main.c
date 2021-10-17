@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
             free(file_end);
             exit(1);
         }
-        modo1(fp_in, fp_out);
         free(file_end);
+        modo1(fp_in, fp_out);
     }
     return 0;
 }

@@ -2,8 +2,8 @@
 
 /** \brief inicializa o tabuleiro
  *
- * \param lab lab_t
- * \return int**
+ * \param lab lab_t numero de linhas e de colunas
+ * \return int** tabuleiro vazio
  *
  */
 int **init_tab(lab_t lab)
@@ -18,38 +18,32 @@ int **init_tab(lab_t lab)
     return tab;
 }
 
-void shadow_fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out)
-{
-    int aux_x = 0, aux_y = 0, aux_custo = 0;
-    while ((*aux_tamanho) != lab.blocos)
-    {
-        if (fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
-        {
-            close_files(fp_in, fp_out);
-            exit(1);
-        }
-        (*aux_tamanho)++;
-    }
-}
-
-void fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab)
-{
-    int aux_x = 0, aux_y = 0, aux_custo = 0;
-    while ((*aux_tamanho) != lab.blocos)
-    {
-        if (fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
-        {
-            close_files(fp_in, fp_out);
-            exit(1);
-        }
-        tab[aux_x - 1][aux_y - 1] = aux_custo;
-        (*aux_tamanho)++;
-    }
-}
-
-/** \brief struct que contem os dados de cada labirinto
+/** \brief coloca os valores do ficheiro no labirinto ou passa as linhas do ficheiro
+ *         a frente quando os valores das coordenadas estao fora do labirinto
  *
- * \return lab_t
+ * \param lab lab_t numero de linhas e de colunas
+ * \return int** tabuleiro cheio ou vazio
+ *
+ */
+void fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab, int flag)
+{
+    int aux_x = 0, aux_y = 0, aux_custo = 0;
+    while ((*aux_tamanho) != lab.blocos)
+    {
+        if (fscanf(fp_in, "%d %d %d", &aux_x, &aux_y, &aux_custo) != 3)
+        {
+            close_files(fp_in, fp_out);
+            exit(1);
+        }
+        if (flag == 1)
+            tab[aux_x - 1][aux_y - 1] = aux_custo;
+        (*aux_tamanho)++;
+    }
+}
+
+/** \brief inicializa todos os valores da struct
+ *
+ * \return lab_t struct que contem os dados de cada labirinto
  *
  */
 lab_t init_maze()
@@ -68,8 +62,8 @@ lab_t init_maze()
 
 /** \brief liberta a memória alocada para todo o tabuleiro
  *
- * \param tab int**
- * \param lab lab_t
+ * \param tab int** tabuleiro completo
+ * \param lab lab_t linhas e colunas
  * \return void
  *
  */
@@ -83,12 +77,12 @@ void free_tab(int **tab, lab_t lab)
     free(tab);
 }
 
-/** \brief verifica se a coordenada se encontra dentro do tabuleiro, se nao estiver retorna -2, se estiver retorna 0
+/** \brief verifica se a coordenada se encontra dentro do tabuleiro
  *
- * \param lab lab_t
- * \param x int
+ * \param lab lab_t linhas e colunas
+ * \param x int coordenada a ser verificada
  * \param y int
- * \return int
+ * \return int se nao estiver retorna -2, se estiver retorna 0
  *
  */
 int check_if_outside(lab_t lab, int x, int y)
@@ -98,11 +92,11 @@ int check_if_outside(lab_t lab, int x, int y)
     return 0;
 }
 
-/** \brief
+/** \brief verifica se o ficheiro tem a extensao correta
  *
- * \param filename char*
- * \param offset int
- * \return int
+ * \param filename char* nome do ficheiro
+ * \param offset int podera ser utilizado para o projeto final
+ * \return int 1 se tiver a extensao correta, 0 se nao
  *
  */
 int check_filename(char *filename, int offset)
@@ -129,8 +123,8 @@ int check_filename(char *filename, int offset)
 
 /** \brief muda a extencao do ficheiro de saida para .sol1
  *
- * \param filename char*
- * \return char*
+ * \param filename char* nome do ficheiro que vai ser alterado
+ * \return char* nome com a alteracao
  *
  */
 char *change_ex(char *filename)
@@ -158,11 +152,12 @@ void close_files(FILE *fp1, FILE *fp2)
     fclose(fp2);
 }
 
-/** \brief verifica, de acordo com o algorimo A1-A6 lido do ficheiro de entrada a cor da celula de acordo com o custo de cada uma
+/** \brief verifica, de acordo com o algorimo A2-A4 lido do ficheiro de entrada a cor da celula
+ *         de acordo com o custo de cada uma
  *
- * \param lab lab_t
- * \param custo int
- * \return int
+ * \param lab lab_t A2-A4
+ * \param custo int valor da celula
+ * \return int 1 se correto, 0 se nao
  *
  */
 int verifica_coord(lab_t lab, int custo)
@@ -181,13 +176,17 @@ int verifica_coord(lab_t lab, int custo)
         if (custo == -1)
             return 1;
         break;
-    case '6':
-        if (custo == -1)
-            return 1;
     }
     return 0;
 }
 
+/** \brief algoritmo de conectividade
+ *
+ * \param int *tab_id id de cada celula
+ * \param int *tab_size tamanho de cada ramo
+ * \return void
+ *
+ */
 void conn(int *tab_id, int *tab_size, int i, int j)
 {
     if (i == j)

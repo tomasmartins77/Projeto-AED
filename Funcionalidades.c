@@ -1,38 +1,37 @@
-
 #include "modos.h"
 #include "Utility.h"
 #include "Funcionalidades.h"
 
 /** \brief executa os algoritmos A1-A6 consoante o que foi lido no ficheiro de entrada
  *
- * \param tab int**
- * \param lab lab_t
- * \return int
+ * \param tab int** tabuleiro completo
+ * \param lab lab_t valores importantes
+ * \return int  resposta a pergunta feita
  *
  */
 int menu_perguntas(int **tab, lab_t lab, int A6_x, int A6_y)
 {
-    switch (lab.pergunta[1])
+    switch (lab.pergunta[1]) /*verifica qual pergunta foi feita*/
     {
-    case '1':
+    case '1': /*A1*/
         return A1(tab, lab.solx, lab.soly);
         break;
-    case '2':
+    case '2': /*A2*/
         return A234(tab, lab, lab.solx, lab.soly);
         break;
-    case '3':
+    case '3': /*A3*/
         return A234(tab, lab, lab.solx, lab.soly);
         break;
-    case '4':
+    case '4': /*A4*/
         return A234(tab, lab, lab.solx, lab.soly);
         break;
-    case '5':
+    case '5': /*A5*/
         if (tab[lab.solx - 1][lab.soly - 1] < 1)
             return -1;
         else
             return A5(tab, lab);
         break;
-    case '6':
+    case '6': /*A6*/
         if (tab[lab.solx - 1][lab.soly - 1] != 0 || tab[A6_x - 1][A6_y - 1] != 0)
             return 0;
         else
@@ -42,12 +41,12 @@ int menu_perguntas(int **tab, lab_t lab, int A6_x, int A6_y)
     exit(1);
 }
 
-/** \brief
+/** \brief retorna o valor de uma certa coordenada
  *
- * \param tab int**
- * \param x int
+ * \param tab int** labirinto completo
+ * \param x int coordenada que pretendemos verificar
  * \param y int
- * \return int
+ * \return int valor da coordenada
  *
  */
 int A1(int **tab, int x, int y)
@@ -55,28 +54,28 @@ int A1(int **tab, int x, int y)
     return tab[x - 1][y - 1];
 }
 
-/** \brief
+/** \brief verifica quais os vizinhos de uma certa coordenada
  *
- * \param tab int**
- * \param lab lab_t
- * \param x int
+ * \param tab int** labirinto completo
+ * \param lab lab_t valores importantes
+ * \param x int coordenada na qual queremos verificar os vizinhos
  * \param y int
- * \return int
+ * \return int 1 se tem os vizinhos pretendidos, 0 se nao
  *
  */
 int A234(int **tab, lab_t lab, int x, int y)
 {
     int resultado = 0, i;
 
-    for (i = -1; i <= 1; i += 2)
+    for (i = -1; i <= 1; i += 2) /*loop que passa pelos vizinhos*/
     {
-        if (check_if_outside(lab, x + i, y) == 0)
+        if (check_if_outside(lab, x + i, y) == 0) /*vizinhos verticais*/
         {
             resultado = A1(tab, x + i, y);
             if (verifica_coord(lab, resultado) == 1)
                 return 1;
         }
-        if (check_if_outside(lab, x, y + i) == 0)
+        if (check_if_outside(lab, x, y + i) == 0) /*vizinhos horizontais*/
         {
             resultado = A1(tab, x, y + i);
             if (verifica_coord(lab, resultado) == 1)
@@ -86,16 +85,16 @@ int A234(int **tab, lab_t lab, int x, int y)
     return 0;
 }
 
-/** \brief
+/** \brief verifica se a celula e cinzenta e quebravel
  *
- * \param tab int**
- * \param lab lab_t
- * \return int
+ * \param tab int** labirinto completo
+ * \param lab lab_t valores importantes
+ * \return int 1 se e quebravel, 0 se nao, -1 se a celula nao e cinzenta
  *
  */
 int A5(int **tab, lab_t lab)
 {
-    if (tab[lab.solx - 1][lab.soly - 1] > 0)
+    if (tab[lab.solx - 1][lab.soly - 1] > 0) /*verifica se a celula e cinzenta*/
     {
         if (check_if_outside(lab, lab.solx - 1, lab.soly) != -2 && tab[lab.solx - 2][lab.soly - 1] == 0 && check_if_outside(lab, lab.solx + 1, lab.soly) != -2 && tab[lab.solx][lab.soly - 1] == 0)
             return 1;
@@ -107,62 +106,71 @@ int A5(int **tab, lab_t lab)
     return -1;
 }
 
+/** \brief verifica se 2 celulas se encontram na mesma sala
+ *
+ * \param tab int** labirinto completo
+ * \param lab lab_t struct valores importantes para a resolucao
+ * \param int A6_x valor da segunda coordenada
+ * \param int A6_x valor da segunda coordenada
+ * \return int 1 se as celulas estao na mesma sala, 0 se nao
+ *
+ */
 int A6(int **tab, lab_t lab, int A6_x, int A6_y)
 {
     int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas;
 
-    int *tab_id = (int *)malloc(size * sizeof(int));
+    int *tab_id = (int *)malloc(size * sizeof(int)); /*alocacao o array de id*/
     if (tab_id == NULL)
     {
         free_tab(tab, lab);
         exit(1);
     }
 
-    int *tab_size = (int *)malloc(size * sizeof(int));
+    int *tab_size = (int *)malloc(size * sizeof(int)); /*alocacao o array de size*/
     if (tab_size == NULL)
     {
         free_tab(tab, lab);
         exit(1);
     }
 
-    for (i = 0; i < size; i++)
+    for (i = 0; i < size; i++) /*inicializacao de valores*/
     {
         tab_size[i] = 1;
         tab_id[i] = i;
     }
 
-    for (x = 0; x < lab.linhas; x++)
+    for (x = 0; x < lab.linhas; x++) /*percorre todo o tabuleiro*/
     {
         for (y = 0; y < lab.colunas; y++)
         {
-            if (tab[x][y] != 0)
+            if (tab[x][y] != 0) /*se a celula nao for branca, nao vale a pena verificar*/
                 continue;
 
             for (i = x * lab.colunas + y; i != tab_id[i]; i = tab_id[i])
                 ;
 
-            if (x - 1 > 0 && tab[x - 1][y] == 0)
+            if (x - 1 > 0 && tab[x - 1][y] == 0) /*vizinho de cima*/
             {
                 for (j = (x - 1) * lab.colunas + y; j != tab_id[j]; j = tab_id[j])
                     ;
                 conn(tab_id, tab_size, i, j);
             }
 
-            if (x + 1 < lab.linhas && tab[x + 1][y] == 0)
+            if (x + 1 < lab.linhas && tab[x + 1][y] == 0) /*vizinho de baixo*/
             {
                 for (j = (x + 1) * lab.colunas + y; j != tab_id[j]; j = tab_id[j])
                     ;
                 conn(tab_id, tab_size, i, j);
             }
 
-            if (y - 1 > 0 && tab[x][y - 1] == 0)
+            if (y - 1 > 0 && tab[x][y - 1] == 0) /*vizinho da esquerda*/
             {
                 for (j = x * lab.colunas + y - 1; j != tab_id[j]; j = tab_id[j])
                     ;
                 conn(tab_id, tab_size, i, j);
             }
 
-            if (y + 1 < lab.colunas && tab[x][y + 1] == 0)
+            if (y + 1 < lab.colunas && tab[x][y + 1] == 0) /*vizinho da direita*/
             {
                 for (j = x * lab.colunas + y + 1; j != tab_id[j]; j = tab_id[j])
                     ;
@@ -174,7 +182,7 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y)
         ;
     for (j = (lab.solx - 1) * lab.colunas + lab.soly - 1; j != tab_id[j]; j = tab_id[j])
         ;
-    if (i == j)
+    if (i == j) /*verifica se estao conectados*/
     {
         free(tab_id);
         free(tab_size);
