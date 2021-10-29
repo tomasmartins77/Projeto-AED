@@ -59,5 +59,4 @@ void modo1(FILE *fp_in, FILE *fp_out)
         aux_tamanho = 0;
         fprintf(fp_out, "%d\n\n", resposta); /*escreve no ficheiro de saida a resposta*/
     }
-    close_files(fp_in, fp_out);
 }

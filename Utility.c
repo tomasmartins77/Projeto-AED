@@ -102,19 +102,21 @@ int check_if_outside(lab_t lab, int x, int y)
  * \return int 1 se tiver a extensao correta, 0 se nao
  *
  */
-int check_filename(char *filename)
+int check_filename(char *filename, int offset)
 {
     int len = 0, j = 0, t = 0;
-    char ex[5];
-    for (j = 0; j < 5; j++)
+    char ex[offset + 1];
+    for (j = 0; j < offset + 1; j++)
         ex[j] = '\0';
 
     len = strlen(filename);
-    t = len - 4;
+    t = len - offset;
     for (j = 0; t < len; j++, t++)
         ex[j] = filename[t];
 
     if (strcmp(".in1", ex) == 0)
+        return 1;
+    if (strcmp(".in", ex) == 0)
         return 1;
     return 0;
 }
@@ -125,10 +127,13 @@ int check_filename(char *filename)
  * \return char* nome com a alteracao
  *
  */
-char *change_ex(char *filename)
+char *change_ex(char *filename, int offset)
 {
-    filename[strlen(filename) - 4] = '\0'; /*corta a string retirando o .in1*/
-    strcat(filename, ".sol1");             /*adiciona .sol1 no final da string*/
+    filename[strlen(filename) - offset] = '\0'; /*corta a string retirando o .in1 ou .in*/
+    if (offset == 4)
+        strcat(filename, ".sol1"); /*adiciona .sol1 no final da string*/
+    else if (offset == 3)
+        strcat(filename, ".sol"); /*adiciona .sol no final da string*/
     return filename;
 }
 
