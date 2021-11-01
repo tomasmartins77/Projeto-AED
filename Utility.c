@@ -50,7 +50,7 @@ void fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab, int
  * \return lab_t struct que contem os dados de cada labirinto
  *
  */
-lab_t init_maze()
+lab_t init_lab()
 {
     int i = 0;
     lab_t lab;

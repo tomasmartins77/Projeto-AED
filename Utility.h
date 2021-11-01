@@ -21,7 +21,7 @@ void fill(lab_t lab, int *aux_tamanho, FILE *fp_in, FILE *fp_out, int **tab, int
 /** \brief inicializa todos os valores da struct
  *
  */
-lab_t init_maze();
+lab_t init_lab();
 
 /** \brief liberta a memória alocada para todo o tabuleiro
  *

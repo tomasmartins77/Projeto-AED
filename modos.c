@@ -12,7 +12,7 @@
  */
 void modo1(FILE *fp_in, FILE *fp_out)
 {
-    lab_t lab = init_maze(); /*inicializa a struct que vai receber os valores dos ficheiros*/
+    lab_t lab = init_lab(); /*inicializa a struct que vai receber os valores dos ficheiros*/
     int aux_tamanho = 0, resposta = 0, sec_cordx = 0, sec_cordy = 0;
     int **tab = NULL;
 
