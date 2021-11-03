@@ -37,7 +37,7 @@ int menu_perguntas(int **tab, lab_t lab, int A6_x, int A6_y)
         if (tab[lab.solx - 1][lab.soly - 1] != 0 || tab[A6_x - 1][A6_y - 1] != 0)
             return 0;
         else
-            return A6(tab, lab, A6_x, A6_y);
+            return A6(tab, lab, A6_x, A6_y, 0);
         break;
     }
     exit(1);
@@ -118,9 +118,9 @@ int A5(int **tab, lab_t lab)
  * \return int 1 se as celulas estao na mesma sala, 0 se nao
  *
  */
-int A6(int **tab, lab_t lab, int A6_x, int A6_y)
+int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag)
 {
-    int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas;
+    int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas, count = 0;
 
     int *tab_id = (int *)malloc(size * sizeof(int)); /*alocacao o array de id*/
     if (tab_id == NULL)
@@ -156,28 +156,28 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y)
             {
                 for (j = (x - 1) * lab.colunas + y; j != tab_id[j]; j = tab_id[j])
                     ;
-                conn(tab_id, tab_size, i, j);
+                conn(tab_id, tab_size, i, j, x * lab.colunas + y, (x - 1) * lab.colunas + y);
             }
 
             if (x + 1 < lab.linhas && tab[x + 1][y] == 0) /*vizinho de baixo*/
             {
                 for (j = (x + 1) * lab.colunas + y; j != tab_id[j]; j = tab_id[j])
                     ;
-                conn(tab_id, tab_size, i, j);
+                conn(tab_id, tab_size, i, j, x * lab.colunas + y, (x + 1) * lab.colunas + y);
             }
 
             if (y - 1 > 0 && tab[x][y - 1] == 0) /*vizinho da esquerda*/
             {
                 for (j = x * lab.colunas + y - 1; j != tab_id[j]; j = tab_id[j])
                     ;
-                conn(tab_id, tab_size, i, j);
+                conn(tab_id, tab_size, i, j, x * lab.colunas + y, x * lab.colunas + y - 1);
             }
 
             if (y + 1 < lab.colunas && tab[x][y + 1] == 0) /*vizinho da direita*/
             {
                 for (j = x * lab.colunas + y + 1; j != tab_id[j]; j = tab_id[j])
                     ;
-                conn(tab_id, tab_size, i, j);
+                conn(tab_id, tab_size, i, j, x * lab.colunas + y, x * lab.colunas + y + 1);
             }
         }
     }
@@ -185,6 +185,43 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y)
         ;
     for (j = (lab.solx - 1) * lab.colunas + lab.soly - 1; j != tab_id[j]; j = tab_id[j])
         ;
+
+    int aux = 0;
+    for (x = 0; x < lab.linhas; x++) /*percorre todo o tabuleiro*/
+    {
+        for (y = 0; y < lab.colunas; y++)
+        {
+            if (tab[x][y] != 0) /*se a celula nao for branca, nao vale a pena verificar*/
+                continue;
+
+            tab[x][y] = -tab_id[x * lab.colunas + y] - 3;
+
+            if (flag == 1)
+            {
+                if (tab_id[x * lab.colunas + y] != aux)
+                {
+                    count++;
+                }
+            }
+
+            flag = 1;
+            for (i = x * lab.colunas + y; i != tab_id[i]; i = tab_id[i])
+                ;
+            aux = tab_id[x * lab.colunas + y];
+            printf("%d ", tab_id[x * lab.colunas + y]);
+        }
+    }
+    printf("%d salas\n", count);
+
+    for (x = 0; x < lab.linhas; x++)
+    {
+        for (y = 0; y < lab.colunas; y++)
+        {
+            printf("%3d ", tab[x][y]);
+        }
+        printf("\n");
+    }
+
     if (i == j) /*verifica se estao conectados*/
     {
         free(tab_id);

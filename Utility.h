@@ -57,6 +57,6 @@ int verifica_coord(lab_t lab, int custo);
 /** \brief algoritmo de conectividade
  *
  */
-void conn(int *tab_id, int *tab_size, int i, int j);
+void conn(int *tab_id, int *tab_size, int i, int j, int p, int q);
 
 #endif

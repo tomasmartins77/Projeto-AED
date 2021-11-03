@@ -44,7 +44,7 @@ void modo1(FILE *fp_in, FILE *fp_out)
                 tab = init_tab(lab);
         }
         /*resto do labirinto*/
-        while (aux_tamanho != lab.blocos)
+        if (aux_tamanho != lab.blocos)
         {
             fill(lab, &aux_tamanho, fp_in, fp_out, tab, 1);
         }
@@ -58,5 +58,30 @@ void modo1(FILE *fp_in, FILE *fp_out)
         }
         aux_tamanho = 0;
         fprintf(fp_out, "%d\n\n", resposta); /*escreve no ficheiro de saida a resposta*/
+    }
+}
+
+void modo2(FILE *fp_in, FILE *fp_out)
+{
+    lab_t maze = init_lab();
+    int **tab = NULL;
+    int tamanho = 0, resposta = 0;
+
+    while (fp_in != NULL)
+    {
+        if (fscanf(fp_in, "%d %d %d %d %d", &maze.linhas, &maze.colunas, &maze.solx, &maze.soly, &maze.blocos) != 5)
+            exit(1);
+
+        if (check_if_outside(maze, maze.solx, maze.soly) == -2)
+        {
+            fill(maze, &tamanho, fp_in, fp_out, tab, 0);
+            resposta == -2;
+        }
+        else
+        {
+            tab = init_tab(maze);
+            fill(maze, &tamanho, fp_in, fp_out, tab, 1);
+            resposta = A6(tab, maze, 0, 0, 1);
+        }
     }
 }

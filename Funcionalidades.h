@@ -30,6 +30,6 @@ int A5(int **tab, lab_t lab);
 /** \brief verifica se 2 celulas se encontram na mesma sala
  *
  */
-int A6(int **tab, lab_t lab, int A6_x, int A6_y);
+int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag);
 
 #endif
