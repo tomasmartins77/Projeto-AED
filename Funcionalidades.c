@@ -196,43 +196,53 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
                 if (tab[i][j] == 0)
                 {
                     if (tab_id[j + i * lab.colunas] == j + i * lab.colunas)
-                        *salas++;
-                }
-            }
-
-            ocurrencias = (int *)malloc(sizeof(int) * *salas);
-            if (ocurrencias == NULL)
-                exit(1);
-            valores = (int *)malloc(sizeof(int) * *salas);
-            if (valores = NULL)
-                exit(1);
-
-            // initialize array
-            for (i = 0, j = -3; i < *salas; i++, j--)
-            {
-                ocurrencias[i] = -1;
-                valores[i] = j;
-            }
-
-            for (x = 0; x < lab.linhas; x++)
-            {
-                for (y = 0; y < lab.colunas; y++)
-                {
-                    if (A1(tab, x + 1, y + 1) != 0) // se for peca branca
-                        continue;
-
-                    for (i = 0; ocurrencias[i] != tab_id[x * lab.colunas + y] && ocurrencias[i] != -1; i++)
-                    {
-                    }
-                    if (ocurrencias[i] == -1)
-                        ocurrencias[i] = tab_id[x * lab.colunas + y];
-
-                    tab[x][y] = valores[i];
+                        (*salas)++;
                 }
             }
         }
+        printf("%d\n", *salas);
+        ocurrencias = (int *)malloc(sizeof(int) * *salas);
+        if (ocurrencias == NULL)
+            exit(1);
+
+        valores = (int *)malloc(sizeof(int) * *salas);
+        if (valores == NULL)
+            exit(1);
+
+        // initialize array
+        for (i = 0, j = -3; i < *salas; i++, j--)
+        {
+            ocurrencias[i] = -1;
+            valores[i] = j;
+        }
+
+        for (x = 0; x < lab.linhas; x++)
+        {
+            for (y = 0; y < lab.colunas; y++)
+            {
+                if (A1(tab, x + 1, y + 1) != 0) // se for peca branca
+                    continue;
+
+                for (i = 0; ocurrencias[i] != tab_id[x * lab.colunas + y] && ocurrencias[i] != -1; i++)
+                {
+                }
+                if (ocurrencias[i] == -1)
+                    ocurrencias[i] = tab_id[x * lab.colunas + y];
+
+                tab[x][y] = valores[i];
+            }
+        }
+
         free(valores);
         free(ocurrencias);
+    }
+    for (x = 0; x < lab.linhas; x++)
+    {
+        for (y = 0; y < lab.colunas; y++)
+        {
+            printf("%5d ", tab[x][y]);
+        }
+        printf("\n");
     }
 
     if (i == j) /*verifica se estao conectados*/

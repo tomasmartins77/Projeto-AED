@@ -79,9 +79,12 @@ void modo2(FILE *fp_in, FILE *fp_out)
         }
         else
         {
+            printf("    %d\n", salas);
             tab = init_tab(maze);
             fill(maze, &tamanho, fp_in, fp_out, tab, 1);
             resposta = A6(tab, maze, 0, 0, 1, &salas);
+            printf("    %d\n", salas);
         }
+        free_tab(tab, maze);
     }
 }
