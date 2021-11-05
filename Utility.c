@@ -187,7 +187,7 @@ int verifica_coord(lab_t lab, int custo)
  */
 void conn(int *tab_id, int *tab_size, int i, int j, int p, int q)
 {
-    int t = 0, x = 0;
+    int t = 0, x = 0, morte2 = -2;
 
     if (i == j) /*ja estao conectados*/
         return;

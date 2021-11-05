@@ -120,7 +120,7 @@ int A5(int **tab, lab_t lab)
  */
 int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag)
 {
-    int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas, count = 0, salas = 0, morte = -2;
+    int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas, count = 0, salas = 0;
 
     int *tab_id = (int *)malloc(size * sizeof(int)); /*alocacao o array de id*/
     if (tab_id == NULL)
@@ -194,54 +194,56 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag)
             if (tab[x][y] != 0) /*se a celula nao for branca, nao vale a pena verificar*/
                 continue;
 
-            tab[x][y] = -tab_id[x * lab.colunas + y] - 3;
-
-            if (flag == 1)
-            {
-                for (x = 0; x < lab.linhas; x++)
-                {
-                    for (y = 0; y < lab.colunas; y++)
-                    {
-                        //verificar se e peca branca
-                        if (tab[x][y] == 0)
-                        {
-                            printf("corno");
-
-                            //se nao tiver sido mudado ainda e nao for a raiz da arvore
-                            for (i = 1; tab_id[i] >= 0 && tab_id[i] != i; i++)
-                            {
-                                tab_id[i] = morte--;
-                                printf("morte %d\n", morte);
-                            }
-                        }
-                    }
-                }
-            }
-
             flag = 1;
 
             aux = tab_id[x * lab.colunas + y];
 
             for (i = x * lab.colunas + y; i != tab_id[i]; i = tab_id[i]) //weighted quick union
                 ;
+        }
+    }
 
-            /* for (i = 0; i < lab.linhas * lab.colunas; i++)
+    for (i = 0; i * lab.colunas < lab.linhas * lab.colunas; i++)
+    {
+        for (j = 0; j < lab.colunas; j++)
+        {
+            if (tab[i][j] == 0)
             {
-                if (A1(tab, i / lab.colunas, i % lab.colunas) == 0)
-                {
-                    /* for (j = i; j != tab_id[j]; j = tab_id[j])
-                        ;
-                    if (tab_id[j] == i)
-                        tab[i / lab.colunas][i % lab.colunas] = morte--;
-                    else if (tab[j / lab.colunas][j % lab.colunas] < -2)
-                        tab[i / lab.colunas][i % lab.colunas] = tab[j / lab.colunas][j % lab.colunas];
-                    printf("corno");
-                }
-            }*/
+                if (tab_id[j + i * lab.colunas] == j + i * lab.colunas)
+                    salas++;
+            }
+            printf(" %2d ", tab_id[j + i * lab.colunas]);
+        }
+        printf("\n");
+    }
 
-            // if (i == tab_id[i] && tab_id[i] >= 0) // i é uma root
-            //   i = morte--;
-            //printf("%d ", tab_id[x * lab.colunas + y]);
+    printf("Salas SALAS: %d\n", salas);
+
+    int *ocurrencias = (int *)malloc(sizeof(int) * salas);
+
+    //initialize array
+    for (i = 0; i < salas; i++)
+    {
+        ocurrencias[i] = 0;
+    }
+
+    for (x = 0; x < lab.linhas; x++)
+    {
+        for (y = 0; y < lab.colunas; y++)
+        {
+            if (tab[x][y] == 0) //se for peca branca
+            {
+                for (i = 0; i < salas; i++)
+                {
+                    if (ocurrencias[i] == 0)
+                        ocurrencias[i] = tab_id[x * lab.colunas + y];
+
+                    else if (ocurrencias[i] == tab_id[x * lab.colunas + y])
+                        tab[x][y] = ocurrencias[i];
+
+                    printf("occurenciascsacsa %d\n", ocurrencias[i]);
+                }
+            }
         }
     }
 
@@ -249,13 +251,10 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag)
     {
         for (y = 0; y < lab.colunas; y++)
         {
-            printf("%3d ", tab[x][y]);
+            printf("%3d", tab[x][y]);
         }
-
         printf("\n");
     }
-
-    printf("Salas SALAS: %d\n", morte);
 
     if (i == j) /*verifica se estao conectados*/
     {
