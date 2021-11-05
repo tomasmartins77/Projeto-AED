@@ -75,16 +75,17 @@ void modo2(FILE *fp_in, FILE *fp_out)
         if (check_if_outside(maze, maze.solx, maze.soly) == -2)
         {
             fill(maze, &tamanho, fp_in, fp_out, tab, 0);
-            resposta == -2;
+            resposta = -2;
         }
         else
         {
-            printf("    %d\n", salas);
             tab = init_tab(maze);
             fill(maze, &tamanho, fp_in, fp_out, tab, 1);
             resposta = A6(tab, maze, 0, 0, 1, &salas);
-            printf("    %d\n", salas);
         }
+        if (resposta == 1 || resposta == -2)
+            fprintf(fp_in, "%d\n\n", resposta);
+
         free_tab(tab, maze);
     }
 }

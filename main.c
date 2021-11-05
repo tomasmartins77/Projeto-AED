@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
         free(file_end);
         /*abre o ficheiro para escrita*/
         modo1(fp_in, fp_out);
+        close_files(fp_in, fp_out);
     }
     else if (argc == 2 && check_filename(argv[1], 3) == 1)
     {
@@ -63,8 +64,8 @@ int main(int argc, char *argv[])
         }
         free(file_end);
         modo2(fp_in, fp_out);
+        close_files(fp_in, fp_out);
     }
 
-    close_files(fp_in, fp_out);
     return 0;
 }
