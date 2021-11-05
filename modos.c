@@ -65,7 +65,7 @@ void modo2(FILE *fp_in, FILE *fp_out)
 {
     lab_t maze = init_lab();
     int **tab = NULL;
-    int tamanho = 0, resposta = 0;
+    int tamanho = 0, resposta = 0, salas = 0;
 
     while (fp_in != NULL)
     {
@@ -81,7 +81,7 @@ void modo2(FILE *fp_in, FILE *fp_out)
         {
             tab = init_tab(maze);
             fill(maze, &tamanho, fp_in, fp_out, tab, 1);
-            resposta = A6(tab, maze, 0, 0, 1);
+            resposta = A6(tab, maze, 0, 0, 1, &salas);
         }
     }
 }

@@ -37,7 +37,7 @@ int menu_perguntas(int **tab, lab_t lab, int A6_x, int A6_y)
         if (tab[lab.solx - 1][lab.soly - 1] != 0 || tab[A6_x - 1][A6_y - 1] != 0)
             return 0;
         else
-            return A6(tab, lab, A6_x, A6_y, 0);
+            return A6(tab, lab, A6_x, A6_y, 0, 0);
         break;
     }
     exit(1);
@@ -118,10 +118,11 @@ int A5(int **tab, lab_t lab)
  * \return int 1 se as celulas estao na mesma sala, 0 se nao
  *
  */
-int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag)
+int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
 {
-    int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas, count = 0, salas = 0;
-
+    int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas;
+    int *valores = NULL;
+    int *ocurrencias = NULL;
     int *tab_id = (int *)malloc(size * sizeof(int)); /*alocacao o array de id*/
     if (tab_id == NULL)
     {
@@ -146,7 +147,7 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag)
     {
         for (y = 0; y < lab.colunas; y++)
         {
-            if (tab[x][y] != 0) /*se a celula nao for branca, nao vale a pena verificar*/
+            if (A1(tab, x + 1, y + 1) != 0) // se for peca branca
                 continue;
 
             for (i = x * lab.colunas + y; i != tab_id[i]; i = tab_id[i])
@@ -186,74 +187,52 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag)
     for (j = (lab.solx - 1) * lab.colunas + lab.soly - 1; j != tab_id[j]; j = tab_id[j])
         ;
 
-    int aux = 0;
-    for (x = 0; x < lab.linhas; x++) /*percorre todo o tabuleiro*/
+    if (flag == 1)
     {
-        for (y = 0; y < lab.colunas; y++)
+        for (i = 0; i * lab.colunas < lab.linhas * lab.colunas; i++)
         {
-            if (tab[x][y] != 0) /*se a celula nao for branca, nao vale a pena verificar*/
-                continue;
-
-            flag = 1;
-
-            aux = tab_id[x * lab.colunas + y];
-
-            for (i = x * lab.colunas + y; i != tab_id[i]; i = tab_id[i]) //weighted quick union
-                ;
-        }
-    }
-
-    for (i = 0; i * lab.colunas < lab.linhas * lab.colunas; i++)
-    {
-        for (j = 0; j < lab.colunas; j++)
-        {
-            if (tab[i][j] == 0)
+            for (j = 0; j < lab.colunas; j++)
             {
-                if (tab_id[j + i * lab.colunas] == j + i * lab.colunas)
-                    salas++;
-            }
-            printf(" %2d ", tab_id[j + i * lab.colunas]);
-        }
-        printf("\n");
-    }
-
-    printf("Salas SALAS: %d\n", salas);
-
-    int *ocurrencias = (int *)malloc(sizeof(int) * salas);
-
-    //initialize array
-    for (i = 0; i < salas; i++)
-    {
-        ocurrencias[i] = 0;
-    }
-
-    for (x = 0; x < lab.linhas; x++)
-    {
-        for (y = 0; y < lab.colunas; y++)
-        {
-            if (tab[x][y] == 0) //se for peca branca
-            {
-                for (i = 0; i < salas; i++)
+                if (tab[i][j] == 0)
                 {
-                    if (ocurrencias[i] == 0)
+                    if (tab_id[j + i * lab.colunas] == j + i * lab.colunas)
+                        *salas++;
+                }
+            }
+
+            ocurrencias = (int *)malloc(sizeof(int) * *salas);
+            if (ocurrencias == NULL)
+                exit(1);
+            valores = (int *)malloc(sizeof(int) * *salas);
+            if (valores = NULL)
+                exit(1);
+
+            // initialize array
+            for (i = 0, j = -3; i < *salas; i++, j--)
+            {
+                ocurrencias[i] = -1;
+                valores[i] = j;
+            }
+
+            for (x = 0; x < lab.linhas; x++)
+            {
+                for (y = 0; y < lab.colunas; y++)
+                {
+                    if (A1(tab, x + 1, y + 1) != 0) // se for peca branca
+                        continue;
+
+                    for (i = 0; ocurrencias[i] != tab_id[x * lab.colunas + y] && ocurrencias[i] != -1; i++)
+                    {
+                    }
+                    if (ocurrencias[i] == -1)
                         ocurrencias[i] = tab_id[x * lab.colunas + y];
 
-                    else if (ocurrencias[i] == tab_id[x * lab.colunas + y])
-                        tab[x][y] = ocurrencias[i];
-
-                    printf("occurenciascsacsa %d\n", ocurrencias[i]);
+                    tab[x][y] = valores[i];
                 }
             }
         }
-    }
-
-    for (x = 0; x < lab.linhas; x++)
-    {
-        for (y = 0; y < lab.colunas; y++)
-        {
-            printf("%3d", tab[x][y]);
-        }
-        printf("\n");
+        free(valores);
+        free(ocurrencias);
     }
 
     if (i == j) /*verifica se estao conectados*/
