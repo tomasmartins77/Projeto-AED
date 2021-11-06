@@ -5,18 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-void change_tab(maze_t maze, int **tab, int *id_tab);
+#include "modos.h"
 
-typedef struct _Node
-{
-    void *value;
-    struct node *next;
-} Node;
+typedef void *Item;
 
 typedef struct _Lista
 {
-    Node *first;
-    Node *last;
+    Item value;
+    struct _Lista *next;
 } Lista;
 
 typedef struct _Graph
@@ -29,6 +25,23 @@ typedef struct _Graph
 typedef struct _Edge
 {
     int V;
-    int W; //peso ou custo
+    int W; // peso ou custo
 } Edge;
+
+Lista *initLista(void);
+
+Lista **criaLista(Graph *grafo);
+
+void freeLista(Lista *lista, void(destruir_fn)(Item));
+
+Lista *insertUnsortedLista(Lista *lista, Item value);
+
+Lista *getNextNodeLista(Lista *node);
+
+Item getItemLista(Lista *node);
+
+void vizinhos(int **tab, lab_t lab, int posx, int posy, int *ESQ, int *DIR, int *CIM, int *BAI);
+
+int quebravel(int **tab, lab_t lab, int x, int y);
+
 #endif

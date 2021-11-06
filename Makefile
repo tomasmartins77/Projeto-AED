@@ -1,2 +1,2 @@
-roap:	main.c	Funcionalidades.c	modos.c	Utility.c	Funcionalidades.h	modos.h	Utility.h
-	gcc	-Wall	-std=c99	-O3	main.c	Funcionalidades.c	modos.c	Utility.c	Funcionalidades.h	modos.h	Utility.h	-o	roap
+roap:	main.c	Funcionalidades.c	modos.c	Utility.c	graphs.c	Utility2.c	Funcionalidades.h	modos.h	Utility.h	graphs.h	Utility2.h
+	gcc	-Wall	-std=c99	-O3	main.c	Funcionalidades.c	modos.c	Utility.c	graphs.c	Utility2.c	Funcionalidades.h	modos.h	Utility.h	graphs.h	Utility2.h	-o	roap

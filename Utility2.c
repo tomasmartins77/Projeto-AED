@@ -1,80 +1,100 @@
+#include "Utility2.h"
 #include "modos.h"
 #include "Utility.h"
 #include "Funcionalidades.h"
-#include "Utility2.h"
-
-void change_tab(maze_t maze, int **tab, int *tab_id)
-{
-    int x = 0, y = 0, i = 0, j = 0, salas;
-
-    for (x = 0; x < maze.linhas; x++)
-    {
-        for (y = 0; y < maze.colunas; y++)
-        {
-            if (tab[x][y] != 0)
-                continue;
-
-            for (i = x * maze.colunas + y; i != tab_id[i]; i = tab_id[i])
-                ;
-        }
-    }
-}
+#include "graphs.h"
 
 Lista *initLista(void)
 {
     return NULL;
 }
 
-/*cria e inicializa uma nova lista*/
-Lista *criaLista()
+/*cria e inicializa uma nova lista de adjacencias*/
+Lista **criaLista(Graph *grafo)
 {
-    Lista *newList = (Lista *)malloc(sizeof(Lista));
+    int i = 0;
 
-    if (newList == NULL)
+    grafo->adj = (Lista **)malloc(grafo->vertex * sizeof(Lista *));
+    if (grafo->adj == NULL)
         exit(1);
 
-    newList = initLista();
+    for (i = 0; i < grafo->vertex; i++)
+        grafo->adj[i] = initLista();
 
-    return newList;
+    return grafo->adj;
 }
 
-void freeLista(Lista *lista, void(destruir_fn)(void *))
+void freeLista(Lista *first, void (*destruir_fn)(Item))
 {
-    Node *curr;
-    Node *next = lista->first;
+    Lista *aux = first;
+    Lista *next;
 
-    while (next != NULL)
+    for (aux = first; aux != NULL; aux = next)
     {
-        curr = next;
-        next = next->next;
-        destruir_fn(curr->value);
-        free(curr);
+        next = aux->next;        /* Keep track of the next node */
+        destruir_fn(aux->value); /* Free current item data with passed function */
+        free(aux);               /* Free current node    */
     }
-    free(lista);
+    return;
 }
 
-Lista *insertUnsortedLista(Lista *lista, void *value)
+Lista *insertUnsortedLista(Lista *lista, Item value)
 {
     /*allocate new value*/
-    Node *new = (Node *)malloc(sizeof(Node));
-
+    Lista *new = (Lista *)malloc(sizeof(Lista));
     if (new == NULL)
-    { //nao sei se e isto ou return new;
-        free(new);
         exit(1);
-    }
 
-    new->next = NULL; //inicia o next como null porque esse passa a ser o ultimo elemento
+    new->next = lista;
     new->value = value;
 
-    if (lista->first == NULL) //se a lista estiver vazia
-        lista->first = new;   //elemento a inserir torna-se o primeiro da lista
+    return new;
+}
 
+Item getItemLista(Lista *node)
+{
+    if (node == NULL) /* Check that node is not empty */
+        return NULL;
+
+    return node->value;
+}
+
+Lista *getNextNodeLista(Lista *node)
+{
+    return ((node == NULL) ? NULL : node->next);
+}
+
+void vizinhos(int **tab, lab_t lab, int posx, int posy, int *ESQ, int *DIR, int *CIM, int *BAI)
+{
+    if (check_if_outside(lab, posx + 1, *ESQ + 1) == 0 && A1(tab, posx + 1, *ESQ + 1) < -2 && check_if_outside(lab, posx + 1, *DIR + 1) == 0 && A1(tab, posx + 1, *DIR + 1) < -2)
+    {
+        *ESQ = A1(tab, posx + 1, *ESQ + 1);
+        *DIR = A1(tab, posx + 1, *DIR + 1);
+    }
     else
     {
-        lista->last->next = new; //insere elemento no final da lista
+        *ESQ = 0;
+        *DIR = 0;
     }
-    lista->last = new; //torna esse node o ultimo pois inserimos no final
+    if (check_if_outside(lab, *CIM + 1, posy + 1) == 0 && A1(tab, *CIM + 1, posy + 1) < -2 && check_if_outside(lab, *BAI + 1, posy + 1) == 0 && A1(tab, *BAI + 1, posy + 1) < -2)
+    {
+        *CIM = A1(tab, *CIM + 1, posy + 1);
+        *BAI = A1(tab, *BAI + 1, posy + 1);
+    }
+    else
+    {
+        *CIM = 0;
+        *BAI = 0;
+    }
+}
 
-    return new;
+int quebravel(int **tab, lab_t lab, int x, int y)
+{
+    /*se esta dentro do tabuleiro e se esta rodeada pelo menos duas pecas brancas disponiveis (esquerda+direita ou cima+baixo)*/
+    if (check_if_outside(lab, x, y + 1) != -2 && A1(tab, x, y + 1) < -1 && check_if_outside(lab, x + 2, y + 1) != -2 && A1(tab, x + 2, y + 1) < -1)
+        return 1;
+    if (check_if_outside(lab, x + 1, y) != -2 && A1(tab, x + 1, y) < -1 && check_if_outside(lab, x + 1, y + 2) != -2 && A1(tab, x + 1, y + 2) < -1)
+        return 1;
+    else
+        return 0;
 }

@@ -121,8 +121,6 @@ int A5(int **tab, lab_t lab)
 int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
 {
     int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas;
-    int *valores = NULL;
-    int *ocurrencias = NULL;
     int *tab_id = (int *)malloc(size * sizeof(int)); /*alocacao o array de id*/
     if (tab_id == NULL)
     {
@@ -182,19 +180,30 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
             }
         }
     }
+
     for (i = (A6_x - 1) * lab.colunas + A6_y - 1; i != tab_id[i]; i = tab_id[i])
         ;
     for (j = (lab.solx - 1) * lab.colunas + lab.soly - 1; j != tab_id[j]; j = tab_id[j])
         ;
 
+    if (i == j) /*verifica se estao conectados*/
+    {
+        free(tab_id);
+        free(tab_size);
+        return 1;
+    }
+
     if (flag == 1)
     {
+        int *valores = NULL;
+        int *ocurrencias = NULL;
         for (i = 0; i * lab.colunas < lab.linhas * lab.colunas; i++)
         {
             for (j = 0; j < lab.colunas; j++)
             {
                 if (tab[i][j] == 0)
                 {
+
                     if (tab_id[j + i * lab.colunas] == j + i * lab.colunas)
                         (*salas)++;
                 }
@@ -238,13 +247,15 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
         free(valores);
         free(ocurrencias);
     }
-
-    if (i == j) /*verifica se estao conectados*/
+    /*for (x = 0; x < lab.linhas; x++) percorre todo o tabuleiro
     {
-        free(tab_id);
-        free(tab_size);
-        return 1;
+        for (y = 0; y < lab.colunas; y++)
+        {
+            printf("%3d ", tab[x][y]);
+        }
+        printf("\n");
     }
+    */
 
     free(tab_id);
     free(tab_size);

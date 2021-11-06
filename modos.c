@@ -1,7 +1,8 @@
-
 #include "modos.h"
 #include "Utility.h"
 #include "Funcionalidades.h"
+#include "graphs.h"
+#include "Utility2.h"
 
 /** \brief realiza o modo da fase intermedia
  *
@@ -65,27 +66,41 @@ void modo2(FILE *fp_in, FILE *fp_out)
 {
     lab_t maze = init_lab();
     int **tab = NULL;
-    int tamanho = 0, resposta = 0, salas = 0;
+    int tamanho = 0, resposta = 1, salas = 0;
+    Graph *graph;
 
     while (fp_in != NULL)
     {
         if (fscanf(fp_in, "%d %d %d %d %d", &maze.linhas, &maze.colunas, &maze.solx, &maze.soly, &maze.blocos) != 5)
-            exit(1);
+            break;
 
         if (check_if_outside(maze, maze.solx, maze.soly) == -2)
         {
             fill(maze, &tamanho, fp_in, fp_out, tab, 0);
-            resposta = -2;
+            printf("asdd");
+            resposta = -1;
         }
         else
         {
             tab = init_tab(maze);
             fill(maze, &tamanho, fp_in, fp_out, tab, 1);
-            resposta = A6(tab, maze, 0, 0, 1, &salas);
-        }
-        if (resposta == 1 || resposta == -2)
-            fprintf(fp_in, "%d\n\n", resposta);
 
+            if (A6(tab, maze, 1, 1, 1, &salas) == 1)
+                resposta = 0;
+        }
+        if (resposta == 0 || resposta == -1)
+        {
+            printf("dsa");
+            fprintf(fp_out, "%d\n\n", resposta);
+        }
+        else
+        {
+            graph = readGraph(salas, maze, tab);
+
+            // print_grafo(fp_out, graph);
+
+            freeGraph(graph);
+        }
         free_tab(tab, maze);
     }
 }

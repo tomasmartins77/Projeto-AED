@@ -15,15 +15,6 @@ typedef struct labirinto
     char pergunta[3]; /*A1-A6*/
 } lab_t;
 
-typedef struct labirinto_B
-{
-    int linhas;
-    int colunas;
-    int solx;
-    int soly;
-    int blocos;
-} maze_t;
-
 /** \brief realiza o modo da fase intermedia
  *
  */

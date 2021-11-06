@@ -1,5 +1,7 @@
 #include "modos.h"
 #include "Utility.h"
+#include "graphs.h"
+#include "Utility2.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,11 +11,11 @@ int main(int argc, char *argv[])
 {
     FILE *fp_in;
     FILE *fp_out;
-
+    char *file_end;
     /*se o formato de invocacao do programa for correto e o ficheiro tiver a extensao correta*/
     if (argc == 3 && check_filename(argv[2], 4) == 1 && strcmp(argv[1], "-s") == 0)
     {
-        char *file_end = (char *)malloc(strlen(argv[2]) * sizeof(char) + 2);
+        file_end = (char *)malloc(strlen(argv[2]) * sizeof(char) + 2);
         if (file_end == NULL)
             exit(1);
 
@@ -33,14 +35,15 @@ int main(int argc, char *argv[])
             free(file_end);
             exit(1);
         }
-        free(file_end);
+
         /*abre o ficheiro para escrita*/
         modo1(fp_in, fp_out);
+        free(file_end);
         close_files(fp_in, fp_out);
     }
-    else if (argc == 2 && check_filename(argv[1], 3) == 1)
+    if (argc == 2 && check_filename(argv[1], 3) == 1)
     {
-        char *file_end = (char *)malloc(strlen(argv[1]) * sizeof(char) + 2);
+        file_end = (char *)malloc(strlen(argv[1]) * sizeof(char) + 2);
         if (file_end == NULL)
             exit(1);
 
@@ -55,15 +58,16 @@ int main(int argc, char *argv[])
         /*muda a extensao do file_end*/
         strcpy(file_end, change_ex(argv[1], 3));
 
-        fp_out = fopen("dasdsda.sol", "w");
+        fp_out = fopen(file_end, "w");
         if (fp_out == NULL)
         {
             fclose(fp_in);
             free(file_end);
             exit(1);
         }
-        free(file_end);
+
         modo2(fp_in, fp_out);
+        free(file_end);
         close_files(fp_in, fp_out);
     }
 
