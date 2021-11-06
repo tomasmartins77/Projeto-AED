@@ -77,7 +77,6 @@ void modo2(FILE *fp_in, FILE *fp_out)
         if (check_if_outside(maze, maze.solx, maze.soly) == -2)
         {
             fill(maze, &tamanho, fp_in, fp_out, tab, 0);
-            printf("asdd");
             resposta = -1;
         }
         else
@@ -90,7 +89,6 @@ void modo2(FILE *fp_in, FILE *fp_out)
         }
         if (resposta == 0 || resposta == -1)
         {
-            printf("dsa");
             fprintf(fp_out, "%d\n\n", resposta);
         }
         else
