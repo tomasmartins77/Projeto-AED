@@ -145,7 +145,7 @@ void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y)
 
             edge->V = -b - 3;
             edge->W = tab[x][y];
-            graph->adj[-a - 3] = insertUnsortedLista(graph->adj[-a - 3], (Item)edge);
+            graph->adj[-a - 3] = insertSortedLista(graph->adj[-a - 3], edge, comparisonItemFnt);
 
             /* Allocates new v2 edge */
             edge = (Edge *)malloc(sizeof(Edge));
@@ -155,7 +155,7 @@ void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y)
             /* Saves v1 to v2 adjacency list */
             edge->V = -a - 3;
             edge->W = tab[x][y];
-            graph->adj[-b - 3] = insertUnsortedLista(graph->adj[-b - 3], (Item)edge);
+            graph->adj[-b - 3] = insertSortedLista(graph->adj[-b - 3], edge, comparisonItemFnt);
         }
         else
         {

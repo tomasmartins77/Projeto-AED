@@ -96,9 +96,8 @@ void modo2(FILE *fp_in, FILE *fp_out)
             graph = readGraph(salas, maze, tab);
 
             // print_grafo(fp_out, graph);
-
+            free_tab(tab, maze);
             freeGraph(graph);
         }
-        free_tab(tab, maze);
     }
 }

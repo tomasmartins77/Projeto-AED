@@ -209,7 +209,6 @@ void conn(int *tab_id, int *tab_size, int i, int j, int p, int q)
         x = tab_id[i];
         tab_id[i] = t;
     }
-
     for (j = q; j != tab_id[j]; j = x)
     {
         x = tab_id[j];

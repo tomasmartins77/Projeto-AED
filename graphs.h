@@ -16,7 +16,7 @@ void print_grafo(FILE *fp_out, Graph *graph);
 
 int verifica_vertice(Lista *first, int value);
 
-void troca_value(Lista *first, int aresta, int value);
+void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y);
 
 void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y);
 

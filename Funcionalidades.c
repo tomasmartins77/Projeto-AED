@@ -195,67 +195,28 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
 
     if (flag == 1)
     {
-        int *valores = NULL;
-        int *ocurrencias = NULL;
-        for (i = 0; i * lab.colunas < lab.linhas * lab.colunas; i++)
-        {
-            for (j = 0; j < lab.colunas; j++)
-            {
-                if (tab[i][j] == 0)
-                {
-
-                    if (tab_id[j + i * lab.colunas] == j + i * lab.colunas)
-                        (*salas)++;
-                }
-            }
-        }
-
-        ocurrencias = (int *)malloc(sizeof(int) * *salas);
-        if (ocurrencias == NULL)
-            exit(1);
-
-        valores = (int *)malloc(sizeof(int) * *salas);
-        if (valores == NULL)
-            exit(1);
-
-        // initialize array
-        for (i = 0, j = -3; i < *salas; i++, j--)
-        {
-            ocurrencias[i] = -1;
-            valores[i] = j;
-        }
-
+        int count = -3;
         for (x = 0; x < lab.linhas; x++)
         {
             for (y = 0; y < lab.colunas; y++)
             {
-                if (A1(tab, x + 1, y + 1) != 0) // se for peca branca
-                    continue;
+                if (A1(tab, x + 1, y + 1) == 0) // se for peca branca
+                {
+                    for (j = x * lab.colunas + y; tab_id[j] >= 0 && j != tab_id[j];)
+                    {
+                        j = tab_id[j];
+                    }
 
-                for (j = x * lab.colunas + y; j != tab_id[j]; j = tab_id[j])
-                    ;
-
-                for (i = 0; i < *salas && ocurrencias[i] != -1 && ocurrencias[i] != tab_id[j]; i++)
-                    ;
-
-                if (ocurrencias[i] == -1)
-                    ocurrencias[i] = tab_id[x * lab.colunas + y];
-
-                tab[x][y] = valores[i];
+                    if (tab_id[j] >= 0)
+                    {
+                        (*salas)++;
+                        tab_id[j] = count--;
+                    }
+                    tab[x][y] = tab_id[j];
+                }
             }
         }
-        free(valores);
-        free(ocurrencias);
     }
-    /*for (x = 0; x < lab.linhas; x++) percorre todo o tabuleiro
-    {
-        for (y = 0; y < lab.colunas; y++)
-        {
-            printf("%3d ", tab[x][y]);
-        }
-        printf("\n");
-    }
-    */
 
     free(tab_id);
     free(tab_size);

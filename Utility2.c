@@ -98,3 +98,61 @@ int quebravel(int **tab, lab_t lab, int x, int y)
     else
         return 0;
 }
+
+Lista *insertSortedLista(Lista *first, Edge *item, int (*compareItems)(int it1, int it2))
+{
+    Lista *new, *aux;
+    Edge *edge;
+    /* alloc and check */
+    new = (Lista *)malloc(sizeof(Lista));
+    if (new == NULL)
+        return NULL;
+
+    new->value = item; /* Initialize new node  */
+    new->next = NULL;
+
+    if (first == NULL) /* first item in list */
+    {
+        return new;
+    }
+    /* list not empty, insertion sort */
+    /* insert at head */
+    edge = getItemLista(first);
+    if ((compareItems(item->V, edge->V) <= 0))
+    {
+        new->next = first;
+        return new;
+    }
+    /* second etc */
+    aux = first;
+    while (aux != NULL)
+    {
+        if (aux->next != NULL)
+        {
+            edge = getItemLista(aux->next);
+            if (compareItems(item->V, edge->V) <= 0)
+            {
+                new->next = aux->next;
+                aux->next = new;
+                return first;
+            }
+        }
+        else /* none left, insert in tail */
+        {
+            aux->next = new;
+            return first;
+        }
+        aux = aux->next;
+    }
+    return NULL;
+}
+
+int comparisonItemFnt(int item1, int item2)
+{
+    if (item1 < item2)
+        return -1;
+    else if (item1 == item2)
+        return 0;
+    else
+        return 1;
+}

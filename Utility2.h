@@ -44,4 +44,8 @@ void vizinhos(int **tab, lab_t lab, int posx, int posy, int *ESQ, int *DIR, int 
 
 int quebravel(int **tab, lab_t lab, int x, int y);
 
+int comparisonItemFnt(int item1, int item2);
+
+Lista *insertSortedLista(Lista *first, Edge *item, int (*compareItems)(int it1, int it2));
+
 #endif
