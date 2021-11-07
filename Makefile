@@ -1,2 +1,10 @@
-roap:	main.c	Funcionalidades.c	modos.c	Utility.c	graphs.c	Utility2.c	Funcionalidades.h	modos.h	Utility.h	graphs.h	Utility2.h
-	gcc	-Wall	-std=c99	-O3	main.c	Funcionalidades.c	modos.c	Utility.c	graphs.c	Utility2.c	Funcionalidades.h	modos.h	Utility.h	graphs.h	Utility2.h	-o	roap
+CC = gcc
+
+CFLAGS = -Wall -std=c99 -O3
+
+TARGET = roap
+
+OBJS = main.c	Funcionalidades.c	modos.c	Utility.c	graphs.c	PQueue.c	Utility2.c	Funcionalidades.h	modos.h	Utility.h	graphs.h	Utility2.h	PQueue.h
+
+roap:	$(TARGET)	$(OBJS)
+	$(CC)	$(CFLAGS)	-o	$(TARGET)	$(OBJS)

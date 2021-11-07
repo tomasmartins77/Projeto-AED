@@ -3,6 +3,7 @@
 #include "Funcionalidades.h"
 #include "graphs.h"
 #include "Utility2.h"
+#include "PQueue.h"
 
 /** \brief realiza o modo da fase intermedia
  *
@@ -66,7 +67,7 @@ void modo2(FILE *fp_in, FILE *fp_out)
 {
     lab_t maze = init_lab();
     int **tab = NULL;
-    int tamanho = 0, resposta = 1, salas = 0;
+    int tamanho = 0, resposta = 1, salas = 0, x = 0, sala_final = 0;
     Graph *graph;
 
     while (fp_in != NULL)
@@ -93,11 +94,29 @@ void modo2(FILE *fp_in, FILE *fp_out)
         }
         else
         {
+            sala_final = -tab[maze.solx - 1][maze.soly - 1] - 3;
+
             graph = readGraph(salas, maze, tab);
 
             // print_grafo(fp_out, graph);
 
             free_tab(tab, maze);
+
+            int *st = (int *)malloc(graph->vertex * sizeof(int));
+            if (st == NULL)
+                exit(1);
+
+            int *wt = (int *)malloc(graph->vertex * sizeof(int));
+            if (wt == NULL)
+                exit(1);
+
+            // GRAPHpfs(graph, 0, st, wt);
+
+            printf("%d\n", sala_final);
+            /*for (x = 0; x < graph->vertex; x++)
+                printf("%d ", st[x]);*/
+            free(st);
+            free(wt);
             freeGraph(graph);
         }
     }
