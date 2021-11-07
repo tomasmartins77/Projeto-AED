@@ -85,12 +85,18 @@ void modo2(FILE *fp_in, FILE *fp_out)
             tab = init_tab(maze);
             fill(maze, &tamanho, fp_in, fp_out, tab, 1);
 
+            if (A1(tab, maze.solx, maze.soly) != 0)
+                resposta = -1;
+
             if (A6(tab, maze, 1, 1, 1, &salas) == 1)
                 resposta = 0;
         }
+
         if (resposta == 0 || resposta == -1)
         {
             fprintf(fp_out, "%d\n\n", resposta);
+            if (check_if_outside(maze, maze.solx, maze.soly) != -2)
+                free_tab(tab, maze);
         }
         else
         {
@@ -112,13 +118,18 @@ void modo2(FILE *fp_in, FILE *fp_out)
 
             // GRAPHpfs(graph, 0, st, wt);
 
-            printf("%d\n", sala_final);
+            // printf("%d\n", sala_final);
             /*for (x = 0; x < graph->vertex; x++)
                 printf("%d ", st[x]);*/
+
+            /*no fprintf->primeira linha:custo(soma de todos os elementos do wt?)
+            /segunda linha->numero de paredes partidas(len do wt?)
+            /depois todas as paredes partidas por ordem(wt possui as paredes partidas por ordem?)*/
             free(st);
             free(wt);
             freeGraph(graph);
         }
+        tamanho = 0;
     }
 }
 
