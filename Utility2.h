@@ -48,4 +48,6 @@ int comparisonItemFnt(int item1, int item2);
 
 Lista *insertSortedLista(Lista *first, Edge *item, int (*compareItems)(int it1, int it2));
 
+void verifica_salas(int **tab, lab_t lab, int *tab_id, int **salas);
+
 #endif

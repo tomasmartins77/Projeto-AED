@@ -1,6 +1,7 @@
 #include "modos.h"
 #include "Utility.h"
 #include "Funcionalidades.h"
+#include "Utility2.h"
 
 /** \brief executa os algoritmos A1-A6 consoante o que foi lido no ficheiro de entrada
  *
@@ -121,6 +122,7 @@ int A5(int **tab, lab_t lab)
 int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
 {
     int i = 0, j = 0, x = 0, y = 0, size = lab.linhas * lab.colunas;
+
     int *tab_id = (int *)malloc(size * sizeof(int)); /*alocacao o array de id*/
     if (tab_id == NULL)
     {
@@ -194,29 +196,9 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
     }
 
     if (flag == 1)
-    {
-        int count = -3;
-        for (x = 0; x < lab.linhas; x++)
-        {
-            for (y = 0; y < lab.colunas; y++)
-            {
-                if (A1(tab, x + 1, y + 1) == 0) // se for peca branca
-                {
-                    for (j = x * lab.colunas + y; tab_id[j] >= 0 && j != tab_id[j];)
-                    {
-                        j = tab_id[j];
-                    }
+        verifica_salas(tab, lab, tab_id, &salas);
 
-                    if (tab_id[j] >= 0)
-                    {
-                        (*salas)++;
-                        tab_id[j] = count--;
-                    }
-                    tab[x][y] = tab_id[j];
-                }
-            }
-        }
-    }
+    // print_tab(tab, lab);
 
     free(tab_id);
     free(tab_size);

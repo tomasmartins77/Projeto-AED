@@ -96,8 +96,22 @@ void modo2(FILE *fp_in, FILE *fp_out)
             graph = readGraph(salas, maze, tab);
 
             // print_grafo(fp_out, graph);
+
             free_tab(tab, maze);
             freeGraph(graph);
         }
+    }
+}
+
+void print_tab(int **tab, lab_t lab)
+{
+    int x, y;
+    for (x = 0; x < lab.linhas; x++)
+    {
+        for (y = 0; y < lab.colunas; y++)
+        {
+            printf("%3d ", tab[x][y]);
+        }
+        printf("\n");
     }
 }

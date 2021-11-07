@@ -90,13 +90,15 @@ void vizinhos(int **tab, lab_t lab, int posx, int posy, int *ESQ, int *DIR, int 
 
 int quebravel(int **tab, lab_t lab, int x, int y)
 {
-    /*se esta dentro do tabuleiro e se esta rodeada pelo menos duas pecas brancas disponiveis (esquerda+direita ou cima+baixo)*/
-    if (check_if_outside(lab, x, y + 1) != -2 && A1(tab, x, y + 1) < -1 && check_if_outside(lab, x + 2, y + 1) != -2 && A1(tab, x + 2, y + 1) < -1)
-        return 1;
-    if (check_if_outside(lab, x + 1, y) != -2 && A1(tab, x + 1, y) < -1 && check_if_outside(lab, x + 1, y + 2) != -2 && A1(tab, x + 1, y + 2) < -1)
-        return 1;
-    else
-        return 0;
+    if (A1(tab, x + 1, y + 1) > 0)
+    {
+        /*se esta dentro do tabuleiro e se esta rodeada pelo menos duas pecas brancas disponiveis (esquerda+direita ou cima+baixo)*/
+        if (check_if_outside(lab, x, y + 1) != -2 && A1(tab, x, y + 1) < -1 && check_if_outside(lab, x + 2, y + 1) != -2 && A1(tab, x + 2, y + 1) < -1)
+            return 1;
+        if (check_if_outside(lab, x + 1, y) != -2 && A1(tab, x + 1, y) < -1 && check_if_outside(lab, x + 1, y + 2) != -2 && A1(tab, x + 1, y + 2) < -1)
+            return 1;
+    }
+    return 0;
 }
 
 Lista *insertSortedLista(Lista *first, Edge *item, int (*compareItems)(int it1, int it2))
@@ -155,4 +157,30 @@ int comparisonItemFnt(int item1, int item2)
         return 0;
     else
         return 1;
+}
+
+void verifica_salas(int **tab, lab_t lab, int *tab_id, int **salas)
+{
+    int count = -3, x, y, j;
+    for (x = 0; x < lab.linhas; x++)
+    {
+        for (y = 0; y < lab.colunas; y++)
+        {
+            if (A1(tab, x + 1, y + 1) == 0) // se for peca branca
+            {
+                for (j = x * lab.colunas + y; tab_id[j] >= 0 && j != tab_id[j];)
+                {
+                    j = tab_id[j];
+                }
+
+                if (tab_id[j] >= 0)
+                {
+                    (**salas)++;
+                    tab_id[j] = count--;
+                }
+                tab[x][y] = tab_id[j];
+            }
+        }
+    }
+    return;
 }

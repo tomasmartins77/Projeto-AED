@@ -27,7 +27,7 @@ Graph *readGraph(int salas, lab_t lab, int **tab)
     {
         for (y = 0; y < lab.colunas; y++)
         {
-            if (A1(tab, x + 1, y + 1) < 1 || quebravel(tab, lab, x, y) == 0)
+            if (quebravel(tab, lab, x, y) == 0)
                 continue;
 
             ESQ = y - 1;

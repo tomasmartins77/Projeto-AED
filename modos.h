@@ -22,4 +22,6 @@ void modo1(FILE *fp_in, FILE *fp_out);
 
 void modo2(FILE *fp_in, FILE *fp_out);
 
+void print_tab(int **tab, lab_t lab);
+
 #endif
