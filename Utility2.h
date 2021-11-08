@@ -26,6 +26,8 @@ typedef struct _Edge
 {
     int V;
     int W; // peso ou custo
+    int x;
+    int y;
 } Edge;
 
 Lista *initLista(void);

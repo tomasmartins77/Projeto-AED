@@ -76,14 +76,14 @@ void print_grafo(FILE *fp_out, Graph *graph)
         if (list != NULL)
         {
             edge = (Edge *)getItemLista(list);
-            printf("%d:%d ", edge->V, edge->W);
+            printf("%d:%d %d %d /", edge->V, edge->W, edge->x, edge->y);
         }
 
         /* Writes adjacent vertices */
         while ((list = getNextNodeLista(list)) != NULL)
         {
             edge = (Edge *)getItemLista(list);
-            printf("%d:%d ", edge->V, edge->W);
+            printf("%d:%d %d %d /", edge->V, edge->W, edge->x, edge->y);
         }
         /* Writes end of list */
         printf("%d\n", (-1));
@@ -109,7 +109,7 @@ int verifica_vertice(Lista *first, int value)
     return 0;
 }
 
-void troca_value(Lista *first, int aresta, int value)
+void troca_value(Lista *first, int aresta, int value, int x, int y)
 {
     Lista *aux = first;
     Edge *edge;
@@ -122,10 +122,11 @@ void troca_value(Lista *first, int aresta, int value)
             if (edge->W > value)
             {
                 edge->W = value;
+                edge->x = x;
+                edge->y = y;
                 return;
             }
         }
-
         aux = aux->next;
     }
     return;
@@ -144,6 +145,8 @@ void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y)
 
             edge->V = -b - 3;
             edge->W = tab[x][y];
+            edge->x = x;
+            edge->y = y;
             graph->adj[-a - 3] = insertSortedLista(graph->adj[-a - 3], edge, comparisonItemFnt);
 
             /* Allocates new v2 edge */
@@ -151,15 +154,16 @@ void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y)
             if (edge == NULL)
                 exit(3);
 
-            /* Saves v1 to v2 adjacency list */
             edge->V = -a - 3;
             edge->W = tab[x][y];
+            edge->x = x;
+            edge->y = y;
             graph->adj[-b - 3] = insertSortedLista(graph->adj[-b - 3], edge, comparisonItemFnt);
         }
         else
         {
-            troca_value(graph->adj[-a - 3], -b - 3, tab[x][y]);
-            troca_value(graph->adj[-b - 3], -a - 3, tab[x][y]);
+            troca_value(graph->adj[-a - 3], -b - 3, tab[x][y], x, y);
+            troca_value(graph->adj[-b - 3], -a - 3, tab[x][y], x, y);
         }
     }
 }

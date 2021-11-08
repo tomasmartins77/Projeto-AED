@@ -60,7 +60,7 @@ void FixDown(int Idx, int N)
     }
 }
 
-void GRAPHpfs(Graph *G, int s, int st[], int wt[])
+void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final)
 {
     int v, w;
     Lista *t;
@@ -78,7 +78,10 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
     while (!PQEmpty())
     {
         v = PQdelmin();
-        for (t = G->adj[v]; t != NULL; t = t->next) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
+        if (sala_final == v)
+            continue;
+
+        for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
         {
             edge = getItemLista(t);
             if (wt[w = edge->V] > wt[v] + edge->W)

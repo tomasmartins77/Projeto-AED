@@ -67,7 +67,7 @@ void modo2(FILE *fp_in, FILE *fp_out)
 {
     lab_t maze = init_lab();
     int **tab = NULL;
-    int tamanho = 0, resposta = 1, salas = 0, x = 0, sala_final = 0;
+    int tamanho = 0, resposta = 1, salas = 0, sala_final = 0;
     Graph *graph;
 
     while (fp_in != NULL)
@@ -104,8 +104,6 @@ void modo2(FILE *fp_in, FILE *fp_out)
 
             graph = readGraph(salas, maze, tab);
 
-            print_grafo(fp_out, graph);
-
             free_tab(tab, maze);
 
             int *st = (int *)malloc(graph->vertex * sizeof(int));
@@ -116,25 +114,54 @@ void modo2(FILE *fp_in, FILE *fp_out)
             if (wt == NULL)
                 exit(1);
 
-            GRAPHpfs(graph, 0, st, wt);
+            GRAPHpfs(graph, 0, st, wt, sala_final);
+
+            Edge *edge;
+            Lista *aresta;
+
             int custo = wt[sala_final];
-            fprintf(fp_out, "%d\n", custo);
-            for (x = 0; x < graph->vertex; x++)
-                printf("%d\n", st[x]);
-
             int paredes = 0;
-            for (x = 0; wt[sala_final] != wt[x]; x++)
-                ;
+            int i = sala_final;
 
-            printf("%d\n", paredes);
-            /*no fprintf->primeira linha:custo(soma de todos os elementos do wt?)
-            /segunda linha->numero de paredes partidas(len do wt?)
-            /depois todas as paredes partidas por ordem(wt possui as paredes partidas por ordem?)*/
+            fprintf(fp_out, "%d\n", custo);
+
+            while (st[i] != -1)
+            {
+                for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
+                {
+                    edge = getItemLista(aresta);
+                    if (edge->V == st[i])
+                    {
+                        paredes++;
+                        i = edge->V;
+                        break;
+                    }
+                }
+            }
+
+            fprintf(fp_out, "%d\n", paredes);
+
+            i = sala_final;
+            while (st[i] != -1)
+            {
+                for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
+                {
+                    edge = getItemLista(aresta);
+                    if (edge->V == st[i])
+                    {
+                        fprintf(fp_out, "%d %d %d\n", edge->x + 1, edge->y + 1, edge->W);
+                        i = edge->V;
+                        break;
+                    }
+                }
+            }
+
             free(st);
             free(wt);
             freeGraph(graph);
         }
         tamanho = 0;
+        fprintf(fp_out, "\n");
     }
 }
 

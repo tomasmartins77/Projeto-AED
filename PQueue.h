@@ -15,7 +15,7 @@
         B = t;     \
     }
 
-void GRAPHpfs(Graph *G, int s, int st[], int wt[]);
+void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final);
 
 void FixUp(int Idx);
 
