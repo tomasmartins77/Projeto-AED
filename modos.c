@@ -117,15 +117,16 @@ void modo2(FILE *fp_in, FILE *fp_out)
                 exit(1);
 
             GRAPHpfs(graph, 0, st, wt);
-
-            int custo_total = 0;
-            printf("%d\n\n", sala_final);
+            int custo = wt[sala_final];
+            fprintf(fp_out, "%d\n", custo);
             for (x = 0; x < graph->vertex; x++)
-            {
-                printf("%d %d\n", wt[x], st[x]);
-                custo_total += wt[x];
-            }
+                printf("%d\n", st[x]);
 
+            int paredes = 0;
+            for (x = 0; wt[sala_final] != wt[x]; x++)
+                ;
+
+            printf("%d\n", paredes);
             /*no fprintf->primeira linha:custo(soma de todos os elementos do wt?)
             /segunda linha->numero de paredes partidas(len do wt?)
             /depois todas as paredes partidas por ordem(wt possui as paredes partidas por ordem?)*/

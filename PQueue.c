@@ -78,7 +78,6 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
     while (!PQEmpty())
     {
         v = PQdelmin();
-
         for (t = G->adj[v]; t != NULL; t = t->next) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
         {
             edge = getItemLista(t);
@@ -96,6 +95,8 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
 
                 if (k == -1)
                     PQinsert(w);
+
+                FixUp(k);
 
                 st[w] = v;
             }
