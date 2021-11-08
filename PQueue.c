@@ -6,16 +6,13 @@ static int qsize;
 
 void PQinit(int size)
 {
-    int i = 0;
-    queue = (int *)malloc(size * sizeof(int));
+    queue = (int *)calloc(size, sizeof(int));
     if (queue == NULL)
         exit(1);
 
     qsize = size;
 
     ffree = 0;
-    for (i = 0; i < size; i++)
-        queue[i] = 0;
 }
 
 void PQinsert(int I)
@@ -84,7 +81,7 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final)
         for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
         {
             edge = getItemLista(t);
-            if (wt[w = edge->V] > wt[v] + edge->W)
+            if (wt[w = edge->V] > wt[v] + edge->W && wt[sala_final] > wt[v] + edge->W)
             {
                 int k = -1;
                 for (int i = 0; i < ffree; i++)

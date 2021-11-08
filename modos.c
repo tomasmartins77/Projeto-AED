@@ -116,42 +116,50 @@ void modo2(FILE *fp_in, FILE *fp_out)
 
             GRAPHpfs(graph, 0, st, wt, sala_final);
 
-            Edge *edge;
-            Lista *aresta;
-
-            int custo = wt[sala_final];
-            int paredes = 0;
-            int i = sala_final;
-
-            fprintf(fp_out, "%d\n", custo);
-
-            while (st[i] != -1)
+            if (st[sala_final] == -1) // se nao e possivel(perguntar rita)
+                fprintf(fp_out, "%d\n", -1);
+            else
             {
-                for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
+                Edge *edge;
+                Lista *aresta;
+
+                int custo = wt[sala_final];
+                int paredes = 0;
+                int i = sala_final;
+
+                // for (int x = 0; x < graph->vertex; x++)
+                //   printf("%d %d\n", wt[x], st[x]);
+
+                fprintf(fp_out, "%d\n", custo);
+
+                while (st[i] != -1)
                 {
-                    edge = getItemLista(aresta);
-                    if (edge->V == st[i])
+                    for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
                     {
-                        paredes++;
-                        i = edge->V;
-                        break;
+                        edge = getItemLista(aresta);
+                        if (edge->V == st[i])
+                        {
+                            paredes++;
+                            i = edge->V;
+                            break;
+                        }
                     }
                 }
-            }
 
-            fprintf(fp_out, "%d\n", paredes);
+                fprintf(fp_out, "%d\n", paredes);
 
-            i = sala_final;
-            while (st[i] != -1)
-            {
-                for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
+                i = sala_final;
+                while (st[i] != -1)
                 {
-                    edge = getItemLista(aresta);
-                    if (edge->V == st[i])
+                    for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
                     {
-                        fprintf(fp_out, "%d %d %d\n", edge->x + 1, edge->y + 1, edge->W);
-                        i = edge->V;
-                        break;
+                        edge = getItemLista(aresta);
+                        if (edge->V == st[i])
+                        {
+                            fprintf(fp_out, "%d %d %d\n", edge->x + 1, edge->y + 1, edge->W);
+                            i = edge->V;
+                            break;
+                        }
                     }
                 }
             }
