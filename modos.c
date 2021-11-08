@@ -104,7 +104,7 @@ void modo2(FILE *fp_in, FILE *fp_out)
 
             graph = readGraph(salas, maze, tab);
 
-            // print_grafo(fp_out, graph);
+            print_grafo(fp_out, graph);
 
             free_tab(tab, maze);
 
@@ -116,11 +116,15 @@ void modo2(FILE *fp_in, FILE *fp_out)
             if (wt == NULL)
                 exit(1);
 
-            // GRAPHpfs(graph, 0, st, wt);
+            GRAPHpfs(graph, 0, st, wt);
 
-            // printf("%d\n", sala_final);
-            /*for (x = 0; x < graph->vertex; x++)
-                printf("%d ", st[x]);*/
+            int custo_total = 0;
+            printf("%d\n\n", sala_final);
+            for (x = 0; x < graph->vertex; x++)
+            {
+                printf("%d %d\n", wt[x], st[x]);
+                custo_total += wt[x];
+            }
 
             /*no fprintf->primeira linha:custo(soma de todos os elementos do wt?)
             /segunda linha->numero de paredes partidas(len do wt?)

@@ -1,7 +1,12 @@
 #include "PQueue.h"
 
+static int *queue;
+static int ffree;
+static int qsize;
+
 void PQinit(int size)
 {
+    int i = 0;
     queue = (int *)malloc(size * sizeof(int));
     if (queue == NULL)
         exit(1);
@@ -9,13 +14,15 @@ void PQinit(int size)
     qsize = size;
 
     ffree = 0;
+    for (i = 0; i < size; i++)
+        queue[i] = 0;
 }
 
 void PQinsert(int I)
 {
     if ((ffree + 1) < qsize)
     {
-        queue[ffree++] = I;
+        queue[ffree] = I;
         FixUp(ffree);
         ffree++;
     }
@@ -28,7 +35,7 @@ int PQEmpty()
 
 void FixUp(int Idx)
 {
-    while (Idx > 0 && comparisonItemFnt(queue[(Idx - 1) / 2], queue[Idx]) == -1)
+    while (Idx > 0 && comparisonItemFnt(queue[(Idx - 1) / 2], queue[Idx]) == 1)
     {
         exch(queue[Idx], queue[(Idx - 1) / 2]);
         Idx = (Idx - 1) / 2;
@@ -41,15 +48,12 @@ void FixDown(int Idx, int N)
     while (2 * Idx < N - 1)
     { /* enquanto não chegar às folhas */
         Child = 2 * Idx + 1;
-        /* Selecciona o maior descendente.
-         */
-        /* Nota: se índice Child é N-1, então só há um descendente */
-        if (Child < (N - 1) && comparisonItemFnt(queue[Child], queue[Child + 1]) == -1)
+
+        if (Child < (N - 1) && comparisonItemFnt(queue[Child], queue[Child + 1]) == 1)
             Child++;
-        if (comparisonItemFnt(queue[Idx], queue[Child]) != -1)
-            break; /* condição acervo */
-        /* satisfeita
-         */
+        if (comparisonItemFnt(queue[Idx], queue[Child]) == -1)
+            break;
+
         exch(queue[Idx], queue[Child]);
         /* continua a descer a árvore */
         Idx = Child;
@@ -60,7 +64,7 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
 {
     int v, w;
     Lista *t;
-    Edge *edge = NULL;
+    Edge *edge;
 
     PQinit(G->vertex);
     for (v = 0; v < G->vertex; v++)
@@ -68,24 +72,38 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
         st[v] = -1;
         wt[v] = INT_MAX;
     }
+
     PQinsert(s);
     wt[s] = 0;
     while (!PQEmpty())
     {
-        v = PQdelmin();
-
-        for (t = G->adj[v]; t != NULL; t = t->next) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
+        if (wt[v = PQdelmin()] != INT_MAX)
         {
-            edge = getItemLista(t);
-            PQinsert(edge->V);
-            if (wt[w = edge->V] > P)
+            for (t = G->adj[v]; t != NULL; t = t->next) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
             {
-                wt[w] = P;
-                FixDown(edge->V, ffree - 1);
-                st[w] = v;
+                edge = getItemLista(t);
+                if (wt[w = edge->V] > wt[v] + edge->W)
+                {
+                    int k = -1;
+                    for (int i = 0; i < ffree; i++)
+                        if (queue[i] == w)
+                        {
+                            k = i;
+                            break;
+                        }
+
+                    wt[w] = wt[v] + edge->W;
+                    if (k == -1)
+                        PQinsert(w);
+
+                    FixUp(w);
+
+                    st[w] = v;
+                }
             }
         }
     }
+    free(queue);
 }
 
 int PQdelmin()

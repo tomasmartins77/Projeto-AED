@@ -198,7 +198,7 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
     if (flag == 1)
         verifica_salas(tab, lab, tab_id, &salas);
 
-    // print_tab(tab, lab);
+    print_tab(tab, lab);
 
     free(tab_id);
     free(tab_size);

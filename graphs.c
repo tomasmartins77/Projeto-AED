@@ -36,7 +36,6 @@ Graph *readGraph(int salas, lab_t lab, int **tab)
             BAI = x + 1;
 
             vizinhos(tab, lab, x, y, &ESQ, &DIR, &CIM, &BAI);
-            /* Saves v2 to v1 adjacency list */
 
             put_vertice(graph, tab, ESQ, DIR, x, y);
             put_vertice(graph, tab, CIM, BAI, x, y);
@@ -137,7 +136,7 @@ void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y)
     Edge *edge;
     if (a != 0 && b != 0)
     {
-        if (verifica_vertice(graph->adj[-a - 3], -b - 3) == 0)
+        if (verifica_vertice(graph->adj[-a - 3], -b - 3) == 0 && verifica_vertice(graph->adj[-b - 3], -a - 3) == 0)
         {
             edge = (Edge *)malloc(sizeof(Edge));
             if (edge == NULL)
@@ -159,8 +158,8 @@ void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y)
         }
         else
         {
-            troca_value(graph->adj[-a - 3], tab[x][y], -b - 3);
-            troca_value(graph->adj[-b - 3], tab[x][y], -a - 3);
+            troca_value(graph->adj[-a - 3], -b - 3, tab[x][y]);
+            troca_value(graph->adj[-b - 3], -a - 3, tab[x][y]);
         }
     }
 }

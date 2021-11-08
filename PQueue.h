@@ -8,18 +8,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int *queue;
-static int ffree;
-static int qsize;
-
 #define exch(A, B) \
     {              \
         int t = A; \
         A = B;     \
         B = t;     \
     }
-
-#define P (wt[v] + edge->W)
 
 void GRAPHpfs(Graph *G, int s, int st[], int wt[]);
 
