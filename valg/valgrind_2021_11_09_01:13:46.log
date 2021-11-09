@@ -1,0 +1,14 @@
+==40884== Memcheck, a memory error detector
+==40884== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40884== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==40884== Command: ./roap small06.in
+==40884== Parent PID: 40612
+==40884== 
+==40884== 
+==40884== HEAP SUMMARY:
+==40884==     in use at exit: 0 bytes in 0 blocks
+==40884==   total heap usage: 1,130 allocs, 1,130 frees, 90,740 bytes allocated
+==40884== 
+==40884== All heap blocks were freed -- no leaks are possible
+==40884== 
+==40884== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

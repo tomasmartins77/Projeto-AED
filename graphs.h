@@ -12,8 +12,6 @@ Graph *readGraph(int salas, lab_t lab, int **tab);
 
 void freeGraph(Graph *graph);
 
-void print_grafo(FILE *fp_out, Graph *graph);
-
 int verifica_vertice(Lista *first, int value);
 
 void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y);

@@ -1,0 +1,14 @@
+==40760== Memcheck, a memory error detector
+==40760== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40760== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==40760== Command: ./roap enunciado112.in
+==40760== Parent PID: 40612
+==40760== 
+==40760== 
+==40760== HEAP SUMMARY:
+==40760==     in use at exit: 0 bytes in 0 blocks
+==40760==   total heap usage: 5 allocs, 5 frees, 9,153 bytes allocated
+==40760== 
+==40760== All heap blocks were freed -- no leaks are possible
+==40760== 
+==40760== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

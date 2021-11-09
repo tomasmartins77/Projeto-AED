@@ -38,19 +38,6 @@ void freeLista(Lista *first, void (*destruir_fn)(Item))
     return;
 }
 
-Lista *insertUnsortedLista(Lista *lista, Item value)
-{
-    /*allocate new value*/
-    Lista *new = (Lista *)malloc(sizeof(Lista));
-    if (new == NULL)
-        exit(1);
-
-    new->next = lista;
-    new->value = value;
-
-    return new;
-}
-
 Item getItemLista(Lista *node)
 {
     if (node == NULL) /* Check that node is not empty */

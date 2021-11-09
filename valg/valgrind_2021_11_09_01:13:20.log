@@ -1,0 +1,14 @@
+==40723== Memcheck, a memory error detector
+==40723== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40723== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==40723== Command: ./roap enunciado109.in
+==40723== Parent PID: 40612
+==40723== 
+==40723== 
+==40723== HEAP SUMMARY:
+==40723==     in use at exit: 0 bytes in 0 blocks
+==40723==   total heap usage: 16 allocs, 16 frees, 9,633 bytes allocated
+==40723== 
+==40723== All heap blocks were freed -- no leaks are possible
+==40723== 
+==40723== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

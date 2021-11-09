@@ -1,0 +1,14 @@
+==40840== Memcheck, a memory error detector
+==40840== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40840== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==40840== Command: ./roap small03.in
+==40840== Parent PID: 40612
+==40840== 
+==40840== 
+==40840== HEAP SUMMARY:
+==40840==     in use at exit: 0 bytes in 0 blocks
+==40840==   total heap usage: 1,130 allocs, 1,130 frees, 90,740 bytes allocated
+==40840== 
+==40840== All heap blocks were freed -- no leaks are possible
+==40840== 
+==40840== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

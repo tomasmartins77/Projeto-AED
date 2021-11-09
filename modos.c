@@ -67,8 +67,11 @@ void modo2(FILE *fp_in, FILE *fp_out)
 {
     lab_t maze = init_lab();
     int **tab = NULL;
-    int tamanho = 0, resposta = 1, salas = 0, sala_final = 0;
-    Graph *graph;
+    int tamanho = 0, resposta = 1, salas = 0, sala_final = 0, i = 0, flag = 0, paredes = 0, custo = 0;
+    int *st = NULL, *wt = NULL;
+    Graph *graph = NULL;
+    Edge *edge = NULL;
+    Lista *aresta = NULL;
 
     while (fp_in != NULL)
     {
@@ -76,6 +79,7 @@ void modo2(FILE *fp_in, FILE *fp_out)
             break;
 
         if (check_if_outside(maze, maze.solx, maze.soly) == -2)
+
         {
             fill(maze, &tamanho, fp_in, fp_out, tab, 0);
             resposta = -1;
@@ -88,13 +92,15 @@ void modo2(FILE *fp_in, FILE *fp_out)
             if (A1(tab, maze.solx, maze.soly) != 0)
                 resposta = -1;
 
-            if (A6(tab, maze, 1, 1, 1, &salas) == 1)
+            else if (A6(tab, maze, 1, 1, 1, &salas) == 1)
                 resposta = 0;
         }
-
         if (resposta == 0 || resposta == -1)
         {
-            fprintf(fp_out, "%d\n\n", resposta);
+            if (flag == 1)
+                fprintf(fp_out, "\n\n");
+
+            fprintf(fp_out, "%d\n", resposta);
             if (check_if_outside(maze, maze.solx, maze.soly) != -2)
                 free_tab(tab, maze);
         }
@@ -106,29 +112,29 @@ void modo2(FILE *fp_in, FILE *fp_out)
 
             free_tab(tab, maze);
 
-            int *st = (int *)malloc(graph->vertex * sizeof(int));
+            st = (int *)malloc(graph->vertex * sizeof(int));
             if (st == NULL)
                 exit(1);
 
-            int *wt = (int *)malloc(graph->vertex * sizeof(int));
+            wt = (int *)malloc(graph->vertex * sizeof(int));
             if (wt == NULL)
                 exit(1);
 
-            GRAPHpfs(graph, 0, st, wt, sala_final);
+            GRAPHpfs(graph, sala_final, st, wt, sala_final);
 
-            if (st[sala_final] == -1) // se nao e possivel(perguntar rita)
+            if (st[0] == -1)
+            {
+                if (flag == 1)
+                    fprintf(fp_out, "\n\n");
+
                 fprintf(fp_out, "%d\n", -1);
+            }
             else
             {
-                Edge *edge;
-                Lista *aresta;
+                if (flag == 1)
+                    fprintf(fp_out, "\n\n");
 
-                int custo = wt[sala_final];
-                int paredes = 0;
-                int i = sala_final;
-
-                // for (int x = 0; x < graph->vertex; x++)
-                //   printf("%d %d\n", wt[x], st[x]);
+                custo = wt[0];
 
                 fprintf(fp_out, "%d\n", custo);
 
@@ -145,10 +151,8 @@ void modo2(FILE *fp_in, FILE *fp_out)
                         }
                     }
                 }
-
                 fprintf(fp_out, "%d\n", paredes);
-
-                i = sala_final;
+                i = 0;
                 while (st[i] != -1)
                 {
                     for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
@@ -163,25 +167,15 @@ void modo2(FILE *fp_in, FILE *fp_out)
                     }
                 }
             }
-
             free(st);
             free(wt);
             freeGraph(graph);
         }
+        i = 0;
+        salas = 0;
+        paredes = 0;
         tamanho = 0;
-        fprintf(fp_out, "\n");
-    }
-}
-
-void print_tab(int **tab, lab_t lab)
-{
-    int x, y;
-    for (x = 0; x < lab.linhas; x++)
-    {
-        for (y = 0; y < lab.colunas; y++)
-        {
-            printf("%3d ", tab[x][y]);
-        }
-        printf("\n");
+        resposta = 1;
+        flag = 1;
     }
 }

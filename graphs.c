@@ -58,40 +58,6 @@ void freeGraph(Graph *graph)
     return;
 }
 
-void print_grafo(FILE *fp_out, Graph *graph)
-{
-    int i = 0;
-    Lista *list;
-    Edge *edge;
-
-    /* Prints number of vertices */
-    printf("%d\n", graph->vertex);
-
-    /* Prints lists of adjacency vertices */
-    for (i = 0; i < graph->vertex; i++)
-    {
-        list = graph->adj[i];
-        printf("%d-> ", i);
-        /* Writes first adjacent vertice */
-        if (list != NULL)
-        {
-            edge = (Edge *)getItemLista(list);
-            printf("%d:%d %d %d /", edge->V, edge->W, edge->x, edge->y);
-        }
-
-        /* Writes adjacent vertices */
-        while ((list = getNextNodeLista(list)) != NULL)
-        {
-            edge = (Edge *)getItemLista(list);
-            printf("%d:%d %d %d /", edge->V, edge->W, edge->x, edge->y);
-        }
-        /* Writes end of list */
-        printf("%d\n", (-1));
-    }
-
-    return;
-}
-
 int verifica_vertice(Lista *first, int value)
 {
     Lista *aux = first;
@@ -101,9 +67,8 @@ int verifica_vertice(Lista *first, int value)
     {
         edge = getItemLista(aux);
         if (edge->V == value)
-        {
             return 1;
-        }
+
         aux = aux->next;
     }
     return 0;

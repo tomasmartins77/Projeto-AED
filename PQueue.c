@@ -11,7 +11,6 @@ void PQinit(int size)
         exit(1);
 
     qsize = size;
-
     ffree = 0;
 }
 
@@ -75,16 +74,16 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final)
     while (!PQEmpty())
     {
         v = PQdelmin();
-        if (sala_final == v)
+        if (v == 0)
             continue;
-
         for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
         {
             edge = getItemLista(t);
-            if (wt[w = edge->V] > wt[v] + edge->W && wt[sala_final] > wt[v] + edge->W)
+            if (wt[w = edge->V] > wt[v] + edge->W && wt[0] > wt[v] + edge->W)
             {
                 int k = -1;
-                for (int i = 0; i < ffree; i++)
+                int i;
+                for (i = 0; i < ffree; i++)
                     if (queue[i] == w)
                     {
                         k = i;

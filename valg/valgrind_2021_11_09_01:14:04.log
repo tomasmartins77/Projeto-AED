@@ -1,0 +1,14 @@
+==40998== Memcheck, a memory error detector
+==40998== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40998== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==40998== Command: ./roap small15.in
+==40998== Parent PID: 40612
+==40998== 
+==40998== 
+==40998== HEAP SUMMARY:
+==40998==     in use at exit: 0 bytes in 0 blocks
+==40998==   total heap usage: 1,130 allocs, 1,130 frees, 90,740 bytes allocated
+==40998== 
+==40998== All heap blocks were freed -- no leaks are possible
+==40998== 
+==40998== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

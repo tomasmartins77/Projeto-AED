@@ -1,0 +1,14 @@
+==41041== Memcheck, a memory error detector
+==41041== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==41041== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==41041== Command: ./roap small18.in
+==41041== Parent PID: 40612
+==41041== 
+==41041== 
+==41041== HEAP SUMMARY:
+==41041==     in use at exit: 0 bytes in 0 blocks
+==41041==   total heap usage: 4,876 allocs, 4,876 frees, 161,436 bytes allocated
+==41041== 
+==41041== All heap blocks were freed -- no leaks are possible
+==41041== 
+==41041== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
