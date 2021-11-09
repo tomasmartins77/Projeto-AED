@@ -8,13 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define exch(A, B) \
-    {              \
-        int t = A; \
-        A = B;     \
-        B = t;     \
-    }
-
 void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final);
 
 void FixUp(int Idx);
@@ -22,6 +15,8 @@ void FixUp(int Idx);
 void FixDown(int Idx, int N);
 
 int PQEmpty();
+
+void exch(int queueA, int queueB, int posicaoA, int posicaoB);
 
 void PQinsert(int I);
 

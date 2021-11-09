@@ -3,15 +3,23 @@
 static int *queue;
 static int ffree;
 static int qsize;
+static int *posicao;
 
 void PQinit(int size)
 {
+    int i = 0;
     queue = (int *)calloc(size, sizeof(int));
     if (queue == NULL)
         exit(1);
 
+    posicao = (int *)malloc(size * sizeof(int));
+    if (posicao == NULL)
+        exit(1);
+
     qsize = size;
     ffree = 0;
+    for (i = 0; i < size; i++)
+        posicao[i] = -3;
 }
 
 void PQinsert(int I)
@@ -19,9 +27,21 @@ void PQinsert(int I)
     if ((ffree + 1) < qsize)
     {
         queue[ffree] = I;
+        posicao[ffree] = ffree;
         FixUp(ffree);
         ffree++;
     }
+}
+
+void exch(int queueA, int queueB, int posicaoA, int posicaoB)
+{
+    int t = queueA;
+    queueA = queueB;
+    queueB = t;
+
+    t = posicaoA;
+    posicaoA = posicaoB;
+    posicaoB = t;
 }
 
 int PQEmpty()
@@ -33,7 +53,7 @@ void FixUp(int Idx)
 {
     while (Idx > 0 && comparisonItemFnt(queue[(Idx - 1) / 2], queue[Idx]) == 1)
     {
-        exch(queue[Idx], queue[(Idx - 1) / 2]);
+        exch(queue[Idx], queue[(Idx - 1) / 2], posicao[Idx], posicao[(Idx - 1) / 2]);
         Idx = (Idx - 1) / 2;
     }
 }
@@ -50,7 +70,7 @@ void FixDown(int Idx, int N)
         if (comparisonItemFnt(queue[Idx], queue[Child]) == -1)
             break;
 
-        exch(queue[Idx], queue[Child]);
+        exch(queue[Idx], queue[Child], posicao[Idx], posicao[Child]);
         /* continua a descer a árvore */
         Idx = Child;
     }
@@ -81,33 +101,25 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final)
             edge = getItemLista(t);
             if (wt[w = edge->V] > wt[v] + edge->W && wt[0] > wt[v] + edge->W)
             {
-                int k = -1;
-                int i;
-                for (i = 0; i < ffree; i++)
-                    if (queue[i] == w)
-                    {
-                        k = i;
-                        break;
-                    }
-
                 wt[w] = wt[v] + edge->W;
 
-                if (k == -1)
+                if (posicao[w] == -3)
                     PQinsert(w);
 
-                FixUp(k);
+                FixUp(w);
 
                 st[w] = v;
             }
         }
     }
     free(queue);
+    free(posicao);
 }
 
 int PQdelmin()
 {
     /* troca MENOR elemento com último da tabela e reordena com FixDown */
-    exch(queue[0], queue[ffree - 1]);
+    exch(queue[0], queue[ffree - 1], posicao[0], posicao[ffree - 1]);
     FixDown(0, ffree - 1);
     /* ultimo elemento não considerado na reordenação */
     return queue[--ffree];
