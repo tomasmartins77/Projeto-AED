@@ -46,6 +46,8 @@ int quebravel(int **tab, lab_t lab, int x, int y);
 
 int comparisonItemFnt(int item1, int item2);
 
+int comparisonItemWeight(int item1, int item2, int *wt);
+
 Lista *insertSortedLista(Lista *first, Edge *item, int (*compareItems)(int it1, int it2));
 
 void verifica_salas(int **tab, lab_t lab, int *tab_id, int **salas);

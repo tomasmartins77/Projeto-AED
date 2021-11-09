@@ -8,20 +8,28 @@
 #include <stdlib.h>
 #include <string.h>
 
-void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final);
+typedef struct _PQ
+{
+    int *queue;
+    int ffree;
+    int qsize;
+    int *posicao;
+} PQ;
 
-void FixUp(int Idx);
+void GRAPHpfs(Graph *G, int s, int st[], int wt[]);
 
-void FixDown(int Idx, int N);
+PQ *FixUp(PQ *pq, int Idx, int *wt);
 
-int PQEmpty();
+PQ *FixDown(PQ *pq, int Idx, int N, int *wt);
 
-void exch(int queueA, int queueB, int posicaoA, int posicaoB);
+int PQEmpty(PQ *pq);
 
-void PQinsert(int I);
+void exch(PQ *pq, int i, int j);
 
-void PQinit(int size);
+PQ *PQinsert(PQ *pq, int *wt, int I);
 
-int PQdelmin();
+PQ *PQinit(PQ *pq, int size);
+
+int PQdelmin(PQ *pq, int *wt);
 
 #endif

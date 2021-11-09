@@ -1,99 +1,112 @@
 #include "PQueue.h"
 
-static int *queue;
-static int ffree;
-static int qsize;
-static int *posicao;
-
-void PQinit(int size)
+PQ *PQinit(PQ *pq, int size)
 {
     int i = 0;
-    queue = (int *)calloc(size, sizeof(int));
-    if (queue == NULL)
+    pq = (PQ *)malloc(sizeof(PQ));
+    if (pq == NULL)
         exit(1);
 
-    posicao = (int *)malloc(size * sizeof(int));
-    if (posicao == NULL)
+    pq->queue = (int *)calloc(size, sizeof(int));
+    if (pq->queue == NULL)
         exit(1);
 
-    qsize = size;
-    ffree = 0;
+    pq->posicao = (int *)malloc(size * sizeof(int));
+
+    pq->qsize = size;
+    pq->ffree = 0;
+
     for (i = 0; i < size; i++)
-        posicao[i] = -3;
+        pq->posicao[i] = -1;
+
+    return pq;
 }
 
-void PQinsert(int I)
+PQ *PQinsert(PQ *pq, int *wt, int I)
 {
-    if ((ffree + 1) < qsize)
+    if ((pq->ffree + 1) < pq->qsize)
     {
-        queue[ffree] = I;
-        posicao[ffree] = ffree;
-        FixUp(ffree);
-        ffree++;
+        pq->queue[pq->ffree] = I;
+        pq->posicao[I] = pq->ffree;
+        pq = FixUp(pq, pq->ffree, wt);
+        pq->ffree++;
     }
+    printf("    %d %d\n", pq->queue[0], pq->queue[1]);
+
+    return pq;
 }
 
-void exch(int queueA, int queueB, int posicaoA, int posicaoB)
+void exch(PQ *pq, int i, int j)
 {
-    int t = queueA;
-    queueA = queueB;
-    queueB = t;
+    int aux = 0;
+    aux = pq->queue[i];
+    pq->queue[i] = pq->queue[j];
+    pq->queue[j] = aux;
 
-    t = posicaoA;
-    posicaoA = posicaoB;
-    posicaoB = t;
+    aux = pq->posicao[i];
+    pq->posicao[i] = pq->posicao[j];
+    pq->posicao[j] = aux;
+
+    return;
 }
 
-int PQEmpty()
+int PQEmpty(PQ *pq)
 {
-    return ffree == 0 ? 1 : 0;
+    return pq->ffree == 0 ? 1 : 0;
 }
 
-void FixUp(int Idx)
+PQ *FixUp(PQ *pq, int Idx, int *wt)
 {
-    while (Idx > 0 && comparisonItemFnt(queue[(Idx - 1) / 2], queue[Idx]) == 1)
+    while (Idx > 0 && comparisonItemWeight((Idx - 1) / 2, Idx, wt) == 1)
     {
-        exch(queue[Idx], queue[(Idx - 1) / 2], posicao[Idx], posicao[(Idx - 1) / 2]);
+        exch(pq, Idx, (Idx - 1) / 2);
         Idx = (Idx - 1) / 2;
     }
+    return pq;
 }
 
-void FixDown(int Idx, int N)
+PQ *FixDown(PQ *pq, int Idx, int N, int *wt)
 {
     int Child; /* índice de um nó descendente */
     while (2 * Idx < N - 1)
     { /* enquanto não chegar às folhas */
         Child = 2 * Idx + 1;
 
-        if (Child < (N - 1) && comparisonItemFnt(queue[Child], queue[Child + 1]) == 1)
+        if (Child < (N - 1) && comparisonItemWeight(Child, Child + 1, wt) == 1)
             Child++;
-        if (comparisonItemFnt(queue[Idx], queue[Child]) == -1)
+        if (comparisonItemWeight(Idx, Child, wt) == -1)
             break;
 
-        exch(queue[Idx], queue[Child], posicao[Idx], posicao[Child]);
+        exch(pq, Idx, Child);
         /* continua a descer a árvore */
         Idx = Child;
     }
+    return pq;
 }
 
-void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final)
+void GRAPHpfs(Graph *G, int s, int st[], int wt[])
 {
     int v, w;
     Lista *t;
     Edge *edge;
+    PQ *pq = NULL;
+    pq = PQinit(pq, G->vertex);
 
-    PQinit(G->vertex);
     for (v = 0; v < G->vertex; v++)
     {
         st[v] = -1;
         wt[v] = INT_MAX;
     }
-
-    PQinsert(s);
+    printf("%d %d\n", pq->queue[0], pq->queue[1]);
+    pq = PQinsert(pq, wt, s);
     wt[s] = 0;
-    while (!PQEmpty())
+    printf("        %d %d\n", pq->queue[0], pq->queue[1]);
+
+    while (!PQEmpty(pq) && pq->posicao[0] != -2)
     {
-        v = PQdelmin();
+        v = PQdelmin(pq, wt);
+
+        pq->posicao[v] = -2;
         if (v == 0)
             continue;
         for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
@@ -103,24 +116,26 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[], int sala_final)
             {
                 wt[w] = wt[v] + edge->W;
 
-                if (posicao[w] == -3)
-                    PQinsert(w);
+                if (pq->posicao[w] == -1)
+                    pq = PQinsert(pq, wt, w);
 
-                FixUp(w);
+                pq = FixUp(pq, w, wt);
 
                 st[w] = v;
             }
         }
     }
-    free(queue);
-    free(posicao);
+    // printf("acabei\n");
+    free(pq->queue);
+    free(pq->posicao);
+    free(pq);
 }
 
-int PQdelmin()
+int PQdelmin(PQ *pq, int *wt)
 {
     /* troca MENOR elemento com último da tabela e reordena com FixDown */
-    exch(queue[0], queue[ffree - 1], posicao[0], posicao[ffree - 1]);
-    FixDown(0, ffree - 1);
+    exch(pq, 0, pq->ffree - 1);
+    pq = FixDown(pq, 0, pq->ffree - 1, wt);
     /* ultimo elemento não considerado na reordenação */
-    return queue[--ffree];
+    return pq->queue[--pq->ffree];
 }

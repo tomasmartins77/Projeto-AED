@@ -146,6 +146,16 @@ int comparisonItemFnt(int item1, int item2)
         return 1;
 }
 
+int comparisonItemWeight(int item1, int item2, int *wt)
+{
+    if (wt[item1] < wt[item2])
+        return -1;
+    else if (wt[item1] == wt[item2])
+        return 0;
+    else
+        return 1;
+}
+
 void verifica_salas(int **tab, lab_t lab, int *tab_id, int **salas)
 {
     int count = -3, x, y, j;
