@@ -63,6 +63,13 @@ void modo1(FILE *fp_in, FILE *fp_out)
     }
 }
 
+/** \brief realiza o modo da fase final
+ *
+ * \param fp_in FILE* ficheiro de entrada
+ * \param fp_out FILE* ficheiro de saida
+ * \return void
+ *
+ */
 void modo2(FILE *fp_in, FILE *fp_out)
 {
     lab_t maze = init_lab();
@@ -78,8 +85,8 @@ void modo2(FILE *fp_in, FILE *fp_out)
         if (fscanf(fp_in, "%d %d %d %d %d", &maze.linhas, &maze.colunas, &maze.solx, &maze.soly, &maze.blocos) != 5)
             break;
 
+        /*se a coordenada estiver fora do tabuleiro*/
         if (check_if_outside(maze, maze.solx, maze.soly) == -2)
-
         {
             fill(maze, &tamanho, fp_in, fp_out, tab, 0);
             resposta = -1;
@@ -89,9 +96,11 @@ void modo2(FILE *fp_in, FILE *fp_out)
             tab = init_tab(maze);
             fill(maze, &tamanho, fp_in, fp_out, tab, 1);
 
+            /*se nao for uma celula branca*/
             if (A1(tab, maze.solx, maze.soly) != 0)
                 resposta = -1;
 
+            /*se forem ambas celulas brancas e pertencerem a mesma sala*/
             else if (A6(tab, maze, 1, 1, 1, &salas) == 1)
                 resposta = 0;
         }
@@ -120,6 +129,7 @@ void modo2(FILE *fp_in, FILE *fp_out)
 
             GRAPHpfs(graph, sala_final, st, wt);
 
+            /*se o ultimo valor da search tree for -1*/
             if (st[0] == -1)
             {
                 if (flag == 1)
@@ -136,14 +146,16 @@ void modo2(FILE *fp_in, FILE *fp_out)
 
                 fprintf(fp_out, "%d\n", custo);
 
+                /*percorrer a search tree*/
                 while (st[i] != -1)
                 {
                     for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
                     {
                         edge = getItemLista(aresta);
+                        /*se o vertice estiver na search tree*/
                         if (edge->V == st[i])
                         {
-                            paredes++;
+                            paredes++; /*incrementar o numero de paredes*/
                             i = edge->V;
                             break;
                         }
@@ -151,11 +163,13 @@ void modo2(FILE *fp_in, FILE *fp_out)
                 }
                 fprintf(fp_out, "%d\n", paredes);
                 i = 0;
+                /*percorrer a search tree*/
                 while (st[i] != -1)
                 {
                     for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
                     {
                         edge = getItemLista(aresta);
+                        /*se o vertice estiver na search tree*/
                         if (edge->V == st[i])
                         {
                             fprintf(fp_out, "%d %d %d\n", edge->x + 1, edge->y + 1, edge->W);
