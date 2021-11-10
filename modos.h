@@ -20,6 +20,9 @@ typedef struct labirinto
  */
 void modo1(FILE *fp_in, FILE *fp_out);
 
+/** \brief realiza o modo da fase final
+ *
+ */
 void modo2(FILE *fp_in, FILE *fp_out);
 
 #endif
