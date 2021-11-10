@@ -31,7 +31,7 @@ PQ *PQinsert(PQ *pq, int *wt, int I)
         pq = FixUp(pq, pq->ffree, wt);
         pq->ffree++;
     }
-    printf("    %d %d\n", pq->queue[0], pq->queue[1]);
+    // printf("    %d %d %d %d\n", pq->queue[0], pq->queue[1], pq->queue[2], pq->queue[3]);
 
     return pq;
 }
@@ -57,9 +57,9 @@ int PQEmpty(PQ *pq)
 
 PQ *FixUp(PQ *pq, int Idx, int *wt)
 {
-    while (Idx > 0 && comparisonItemWeight((Idx - 1) / 2, Idx, wt) == 1)
+    while (Idx > 0 && comparisonItemWeight(pq->queue[(Idx - 1) / 2], pq->queue[Idx], wt) == 1)
     {
-        exch(pq, Idx, (Idx - 1) / 2);
+        exch(pq, pq->queue[Idx], pq->queue[(Idx - 1) / 2]);
         Idx = (Idx - 1) / 2;
     }
     return pq;
@@ -72,12 +72,12 @@ PQ *FixDown(PQ *pq, int Idx, int N, int *wt)
     { /* enquanto não chegar às folhas */
         Child = 2 * Idx + 1;
 
-        if (Child < (N - 1) && comparisonItemWeight(Child, Child + 1, wt) == 1)
+        if (Child < (N - 1) && comparisonItemWeight(pq->queue[Child], pq->queue[Child + 1], wt) == 1)
             Child++;
-        if (comparisonItemWeight(Idx, Child, wt) == -1)
+        if (comparisonItemWeight(pq->queue[Idx], pq->queue[Child], wt) != -1)
             break;
 
-        exch(pq, Idx, Child);
+        exch(pq, pq->queue[Idx], pq->queue[Child]);
         /* continua a descer a árvore */
         Idx = Child;
     }
@@ -97,14 +97,14 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
         st[v] = -1;
         wt[v] = INT_MAX;
     }
-    printf("%d %d\n", pq->queue[0], pq->queue[1]);
+
     pq = PQinsert(pq, wt, s);
     wt[s] = 0;
-    printf("        %d %d\n", pq->queue[0], pq->queue[1]);
 
     while (!PQEmpty(pq) && pq->posicao[0] != -2)
     {
         v = PQdelmin(pq, wt);
+        // printf("        %d %d %d %d\n", pq->queue[0], pq->queue[1], pq->queue[2], pq->queue[3]);
 
         pq->posicao[v] = -2;
         if (v == 0)
@@ -118,8 +118,9 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
 
                 if (pq->posicao[w] == -1)
                     pq = PQinsert(pq, wt, w);
-
-                pq = FixUp(pq, w, wt);
+                else
+                    pq = FixUp(pq, pq->posicao[w], wt);
+                // printf("  fixup      %d %d %d %d %d %d\n", pq->queue[0], pq->queue[1], pq->queue[2], pq->queue[3], pq->queue[4], pq->queue[5]);
 
                 st[w] = v;
             }
@@ -134,7 +135,7 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
 int PQdelmin(PQ *pq, int *wt)
 {
     /* troca MENOR elemento com último da tabela e reordena com FixDown */
-    exch(pq, 0, pq->ffree - 1);
+    exch(pq, pq->queue[0], pq->queue[pq->ffree - 1]);
     pq = FixDown(pq, 0, pq->ffree - 1, wt);
     /* ultimo elemento não considerado na reordenação */
     return pq->queue[--pq->ffree];

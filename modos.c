@@ -121,8 +121,7 @@ void modo2(FILE *fp_in, FILE *fp_out)
                 exit(1);
 
             GRAPHpfs(graph, sala_final, st, wt);
-            for (int x = 0; x < graph->vertex; x++)
-                printf("%d %d\n", wt[x], st[x]);
+
             if (st[0] == -1)
             {
                 if (flag == 1)
