@@ -108,7 +108,8 @@ void GRAPHpfs(Graph *G, int s, int st[], int wt[])
 
         pq->posicao[v] = -2;
         if (v == 0)
-            continue;
+            continue; 
+            
         for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
         {
             edge = getItemLista(t);
