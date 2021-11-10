@@ -110,8 +110,6 @@ void modo2(FILE *fp_in, FILE *fp_out)
 
             graph = readGraph(salas, maze, tab);
 
-            free_tab(tab, maze);
-
             st = (int *)malloc(graph->vertex * sizeof(int));
             if (st == NULL)
                 exit(1);
