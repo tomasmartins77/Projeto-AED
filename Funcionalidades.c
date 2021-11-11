@@ -130,9 +130,19 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
         exit(1);
     }
 
+    int *tab_size = (int *)malloc(size * sizeof(int)); /*alocacao o array de size*/
+    if (tab_size == NULL)
+    {
+        free_tab(tab, lab);
+        exit(1);
+    }
+
     for (i = 0; i < size; i++) /*inicializacao de valores*/
+    {
+        tab_size[i] = 1;
         tab_id[i] = i;
-    
+    }
+
     for (x = 0; x < lab.linhas; x++) /*percorre todo o tabuleiro*/
     {
         for (y = 0; y < lab.colunas; y++)
@@ -147,28 +157,28 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
             {
                 for (j = (x - 1) * lab.colunas + y; j != tab_id[j]; j = tab_id[j])
                     ;
-                conn(tab_id, i, j, x * lab.colunas + y, (x - 1) * lab.colunas + y);
+                conn(tab_id, tab_size, i, j, x * lab.colunas + y, (x - 1) * lab.colunas + y);
             }
 
             if (x + 1 < lab.linhas && tab[x + 1][y] == 0) /*vizinho de baixo*/
             {
                 for (j = (x + 1) * lab.colunas + y; j != tab_id[j]; j = tab_id[j])
                     ;
-                conn(tab_id, i, j, x * lab.colunas + y, (x + 1) * lab.colunas + y);
+                conn(tab_id, tab_size, i, j, x * lab.colunas + y, (x + 1) * lab.colunas + y);
             }
 
             if (y - 1 > 0 && tab[x][y - 1] == 0) /*vizinho da esquerda*/
             {
                 for (j = x * lab.colunas + y - 1; j != tab_id[j]; j = tab_id[j])
                     ;
-                conn(tab_id, i, j, x * lab.colunas + y, x * lab.colunas + y - 1);
+                conn(tab_id, tab_size, i, j, x * lab.colunas + y, x * lab.colunas + y - 1);
             }
 
             if (y + 1 < lab.colunas && tab[x][y + 1] == 0) /*vizinho da direita*/
             {
                 for (j = x * lab.colunas + y + 1; j != tab_id[j]; j = tab_id[j])
                     ;
-                conn(tab_id, i, j, x * lab.colunas + y, x * lab.colunas + y + 1);
+                conn(tab_id, tab_size, i, j, x * lab.colunas + y, x * lab.colunas + y + 1);
             }
         }
     }
@@ -181,6 +191,7 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
     if (i == j) /*verifica se estao conectados*/
     {
         free(tab_id);
+        free(tab_size);
         return 1;
     }
     /*fase final, conta as salas e "pinta" o tabuleiro*/
@@ -188,5 +199,6 @@ int A6(int **tab, lab_t lab, int A6_x, int A6_y, int flag, int *salas)
         verifica_salas(tab, lab, tab_id, &salas);
 
     free(tab_id);
+    free(tab_size);
     return 0;
 }

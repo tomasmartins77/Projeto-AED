@@ -1,137 +1,122 @@
 #include "PQueue.h"
 
+static int *queue;/*fila de prioridade*/
+static int ffree;/*primeira posicao vazia*/
+static int qsize;/*tamanho total da fila*/
+static int *posicao;/*posicao do vertice na fila*/
+
 /**
- * @brief inicializa a priority queue, o array de posicao(indica a posicao do vertice na fila)
- *        , variavel de
+ * @brief inicializa a priority queue
  *
- * @param pq fila
  * @param size numero de vertices do grafo
- * @return Queue*
  */
-Queue *PQinit(Queue *pq, int size)
+void PQinit(int size)
 {
-    pq = (Queue *)malloc(sizeof(Queue));
-    if (pq == NULL)
+    queue = (int *)calloc(size, sizeof(int));
+    if (queue == NULL)
         exit(1);
-    pq->queue = (int *)calloc(size, sizeof(int));
-    if (pq->queue == NULL)
-        exit(1);
-    pq->posicao = (int *)malloc(size * sizeof(int));
-    if (pq->posicao == NULL)
+    posicao = (int *)malloc(size * sizeof(int));
+    if (posicao == NULL)
         exit(1);
 
-    pq->ffree = 0;
+    qsize = size;
+    ffree = 0;
 
     for (int i = 0; i < size; i++)
-        pq->posicao[i] = -1;
-    return pq;
+        posicao[i] = -1;
 }
 
 /**
- * @brief insere um vertice na priority queue na primeira posicao vazia
+ * @brief insere um vertice na priority queue
  *
- * @param pq fila de prioridade
  * @param I vertice a ser inserido
  * @param wt vetor de custos para comparacoes
- * @param size numero de vertices
- * @return Queue*
  */
-Queue *PQinsert(Queue *pq, int I, int *wt, int size)
+void PQinsert(int I, int *wt)
 {
-    if ((pq->ffree + 1) < size) /*se a fila nao tiver cheia*/
+    if ((ffree + 1) < qsize)/*se a fila nao tiver cheia*/
     {
-        pq->queue[pq->ffree] = I;      /*insere na primeira posicao vazia o vertice*/
-        pq->posicao[I] = pq->ffree;    /*posicao da fila do vertice*/
-        pq = FixUp(pq, pq->ffree, wt); /*atualiza a prioridade*/
-        pq->ffree++;                   /*temos mais um elemento na fila*/
+        queue[ffree] = I;/*insere na primeira posicao vazia o vertice*/
+        posicao[I] = ffree;/*posicao da fila do vertice*/
+        FixUp(ffree, wt);/*atualiza a prioridade*/
+        ffree++;/*temos mais um elemento na fila*/
     }
-    return pq;
 }
 
 /**
  * @brief verifica se a fila esta vazia ou nao
  *
- * @param pq fila
  * @return int 1 se a fila estiver vazia, 0 se nao
  */
-int PQEmpty(Queue *pq)
+int PQEmpty()
 {
-    return pq->ffree == 0 ? 1 : 0;
+    return ffree == 0 ? 1 : 0;
 }
 
 /**
  * @brief altera uma certa posicao da fila para o seu valor correto de prioridade, de menos prioridade para mais
- *        prioridade, se o seu "pai" tiver um custo menor, vai trocar de posicao
- *        fazendo isto ate chegar a posicao correta
+ *        prioridade
  *
- * @param pq fila
  * @param Idx posicao da fila a ser verificada
  * @param wt vetor de custos para comparacao
- * @return Queue*
  */
-Queue *FixUp(Queue *pq, int Idx, int *wt)
+void FixUp(int Idx, int *wt)
 {
-    while (Idx > 0 && comparisonItemWeight(pq->queue[(Idx - 1) / 2], pq->queue[Idx], wt) == 1)
+    while (Idx > 0 && comparisonItemWeight(queue[(Idx - 1) / 2], queue[Idx], wt) == 1)
     {
-        pq->posicao[pq->queue[(Idx - 1) / 2]] = Idx; /*atualiza as posicoes dos vertices*/
-        pq->posicao[pq->queue[Idx]] = (Idx - 1) / 2;
-        exch(pq->queue[Idx], pq->queue[(Idx - 1) / 2]); /*troca os elementos da fila*/
+        posicao[queue[(Idx - 1) / 2]] = Idx;/*atualiza as posicoes dos vertices*/
+        posicao[queue[Idx]] = (Idx - 1) / 2;
+        exch(queue[Idx], queue[(Idx - 1) / 2]);/*troca os elementos da fila*/
 
         Idx = (Idx - 1) / 2;
     }
-    return pq;
 }
 
 /**
  * @brief altera uma certa posicao da fila para o seu valor correto de prioridade, de mais prioridade para menos
- *        prioridade, percorre a fila, verificando para que ramo da arvore o valor vai descer para
- *        de acordo com o seu custo
+ *        prioridade
  *
- * @param pq fila
  * @param Idx vertice a ser verificado
  * @param N ultima posicao da fila ocupada
  * @param wt vetor de custos para comparacao
  */
-Queue *FixDown(Queue *pq, int Idx, int N, int *wt)
+void FixDown(int Idx, int N, int *wt)
 {
     int Child; /* índice de um nó descendente */
     while (2 * Idx < N - 1)
     { /* enquanto não chegar às folhas */
         Child = 2 * Idx + 1;
         /*verifica para que ramo da arvore vai*/
-        if (Child < (N - 1) && comparisonItemWeight(pq->queue[Child], pq->queue[Child + 1], wt) == 1)
+        if (Child < (N - 1) && comparisonItemWeight(queue[Child], queue[Child + 1], wt) == 1)
             Child++;
-        if (comparisonItemWeight(pq->queue[Idx], pq->queue[Child], wt) == -1) /*encontra-se a posicao correta*/
+        if (comparisonItemWeight(queue[Idx], queue[Child], wt) == -1) /*encontra-se a posicao correta*/
             break;
 
-        pq->posicao[pq->queue[Child]] = Idx; /*atualiza as posicoes dos vertices*/
-        pq->posicao[pq->queue[Idx]] = Child;
-        exch(pq->queue[Idx], pq->queue[Child]); /*troca os elementos da fila*/
+        posicao[queue[Child]] = Idx;/*atualiza as posicoes dos vertices*/
+        posicao[queue[Idx]] = Child;
+        exch(queue[Idx], queue[Child]);/*troca os elementos da fila*/
 
         /* continua a descer a árvore */
         Idx = Child;
     }
-    return pq;
 }
 
 /**
- * @brief elimina elemento de maior prioridade da lista, troca o elemento de maior prioridade com
- *        o de menor, e diminui uma posicao total da fila, retirando-o figurativamente da fila
+ * @brief elimina elemento de maior prioridade da lista
  *
- * @param pq fila
  * @param wt vetor de pesos para comparacoes
  * @return int elemento com maior prioridade depois de retirado da lista
  */
-int PQdelmin(Queue *pq, int *wt)
+int PQdelmin(int *wt)
 {
     /* troca MENOR elemento com último da tabela e reordena com FixDown */
-    pq->posicao[pq->queue[pq->ffree - 1]] = 0; /*atualiza as posicoes dos vertices*/
-    pq->posicao[pq->queue[0]] = -2;
-    exch(pq->queue[0], pq->queue[pq->ffree - 1]); /*troca os elementos da fila*/
+    posicao[queue[ffree - 1]] = 0;/*atualiza as posicoes dos vertices*/
+    posicao[queue[0]] = -2;
+    exch(queue[0], queue[ffree - 1]);/*troca os elementos da fila*/
 
-    pq = FixDown(pq, 0, pq->ffree - 1, wt);
+    FixDown(0, ffree - 1, wt);
     /* ultimo elemento não considerado na reordenação */
-    return pq->queue[--pq->ffree];
+    return queue[--ffree];
 }
 
 /**
@@ -147,38 +132,36 @@ void Dijkstras(Graph *G, int s, int st[], int wt[])
     int v, w;
     Lista *t;
     Edge *edge;
-    Queue *pq = NULL;
     /*inicializacao da fila, st e wt*/
-    pq = PQinit(pq, G->vertex);
+    PQinit(G->vertex);
     for (v = 0; v < G->vertex; v++)
     {
         st[v] = -1;
         wt[v] = INT_MAX;
     }
     /*inserir o vertice para qual se quer comecar na fila*/
-    pq = PQinsert(pq, s, wt, G->vertex);
+    PQinsert(s, wt);
     wt[s] = 0;
-    while (!PQEmpty(pq) && pq->posicao[0] != -2)
+    while (!PQEmpty() && posicao[0] != -2)
     {
-        v = PQdelmin(pq, wt);                                   /*marca esse vertice como visto e guarda-o para verificar as suas arestas*/
-        pq->posicao[v] = -2;                                    /*vertice visto*/
-        for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade*/
+        v = PQdelmin(wt); /*marca esse vertice como visto e guarda-o para verificar as suas arestas*/
+        posicao[v] = -2;  /*vertice visto*/
+        for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
         {
             edge = getItemLista(t);
             if (wt[w = edge->V] > wt[v] + edge->W && wt[0] > wt[v] + edge->W)
             {
                 wt[w] = wt[v] + edge->W; /*se a relaxacao de aresta for bem feita, atualiza o custo*/
 
-                if (pq->posicao[w] == -1) /*se for a primeira vez que vai inserir esse vertice na queue*/
-                    pq = PQinsert(pq, w, wt, G->vertex);
+                if (posicao[w] == -1) /*se for a primeira vez que vai inserir esse vertice na queue*/
+                    PQinsert(w, wt);
                 else
-                    pq = FixUp(pq, pq->posicao[w], wt); /*atualiza a prioridade*/
+                    FixUp(posicao[w], wt); /*atualiza a prioridade*/
 
                 st[w] = v; /*vertice de onde a aresta veio*/
             }
         }
     }
-    free(pq->posicao);
-    free(pq->queue);
-    free(pq);
-}
+    free(posicao);
+    free(queue);
+} 

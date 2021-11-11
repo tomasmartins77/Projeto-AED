@@ -20,7 +20,7 @@ rm -f valg/*
 
 for F in ${input}; do 
     sleep 1;
-     "./roap" "${F}";
+    VALG "./roap" "${F}";
 done;
 
 FILES=$(ls *.sol)
