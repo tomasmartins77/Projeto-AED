@@ -18,7 +18,6 @@ typedef struct _Lista
 typedef struct _Graph
 {
     int vertex;  /*total de vertices = numero de salas do tabuleiro*/
-    int edge;    /*numero total de vertices*/
     Lista **adj; /*lista de adjacencias*/
 } Graph;
 

@@ -29,12 +29,12 @@ Queue *PQinit(Queue *pq, int size)
 
 /**
  * @brief insere um vertice na priority queue na primeira posicao vazia
- * 
+ *
  * @param pq fila de prioridade
  * @param I vertice a ser inserido
  * @param wt vetor de custos para comparacoes
  * @param size numero de vertices
- * @return Queue* 
+ * @return Queue*
  */
 Queue *PQinsert(Queue *pq, int I, int *wt, int size)
 {
@@ -50,7 +50,7 @@ Queue *PQinsert(Queue *pq, int I, int *wt, int size)
 
 /**
  * @brief verifica se a fila esta vazia ou nao
- * 
+ *
  * @param pq fila
  * @return int 1 se a fila estiver vazia, 0 se nao
  */
@@ -63,11 +63,11 @@ int PQEmpty(Queue *pq)
  * @brief altera uma certa posicao da fila para o seu valor correto de prioridade, de menos prioridade para mais
  *        prioridade, se o seu "pai" tiver um custo menor, vai trocar de posicao
  *        fazendo isto ate chegar a posicao correta
- * 
+ *
  * @param pq fila
  * @param Idx posicao da fila a ser verificada
  * @param wt vetor de custos para comparacao
- * @return Queue* 
+ * @return Queue*
  */
 Queue *FixUp(Queue *pq, int Idx, int *wt)
 {
@@ -86,7 +86,7 @@ Queue *FixUp(Queue *pq, int Idx, int *wt)
  * @brief altera uma certa posicao da fila para o seu valor correto de prioridade, de mais prioridade para menos
  *        prioridade, percorre a fila, verificando para que ramo da arvore o valor vai descer para
  *        de acordo com o seu custo
- * 
+ *
  * @param pq fila
  * @param Idx vertice a ser verificado
  * @param N ultima posicao da fila ocupada
@@ -117,7 +117,7 @@ Queue *FixDown(Queue *pq, int Idx, int N, int *wt)
 /**
  * @brief elimina elemento de maior prioridade da lista, troca o elemento de maior prioridade com
  *        o de menor, e diminui uma posicao total da fila, retirando-o figurativamente da fila
- * 
+ *
  * @param pq fila
  * @param wt vetor de pesos para comparacoes
  * @return int elemento com maior prioridade depois de retirado da lista
@@ -160,11 +160,9 @@ void Dijkstras(Graph *G, int s, int st[], int wt[])
     wt[s] = 0;
     while (!PQEmpty(pq) && pq->posicao[0] != -2)
     {
-        v = PQdelmin(pq, wt); /*marca esse vertice como visto e guarda-o para verificar as suas arestas*/
-        pq->posicao[v] = -2;  /*vertice visto*/
-        if (v == 0)
-            continue;
-        for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
+        v = PQdelmin(pq, wt);                                   /*marca esse vertice como visto e guarda-o para verificar as suas arestas*/
+        pq->posicao[v] = -2;                                    /*vertice visto*/
+        for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade*/
         {
             edge = getItemLista(t);
             if (wt[w = edge->V] > wt[v] + edge->W && wt[0] > wt[v] + edge->W)
