@@ -9,7 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-/** \brief cria e preenche o grafo cujos vertices correspondem ao numero de salas
+/** \brief cria e preenche o grafo cujos vertices correspondem ao numero de salas, cada sala e 
+ *         um vertice e o seu custo e o valor da parede mais barata que entreliga as salas
  *
  * \param salas numero total de salas
  * \param lab lab_t
@@ -48,8 +49,8 @@ Graph *readGraph(int salas, lab_t lab, int **tab)
             /*ver quais os vizinhos dessa parede*/
             vizinhos(tab, lab, x, y, &ESQ, &DIR, &CIM, &BAI);
 
-            put_vertice(graph, tab, ESQ, DIR, x, y);
-            put_vertice(graph, tab, CIM, BAI, x, y);
+            put_edge(graph, tab, ESQ, DIR, x, y);
+            put_edge(graph, tab, CIM, BAI, x, y);
         }
         if (x >= 2 && lab.linhas > 2)
             free(tab[x - 2]);
@@ -106,13 +107,13 @@ int verifica_vertice(Lista *first, int value)
     return 0;
 }
 
-/** \brief troca o valor de uma aresta se o seu peso for inferior
+/** \brief troca o valor de uma aresta se o seu peso for inferior ao que ja estava la presente
  *
  * \param first Lista* primeiro elemento da lista
- * \param aresta int
- * \param value int
+ * \param aresta int aresta a ser verificada
+ * \param value int custo que pode ser maior ou menor
  * \param x int posicao x
- * \param y int posicao x
+ * \param y int posicao y
  * \return void
  *
  */
@@ -140,18 +141,19 @@ void troca_value(Lista *first, int aresta, int value, int x, int y)
     return;
 }
 
-/** \brief coloca os vertices nas listas de adjacencias respetivas
+/** \brief coloca as arestas na lista de adjacencia respetiva, se esse vertice ja existir, troca
+ *         os valores se for menor do que o anterior
  *
  * \param graph Graph* grafo
  * \param tab int** labirinto completo
- * \param a int
+ * \param a int uma possivel aresta 
  * \param b int
  * \param x int posicao x
  * \param y int posicao x
  * \return void
  *
  */
-void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y)
+void put_edge(Graph *graph, int **tab, int a, int b, int x, int y)
 {
     Edge *edge;
     if (a != 0 && b != 0)

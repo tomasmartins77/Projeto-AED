@@ -33,7 +33,8 @@ Lista *getNextNodeLista(Lista *node);
  */
 Item getItemLista(Lista *node);
 
-/** \brief insere um node ordenadamente numa lista
+/** \brief insere um node ordenadamente numa lista, percorre a lista, verificando o valor das suas
+ *         arestas
  *
  */
 Lista *insertSortedLista(Lista *first, Edge *item, int (*compareItems)(int it1, int it2));

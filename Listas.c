@@ -74,7 +74,8 @@ Lista *getNextNodeLista(Lista *node)
     return ((node == NULL) ? NULL : node->next);
 }
 
-/** \brief insere um node ordenadamente numa lista
+/** \brief insere um node ordenadamente numa lista, percorre a lista, verificando o valor das suas
+ *         arestas
  *
  * \param first Lista* primeiro node da lista
  * \param item Edge* aresta

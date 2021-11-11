@@ -134,7 +134,7 @@ void verifica_salas(int **tab, lab_t lab, int *tab_id, int **salas)
                 if (tab_id[j] >= 0)
                 {
                     (**salas)++;         /*incrementar o numero de salas*/
-                    tab_id[j] = count--; /*alterar o id dessa sala para id negativo e consecutivo (Ex: -3, -4, -5, ...)*/
+                    tab_id[j] = count--; /*alterar o id dessa sala para id negativo e consecutivo (Ex: -2, -3, -4, ...)*/
                 }
                 tab[x][y] = tab_id[j]; /*"pintar" o tabuleiro*/
             }
