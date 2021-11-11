@@ -8,7 +8,8 @@
 #include "Utility2.h"
 #include "modos.h"
 
-/** \brief cria e preenche o grafo cujos vertices correspondem ao numero de salas
+/** \brief cria e preenche o grafo cujos vertices correspondem ao numero de salas, cada sala e
+ *         um vertice e o seu custo e o valor da parede mais barata que entreliga as salas
  *
  */
 Graph *readGraph(int salas, lab_t lab, int **tab);
@@ -23,12 +24,13 @@ void freeGraph(Graph *graph);
  */
 int verifica_vertice(Lista *first, int value);
 
-/** \brief coloca os vertices nas listas de adjacencias respetivas
+/** \brief coloca as arestas na lista de adjacencia respetiva, se esse vertice ja existir, troca
+ *         os valores se for menor do que o anterior
  *
  */
-void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y);
+void put_edge(Graph *graph, int **tab, int a, int b, int x, int y);
 
-/** \brief troca o valor de uma aresta se o seu peso for inferior
+/** \brief troca o valor de uma aresta se o seu peso for inferior ao que ja estava la presente  
  *
  */
 void troca_value(Lista *first, int aresta, int value, int x, int y);
