@@ -2,6 +2,9 @@
 #include "Utility.h"
 #include "graphs.h"
 #include "Utility2.h"
+#include "Funcionalidades.h"
+#include "PQueue.h"
+#include "Listas.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +31,7 @@ int main(int argc, char *argv[])
         }
         /*muda a extensao do file_end*/
         strcpy(file_end, change_ex(argv[2], 4));
+        /*abre o ficheiro para escrita*/
         fp_out = fopen(file_end, "w");
         if (fp_out == NULL)
         {
@@ -35,10 +39,8 @@ int main(int argc, char *argv[])
             free(file_end);
             exit(1);
         }
-
-        /*abre o ficheiro para escrita*/
-        modo1(fp_in, fp_out);
         free(file_end);
+        modo1(fp_in, fp_out);
         close_files(fp_in, fp_out);
     }
     if (argc == 2 && check_filename(argv[1], 3) == 1)
@@ -65,11 +67,9 @@ int main(int argc, char *argv[])
             free(file_end);
             exit(1);
         }
-
-        modo2(fp_in, fp_out);
         free(file_end);
+        modo2(fp_in, fp_out); /*caminho de menor custo no labirinto*/
         close_files(fp_in, fp_out);
     }
-
     return 0;
 }

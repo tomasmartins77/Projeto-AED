@@ -3,92 +3,20 @@
 #include "Utility.h"
 #include "Funcionalidades.h"
 #include "graphs.h"
+#include "Listas.h"
 
-/** \brief inicializa uma lista a NULL
- *
- */
-Lista *initLista(void)
-{
-    return NULL;
-}
-
-/** \brief cria e inicializa uma nova lista de adjacencias
- *
- * \param grafo Graph* grafo
- * \return Lista de adjacencias
- *
- */
-Lista **criaLista(Graph *grafo)
-{
-    int i = 0;
-
-    grafo->adj = (Lista **)malloc(grafo->vertex * sizeof(Lista *));
-    if (grafo->adj == NULL)
-        exit(1);
-
-    for (i = 0; i < grafo->vertex; i++)
-        grafo->adj[i] = initLista();
-
-    return grafo->adj;
-}
-
-/** \brief liberta a memoria alocada para a lista
- *
- * \param first  Lista* primeiro elemento da lista
- * \return void
- *
- */
-void freeLista(Lista *first, void (*destruir_fn)(Item))
-{
-    Lista *aux = first;
-    Lista *next;
-
-    /*percorrer a lista ate ao final*/
-    for (aux = first; aux != NULL; aux = next)
-    {
-        next = aux->next;
-        destruir_fn(aux->value); /* liberta dados do valor atual */
-        free(aux);               /* liberta node    */
-    }
-    return;
-}
-
-/** \brief retorna o item (valor) de um certo node nessa lista
- *
- * \param node  Lista* node de uma lista
- * \return Item (valor) de um node
- *
- */
-Item getItemLista(Lista *node)
-{
-    if (node == NULL) /* se o node estiver vazio */
-        return NULL;
-
-    return node->value;
-}
-
-/** \brief retorna o node seguinte de uma lista
- *
- * \param node  Lista* node atual de uma lista
- * \return o node seguinte de uma lista. retorna NULL se o node atual estiver vazio ou se nao houver node seguinte 
- *
- */
-Lista *getNextNodeLista(Lista *node)
-{
-    return ((node == NULL) ? NULL : node->next);
-}
-
-/** \brief verifica os vizinhos horizontais e verticais de uma parede atualizando os valores de ESQ, DIR, CIM, BAI
+/** \brief verifica os vizinhos horizontais e
+ *         verticais de uma parede atualizando os valores de ESQ, DIR, CIM, BAI
  *
  * \param tab int** labirinto completo
- * \param lab lab_t linhas e colunas 
+ * \param lab lab_t linhas e colunas
  * \param posx int posicao atual
  * \param posy int posicao atual
  * \param ESQ int* vizinho da esquerda
  * \param DIR int* vizinho da direita
  * \param CIM int* vizinho de cima
  * \param BAI int* vizinho de baixo
- * \return void 
+ * \return void
  *
  */
 void vizinhos(int **tab, lab_t lab, int posx, int posy, int *ESQ, int *DIR, int *CIM, int *BAI)
@@ -122,7 +50,7 @@ void vizinhos(int **tab, lab_t lab, int posx, int posy, int *ESQ, int *DIR, int 
 /** \brief verifica se uma parede e quebravel no contexto dado
  *
  * \param tab int** labirinto completo
- * \param lab lab_t linhas e colunas 
+ * \param lab lab_t linhas e colunas
  * \param x int posicao atual
  * \param y int posicao atual
  * \return int 0 se nao for quebravel, 1 se for quebravel
@@ -142,67 +70,12 @@ int quebravel(int **tab, lab_t lab, int x, int y)
     return 0;
 }
 
-/** \brief insere um node ordenadamente numa lista
- *
- * \param first Lista* primeiro node da lista
- * \param item Edge* aresta
- * \return 
- *
- */
-Lista *insertSortedLista(Lista *first, Edge *item, int (*compareItems)(int it1, int it2))
-{
-    Lista *new, *aux;
-    Edge *edge;
-    /* alocacao de memoria */
-    new = (Lista *)malloc(sizeof(Lista));
-    if (new == NULL)
-        return NULL;
-
-    new->value = item; /* inicializar um novo node  */
-    new->next = NULL;
-
-    if (first == NULL) /* se a lista estiver vazia */
-    {
-        return new;
-    }
-    /* lista nao esta vazia, insertion sort */
-    /* inserir no inicio da lista */
-    edge = getItemLista(first);
-    if ((compareItems(item->V, edge->V) <= 0))
-    {
-        new->next = first;
-        return new;
-    }
-    /* second etc */
-    aux = first;
-    while (aux != NULL)
-    {
-        if (aux->next != NULL)
-        {
-            edge = getItemLista(aux->next);
-            if (compareItems(item->V, edge->V) <= 0)
-            {
-                new->next = aux->next;
-                aux->next = new;
-                return first;
-            }
-        }
-        else /* none left, insert in tail */
-        {
-            aux->next = new;
-            return first;
-        }
-        aux = aux->next;
-    }
-    return NULL;
-}
-
 /** \brief compara dois inteiros
  *
- * \param item1 int 
- * \param item1 int 
- * \return valor menor, igual ou maior do que 0 consoante o item1 seja menor, igual ou maior que o item2, respetivamente
- *
+ * \param item1 int
+ * \param item1 int
+ * \return valor menor, igual ou maior do que 0 consoante o item1 seja menor,
+ *         igual ou maior que o item2, respetivamente
  */
 int comparisonItemFnt(int item1, int item2)
 {
@@ -216,11 +89,11 @@ int comparisonItemFnt(int item1, int item2)
 
 /** \brief compara o peso de dois inteiros
  *
- * \param item1 int 
- * \param item1 int 
- * \param wt *int peso 
- * \return valor menor, igual ou maior do que 0 consoante o peso do item1 seja menor, igual ou maior que o peso do item2, respetivamente
- *
+ * \param item1 int
+ * \param item1 int
+ * \param wt *int peso
+ * \return valor menor, igual ou maior do que 0 consoante o peso do item1 seja menor,
+ *         igual ou maior que o peso do item2, respetivamente
  */
 int comparisonItemWeight(int item1, int item2, int *wt)
 {
@@ -268,4 +141,42 @@ void verifica_salas(int **tab, lab_t lab, int *tab_id, int **salas)
         }
     }
     return;
+}
+
+/**
+ * @brief imprime para o ficheiro o numero de paredes partidas ou
+ *        quais as paredes partidas
+ *
+ * @param graph grafo completo
+ * @param fp_out ficheiro de saida
+ * @param st vetor com o caminho de menor custo
+ * @param flag 1 se quiser contar as paredes, else se imprimir quais as paredes
+ */
+void print_file(Graph *graph, FILE *fp_out, int *st, int flag)
+{
+    int paredes = 0, i = 0;
+    Lista *aresta = NULL;
+    Edge *edge = NULL;
+
+    /*percorrer a search tree*/
+    while (st[i] != -1)
+    {
+        for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
+        {
+            edge = getItemLista(aresta);
+            /*se o vertice estiver na search tree*/
+            if (edge->V == st[i])
+            {
+                if (flag == 1)
+                    paredes++; /*incrementar o numero de paredes*/
+                else
+                    fprintf(fp_out, "%d %d %d\n", edge->x + 1, edge->y + 1, edge->W);
+
+                i = edge->V;
+                break;
+            }
+        }
+    }
+    if (flag == 1)
+        fprintf(fp_out, "%d\n", paredes);
 }

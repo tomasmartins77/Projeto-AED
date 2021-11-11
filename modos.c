@@ -74,11 +74,9 @@ void modo2(FILE *fp_in, FILE *fp_out)
 {
     lab_t maze = init_lab();
     int **tab = NULL;
-    int tamanho = 0, resposta = 1, salas = 0, sala_final = 0, i = 0, flag = 0, paredes = 0, custo = 0;
+    int tamanho = 0, resposta = 1, salas = 0, sala_final = 0, flag = 0;
     int *st = NULL, *wt = NULL;
     Graph *graph = NULL;
-    Edge *edge = NULL;
-    Lista *aresta = NULL;
 
     while (fp_in != NULL)
     {
@@ -104,6 +102,8 @@ void modo2(FILE *fp_in, FILE *fp_out)
             else if (A6(tab, maze, 1, 1, 1, &salas) == 1)
                 resposta = 0;
         }
+        /*se as coordenadas estiverem na mesma sala ou se a coordenada
+        dada estiver fora do tabuleiro*/
         if (resposta == 0 || resposta == -1)
         {
             if (flag == 1)
@@ -127,9 +127,9 @@ void modo2(FILE *fp_in, FILE *fp_out)
             if (wt == NULL)
                 exit(1);
 
-            GRAPHpfs(graph, sala_final, st, wt);
+            Dijkstras(graph, sala_final, st, wt);
 
-            /*se o ultimo valor da search tree for -1*/
+            /*se o labirinto nao tiver solucao*/
             if (st[0] == -1)
             {
                 if (flag == 1)
@@ -142,50 +142,16 @@ void modo2(FILE *fp_in, FILE *fp_out)
                 if (flag == 1)
                     fprintf(fp_out, "\n\n");
 
-                custo = wt[0];
+                fprintf(fp_out, "%d\n", wt[0]); /*custo do caminho*/
 
-                fprintf(fp_out, "%d\n", custo);
-
-                /*percorrer a search tree*/
-                while (st[i] != -1)
-                {
-                    for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
-                    {
-                        edge = getItemLista(aresta);
-                        /*se o vertice estiver na search tree*/
-                        if (edge->V == st[i])
-                        {
-                            paredes++; /*incrementar o numero de paredes*/
-                            i = edge->V;
-                            break;
-                        }
-                    }
-                }
-                fprintf(fp_out, "%d\n", paredes);
-                i = 0;
-                /*percorrer a search tree*/
-                while (st[i] != -1)
-                {
-                    for (aresta = graph->adj[i]; aresta != NULL; aresta = getNextNodeLista(aresta))
-                    {
-                        edge = getItemLista(aresta);
-                        /*se o vertice estiver na search tree*/
-                        if (edge->V == st[i])
-                        {
-                            fprintf(fp_out, "%d %d %d\n", edge->x + 1, edge->y + 1, edge->W);
-                            i = edge->V;
-                            break;
-                        }
-                    }
-                }
+                print_file(graph, fp_out, st, 1); /*total de paredes partidas*/
+                print_file(graph, fp_out, st, 0); /*quais paredes partidas*/
             }
             free(st);
             free(wt);
             freeGraph(graph);
         }
-        i = 0;
         salas = 0;
-        paredes = 0;
         tamanho = 0;
         resposta = 1;
         flag = 1;

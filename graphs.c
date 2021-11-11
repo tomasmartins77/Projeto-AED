@@ -3,6 +3,7 @@
 #include "Utility.h"
 #include "Utility2.h"
 #include "Funcionalidades.h"
+#include "Listas.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,10 +51,11 @@ Graph *readGraph(int salas, lab_t lab, int **tab)
             put_vertice(graph, tab, ESQ, DIR, x, y);
             put_vertice(graph, tab, CIM, BAI, x, y);
         }
-        if (x >= 2)
+        if (x >= 2 && lab.linhas > 2)
             free(tab[x - 2]);
     }
-    free(tab[x - 2]);
+    if (lab.linhas != 1)
+        free(tab[x - 2]);
     free(tab[x - 1]);
     free(tab);
     return graph;
@@ -71,7 +73,7 @@ void freeGraph(Graph *graph)
     for (i = 0; i < graph->vertex; i++)
     {
         if (graph->adj[i] != NULL)
-            freeLista(graph->adj[i], free);
+            freeLista(graph->adj[i], free); /*libertar a lista de cada vertice*/
     }
     free(graph->adj);
     free(graph);
@@ -104,10 +106,10 @@ int verifica_vertice(Lista *first, int value)
     return 0;
 }
 
-/** \brief troca o valor de uma aresta se o seu peso for inferior 
+/** \brief troca o valor de uma aresta se o seu peso for inferior
  *
  * \param first Lista* primeiro elemento da lista
- * \param aresta int 
+ * \param aresta int
  * \param value int
  * \param x int posicao x
  * \param y int posicao x
@@ -154,8 +156,8 @@ void put_vertice(Graph *graph, int **tab, int a, int b, int x, int y)
     Edge *edge;
     if (a != 0 && b != 0)
     {
-        if (verifica_vertice(graph->adj[-a - 3], -b - 3) == 0 && verifica_vertice(graph->adj[-b - 3], -a - 3) == 0)
         /*inserir vertice na lista*/
+        if (verifica_vertice(graph->adj[-a - 3], -b - 3) == 0 && verifica_vertice(graph->adj[-b - 3], -a - 3) == 0)
         {
             /*aloca nova aresta de v1*/
             edge = (Edge *)malloc(sizeof(Edge));
