@@ -185,25 +185,24 @@ int verifica_coord(lab_t lab, int custo)
  * \return void
  *
  */
-void conn(int *tab_id, int *tab_size, int i, int j, int p, int q)
+void conn(int *tab_id, int i, int j, int p, int q)
 {
     int t = 0, x = 0;
 
     if (i == j) /*ja estao conectados*/
         return;
     /*conectar a arvore menor a maior*/
-    if (tab_size[i] < tab_size[j])
+    if (p < q)
     {
         tab_id[i] = j;
-        tab_size[j] += tab_size[i];
         t = j;
     }
     else
     {
         tab_id[j] = i;
-        tab_size[i] += tab_size[j];
         t = i;
     }
+
     for (i = p; i != tab_id[i]; i = x)
     {
         x = tab_id[i];
