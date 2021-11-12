@@ -162,6 +162,8 @@ void Dijkstras(Graph *G, int s, int st[], int wt[])
     {
         v = PQdelmin(pq, wt); /*marca esse vertice como visto e guarda-o para verificar as suas arestas*/
         pq->posicao[v] = -2;  /*vertice visto*/
+        if (v == 0)
+            continue;
         for (t = G->adj[v]; t != NULL; t = getNextNodeLista(t)) /*percorre a lista do vertice que agora tem maior prioridade (?)*/
         {
             edge = getItemLista(t);
